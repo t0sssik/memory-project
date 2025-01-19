@@ -27,6 +27,7 @@ class GeneticAlgorithm:
         population = []
         for _ in range(self.population_size):
             population.append(TaskSet.generate_viable_set())
+        
         return population
     
     
@@ -36,6 +37,7 @@ class GeneticAlgorithm:
         
     def _top_selection(self) -> List[TaskSet]:
         self._sort_by_fitness()
+        
         return self.population[:2]
     
     
