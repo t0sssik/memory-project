@@ -205,5 +205,51 @@ nav h2{
 
 .diseases{
     background: var(--background-blue);
+    color: white;
+
 }
 
+.diseases h4, .diseases h2{
+    font-weight: normal;
+    font-size: 48px;
+}
+
+.diseases ol {
+    list-style-type: none;
+    counter-reset: num;
+   }
+
+.diseases li::before {
+    content: '0' counter(num);
+    counter-increment: num;
+    font-size: 33px;
+   }
+
+.diseases li{
+    display: flex;
+    margin: 6vh 0 2vh 5vh;
+}
+
+.diseases h4, .diseases p{
+    padding: 0;
+    margin: 0;
+}
+
+.diseases h2{
+    font-size: 50px;
+    margin: 6vh 0 12vh 10vh;
+    line-height: 0.95;
+}
+
+.diseases div{
+    margin: 0 0 20px 168px;
+}
+
+.diseases h4{
+    line-height: 0.9;
+}
+
+.diseases p{
+    font-size: 22px;
+    margin-top: 20px;
+}
