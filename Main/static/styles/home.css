@@ -21,6 +21,7 @@ body {
     --font-color-hero: white;
     --font-color-hero-secondary: #6EA2C6;
     --background-block: #EEF7FE;
+    --background-blue: #5EB6F2;
 }
 
 body{
@@ -129,12 +130,13 @@ nav h2{
 .info{
     display: flex;
     flex-direction: column;
-    padding: 0 104px 0 0;
+    padding: 0;
     user-select: none;
 }
 
 .blocks{
     display: flex;
+    align-items: center;
     margin: 3vh 0 0 10vh;
 }
 
@@ -171,5 +173,37 @@ nav h2{
 .huge-block:last-child{
     background-image: url('../images/block-2-svg.svg');
     color: var(--font-color-hero);
+    margin-right: 104px;
+}
+
+.video-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.info h3{
+    font-size: 24px;
+    font-weight: normal;
+    background: var(--background-blue);
+    color: white;
+    margin: 0 500px 0 0;
+    padding: 10px 30px 10px 30px;
+    border-radius: 15px 15px 0 0;
+}
+
+
+.video-block video{
+    max-width: 1232px;
+    max-height: 639px;
+    min-width: 1232px;
+    min-height: 639px;
+    border-radius: 25px;
+
+}
+
+.diseases{
+    background: var(--background-blue);
 }
 
