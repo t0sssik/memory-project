@@ -22,7 +22,8 @@ body {
     --font-color-hero-secondary: #6EA2C6;
     --background-block: #EEF7FE;
     --background-blue: #5EB6F2;
-    --background-shadow: #3480b6;
+    --body-color: #FCFCFC;
+    --nav-color: #F7F8F8;
 }
 
 body{
@@ -33,6 +34,7 @@ body{
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: var(--body-color);
 }
 
 button:hover{
@@ -44,10 +46,10 @@ nav{
     justify-content: space-between;
     margin: 38px 0 0 80px;
     width: 86%;
-    background: white;
     color: var(--font-color);
     border-radius: 20px;
     padding: 0 20px 0 20px;
+    background-color: var(--nav-color);
 }
 
 nav ul{
@@ -85,6 +87,10 @@ nav a{
     color: black;
     text-decoration: none;
     font-size: 23px;
+}
+
+nav a:hover{
+    text-decoration: underline;
 }
 
 main{
@@ -285,4 +291,17 @@ nav h2{
     margin: 0 0 18px 0;
     padding: 15px 100px;
     border-radius: 15px;
+}
+
+button{
+    transition: 0.3s ease all;
+}
+
+button:hover{
+    box-shadow: #4b81a6 3px 3px, #45779a 6px 6px;
+    font-size: 26px;
+}
+
+.huge-block button:hover{
+    font-size: 19px;
 }
