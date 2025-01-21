@@ -1,10 +1,93 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="stylesheet" href="{% static "/styles/start.css" %}" type="text/css">
+    <title>MemoryProject</title>
 </head>
-<body>
-
-</body>
+    <body>
+    <main>
+        <div class="hero">
+        <nav>
+            <h2><a href="../">ТРЕНИРОВКИ</a></h2>
+            <ul>
+                <li><a href="#">Статистика</a></li>
+                <li><a href="#">Имя</a></li>
+                <li><img alt="avatar" src="{% static "/images/avatar.jpg" %}" class="avatar"></li>
+            </ul>
+        </nav>
+            <h1>Первая тренировка</h1>
+                    <p class="description">Перед тем как перейти к первой тренировке, заполните необходимую<br>
+                        информацию о подопечном. На основе этих данных будут подбираться<br>
+                        некоторые упражнения.</p>
+        </div>
+        <div class="info">
+            <form>
+            {% csrf_token %}
+                <ol>
+                    <li>
+                        <div>
+                        <p>Степень образования:</p>
+                            <div>
+                                <input type="radio" id='education1' name='education' value="higher" required
+                                       class="radio"/>
+                                <label for="education1">Высшее образование</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='education2' name="education" value="secondary" required
+                                class="radio"/>
+                                <label for="education2">Среднее образование</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='education3' name="education" value="none" required
+                                class="radio"/>
+                                <label for="education3">Без образования</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <p>Наблюдались ли проблемы с вниманием, памятью, мышлением<br>
+                            или другими когнитивными функциями:</p>
+                            <div>
+                                <input type="radio" id='problems1' name='problems' value="yes" required
+                                class="radio"/>
+                                <label for="problems1">Да</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='problems2' name="problems" value="no" required
+                                class="radio"/>
+                                <label for="problems2">Нет</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <p>Были ли диагностированы когнитивные отклонения от нормы:</p>
+                            <div>
+                                <input type="radio" id='disease1' name='disease' value="yes" required
+                                class="radio"/>
+                                <label for="disease1">Да</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='disease2' name="disease" value="no" required
+                                class="radio"/>
+                                <label for="disease2">Нет</label>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            <p class="description">Для тренировки необходимо распечатать бланк <br>
+            с упражнениями (рекомендуется в цветном формате).</p>
+            <p class="note">Время: &nbsp; 15 мин.</p>
+            <p class="note">Количество заданий: &nbsp; 8.</p>
+            <div class="buttons">
+                <button type="submit" value="hello-form" name="hello-form">Начать упражнения</button>
+                <button>Распечатать бланк</button>
+            </div>
+            </form>
+        </div>
+    </main>
+    </body>
 </html>
