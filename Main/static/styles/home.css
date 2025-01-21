@@ -22,19 +22,28 @@ body {
     --font-color-hero-secondary: #6EA2C6;
     --background-block: #EEF7FE;
     --background-blue: #5EB6F2;
+    --background-shadow: #3480b6;
 }
 
 body{
     font-family: "CoFo Sans", "Arial", sans-serif;
     margin: 0;
     overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+button:hover{
+    cursor: pointer;
 }
 
 nav{
     display: flex;
     justify-content: space-between;
-    margin: 38px 0 0 10vh;
-    width: 87%;
+    margin: 38px 0 0 80px;
+    width: 86%;
     background: white;
     color: var(--font-color);
     border-radius: 20px;
@@ -51,7 +60,7 @@ nav ul{
 }
 
 nav li{
-    padding: 0 3vw 0 0;
+    padding: 0 30px 0 0;
 }
 
 div.hero{
@@ -59,13 +68,13 @@ div.hero{
     flex-direction: column;
     height: 100%;
     width: 100%;
-    background-image: url('../images/Background.png');
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-size: contain;
+    background: linear-gradient(-45deg,#5EB5F2, #91CFFB);
 }
 
 div.hero p, h1{
     color: var(--font-color-hero);
+    font-weight: normal;
 }
 
 div.hero h2, button{
@@ -85,23 +94,34 @@ main{
 }
 
 .hero button{
-    width: 39vh;
-    height: 8vh;
-    margin: 5.5vh 0 7vh 10vh;
+    width: 300px;
+    height: 60px;
+    margin: 25px 0 80px 80px;
     border:0;
     border-radius: 20px;
     background: white;
     font-size:25px;
 }
 
+.hero-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hero-image img{
+    width: 800px;
+    margin-bottom: 100px;
+}
+
 .hero h1{
     font-size: 68px;
-    margin: 4vh 0 0 10vh;
+    margin: 30px 0 0 80px;
 }
 
 .hero p{
     font-size: 27px;
-    margin: 12vh 0 0 10vh;
+    margin: 90px 0 0 80px;
 }
 
 .avatar{
@@ -174,6 +194,10 @@ nav h2{
     background-image: url('../images/block-2-svg.svg');
     color: var(--font-color-hero);
     margin-right: 104px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .video-block{
@@ -252,4 +276,13 @@ nav h2{
 .diseases p{
     font-size: 22px;
     margin-top: 20px;
+}
+
+.huge-block button{
+    width: 100%;
+    border: none;
+    font-size: 18px;
+    margin: 0 0 18px 0;
+    padding: 15px 100px;
+    border-radius: 15px;
 }
