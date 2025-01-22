@@ -7,3 +7,6 @@ def home(request):
 
 def start(request):
     return render(request, 'start.html')
+
+def main(request):
+    return render(request, 'main.html')
