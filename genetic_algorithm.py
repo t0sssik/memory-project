@@ -1,5 +1,5 @@
 from task_set import TaskSet
-from task_set import MAX_TASK_SET_SIZE
+from task_set import TASK_SET_SIZE
 from task import Task
 from task_difficulty import TaskDifficulty
 from task_type import TaskType
@@ -11,11 +11,13 @@ class GeneticAlgorithm:
     
     def __init__(self,
                  user_stat,
+                 reference_difficulty,
                  population_size: int=100,
                  num_of_candidates: int=20,
                  mutation_rate: float=0.01,
                  generations: int=100) -> None:
         self.user_statistics = user_stat
+        self.reference_difficulty = reference_difficulty
         self.population_size = population_size
         self.num_of_candidates = num_of_candidates
         self.mutation_rate = mutation_rate
@@ -26,13 +28,35 @@ class GeneticAlgorithm:
     def _create_initial_population(self) -> List[TaskSet]:      
         population = []
         for _ in range(self.population_size):
-            population.append(TaskSet.generate_viable_set())
+            population.append(self._create_dummy_taskset())
         
         return population
     
     
+    def _create_dummy_taskset(self) -> TaskSet:
+        task_set = []
+        size = 0
+        
+        # добавляем по 1 заданию каждого типа.
+        for task_type in list(TaskType):
+            rand_difficulty = random.choice(list(TaskDifficulty))
+            task = Task(task_type, rand_difficulty)
+            task_set.append(task)
+            size += 1
+            
+        # добавляем случайные задания, пока есть место    
+        while size < TASK_SET_SIZE:
+            rand_type = random.choice(list(TaskType))
+            rand_difficulty = random.choice(list(TaskDifficulty))
+            task = Task(rand_type, rand_difficulty)
+            task_set.append(task)
+            size += 1
+        
+        return TaskSet(task_set, self.user_statistics, self.reference_difficulty)
+    
+    
     def _sort_by_fitness(self) -> None:
-        self.population.sort(key=lambda x: x.fitness(self.user_statistics), reverse=True)
+        self.population.sort(key=lambda x: x.fitness, reverse=True)
         
         
     def _top_selection(self) -> List[TaskSet]:
@@ -55,19 +79,19 @@ class GeneticAlgorithm:
         pass
     
     
-    # def _crossover(self, selected_sets: Tuple[TaskSet, TaskSet]) -> List[TaskSet]:
-    #     mask = [random.randint(0, 1) for _ in range(MAX_TASK_SET_SIZE)]
-    #     child_1 = []
-    #     child_2 = []
-    #     for i, elem in enumerate(mask):
-    #         if elem == 0:
-    #             child_1.append(selected_sets[0].tasks[i])
-    #             child_2.append(selected_sets[1].tasks[i])
-    #         else:
-    #             child_1.append(selected_sets[1].tasks[i])
-    #             child_2.append(selected_sets[0].tasks[i])
+    def _crossover(self, selected_sets: Tuple[TaskSet, TaskSet]) -> List[TaskSet]:
+        mask = [random.randint(0, 1) for _ in range(TASK_SET_SIZE)]
+        child_1 = []
+        child_2 = []
+        for i, elem in enumerate(mask):
+            if elem == 0:
+                child_1.append(selected_sets[0].tasks[i])
+                child_2.append(selected_sets[1].tasks[i])
+            else:
+                child_1.append(selected_sets[1].tasks[i])
+                child_2.append(selected_sets[0].tasks[i])
         
-    #     return [TaskSet(child_1), TaskSet(child_2)]
+        return [TaskSet(child_1, self.user_statistics, self.reference_difficulty), TaskSet(child_2, self.user_statistics, self.reference_difficulty)]
 
     
     def evolve(self, selection_method: str='top') -> TaskSet:
@@ -91,6 +115,21 @@ class GeneticAlgorithm:
     
     
 if __name__ == '__main__':
-    ga = GeneticAlgorithm(population_size=20, num_of_candidates=4, generations=10)
+    test_user_stat = {
+        'MEMORY': 0.1,
+        'ATTENTION':0.2,
+        'RECOGNITION':0.3,
+        'ACTION':0.4,
+        'SPEECH':0.5
+    }
+    test_ref_dif = 1.95
+    
+    ga = GeneticAlgorithm(
+        user_stat=test_user_stat,
+        reference_difficulty=test_ref_dif,
+        population_size=20,
+        num_of_candidates=4,
+        generations=10
+    )
     best = ga.evolve()
     print(best)
