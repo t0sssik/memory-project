@@ -1,5 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+
 from .functions import *
 # Create your views here.
 
@@ -15,5 +16,8 @@ def main(request):
 def auth(request):
     if request.method == 'POST':
         if request.POST.get('button') == 'register':
-            create_user(request.POST)
+            if create_user(request.POST):
+                return redirect('/')
+        elif request.POST.get('button') == 'auth':
+            pass
     return render(request, 'auth.html')
