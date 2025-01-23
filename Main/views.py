@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.models import User
-
-from .functions import *
+from django.http import JsonResponse
+from Main.functions.user_functions import *
+import json
 # Create your views here.
 
 def home(request):
@@ -21,10 +21,26 @@ def auth(request):
         if request.POST.get('button') == 'register':
             if create_user(request):
                 return redirect('/')
+            else:
+                # print(request.POST)
+                received_data = json.loads(request.body.decode('utf-8'))
+                print(received_data)
+                return JsonResponse({'data': 'data'})
+                # return render(request, 'auth.html', {"reg_error": True})
         elif request.POST.get('button') == 'auth':
             if authenticate_user(request):
                 return redirect('/')
+            else:
+                return
+                # return render(request, 'auth.html', {"auth_error": True})
     return render(request, 'auth.html')
+
+def validate_email(request):
+    username = request.GET.get('email')
+    response = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return JsonResponse(response)
 
 def logout_view(request):
     logout(request)

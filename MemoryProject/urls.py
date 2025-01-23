@@ -25,5 +25,7 @@ urlpatterns = [
     path('start/', views.start, name='start'),
     path('main/', views.main, name='main'),
     path('auth/', views.auth, name='auth'),
+    path('auth/validate_email/', views.validate_email, name='validate_email'),
     path('logout/', views.logout_view, name='logout'),
+
 ]

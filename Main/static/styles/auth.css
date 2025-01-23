@@ -177,6 +177,22 @@ label{
     color: black;
 }
 
+.error{
+    margin: initial;
+    color: var(--red-req);
+    border-color: var(--red-req);
+}
+
+.error input{
+    margin: 0;
+}
+
+
+label.error{
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
 .check-label:hover{
     cursor: pointer;
     color: var(--font-color-secondary);

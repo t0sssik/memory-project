@@ -32,11 +32,19 @@
                     <input required id="first-name" name="first-name" placeholder="Введите имя"/>
                     <label for="last-name">Фамилия <strong>*</strong></label>
                     <input required id="last-name" name="last-name" placeholder="Введите фамилию"/>
-                    <label for="email">E-mail <strong>*</strong></label>
-                    <input required id="email" name="email" type="email" placeholder="example@mail.ru"/>
+{#                    {% if reg_error %}#}
+{#                        <label for="email">E-mail <strong>*</strong></label>#}
+{#                        <input required id="email" name="email" type="email" placeholder="example@mail.ru" class="error"/>#}
+{#                        <label for="email" class="error">Этот адрес электронной почты уже используется</label>#}
+{#                    {% else %}#}
+{#                        <label for="email">E-mail <strong>*</strong></label>#}
+{#                        <input required id="email" name="email" type="email" placeholder="example@mail.ru"/>#}
+{#                    {% endif %}#}
+                    <label for="id_email">E-mail <strong>*</strong></label>
+                    <input class="is-valid" required name="email" type="email" placeholder="example@mail.ru" id="id_email"/>
+                    <label class="error" id="email-error" style="display: none">Этот почтовый адрес недоступен!</label>
                     <label for="password">Придумайте пароль <strong>*</strong></label>
                     <input required id="password" type="password" name="password" placeholder="Введите пароль"/>
-
                     <button type="submit" value="register" name="button">Создать аккаунт</button>
                     <p class="note">Нажимая кнопку «Создать аккаунт», я соглашаюсь с <a href="#">политикой<br>
                         конфиденциальности</a> сервиса и даю согласие на обработку персональных данных</p>
@@ -44,5 +52,36 @@
             </div>
         </div>
     </main>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    $('#id_email').keyup(function () {
+    // создаем AJAX-вызов
+    $.ajax({
+        data: $(this).serialize(), // получаяем данные формы
+        url: "{% url 'validate_email' %}",
+        // если успешно, то
+        success: function (response) {
+            let errorblock = document.getElementById("email-error");
+            if (response.is_taken == true) {
+
+                $('#id_email').removeClass('is-valid').addClass('error');
+                errorblock.style.display = 'block';
+            }
+            else {
+                $('#id_email').removeClass('error').addClass('is-valid');
+                errorblock.style.display = 'none';
+            }
+        },
+        // если ошибка, то
+        error: function (response) {
+            // предупредим об ошибке
+            console.log(response.responseJSON.errors)
+        }
+    });
+    return false;
+});
+    </script>
+    {% endblock %}
     </body>
 </html>

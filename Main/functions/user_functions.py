@@ -30,7 +30,6 @@ def authenticate_user(request):
     if not _validate_user(request):
         user = authenticate(request, username=request.POST.get('email'),
                             password=request.POST.get('password'))
-        print(request, user)
         if user is not None:
             login(request, user)
             return True
