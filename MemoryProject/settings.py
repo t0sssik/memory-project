@@ -27,9 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# Мои кастомные настройки
-
-AUTH_USER_MODEL = "Main.User"
 
 # Application definition
 
@@ -108,7 +105,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-ru'
+LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 

@@ -1,6 +1,6 @@
-from django.shortcuts import render, redirect
-from .functions import get_registration_info
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render
+from django.contrib.auth.models import User
+from .functions import *
 # Create your views here.
 
 def home(request):
@@ -12,8 +12,8 @@ def start(request):
 def main(request):
     return render(request, 'main.html')
 
-def auth(response):
-    if response.method == "POST":
-        info = get_registration_info(response.POST)
-
-    return render(response, "auth.html")
+def auth(request):
+    if request.method == 'POST':
+        if request.POST.get('button') == 'register':
+            create_user(request.POST)
+    return render(request, 'auth.html')
