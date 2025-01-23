@@ -39,3 +39,10 @@ def authenticate_user(request):
             return False
     else:
         return False
+
+def validate_register_email(request):
+    username = request.GET.get('email')
+    response = {
+        'is_taken': User.objects.filter(username__iexact=username).exists()
+    }
+    return response

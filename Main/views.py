@@ -21,19 +21,25 @@ def auth(request):
         if request.POST.get('button') == 'register':
             if create_user(request):
                 return redirect('/')
-        elif request.POST.get('button') == 'auth':
+        elif request.method == "POST":
             if authenticate_user(request):
-                return redirect('/')
+                return JsonResponse({"is_ok": True})
             else:
-                return render(request, 'auth.html')
+                return JsonResponse({"is_ok": False})
     return render(request, 'auth.html')
 
 def validate_email(request):
-    username = request.GET.get('email')
-    response = {
-        'is_taken': User.objects.filter(username__iexact=username).exists()
-    }
+    response = validate_register_email(request)
     return JsonResponse(response)
+
+def validate_login_data(request):
+    username = request.POST.get('email')
+    password = request.POST.get('password')
+    if not authenticate_user(request):
+        response = {
+            'wrong_data': 'wrong_data'
+        }
+        return JsonResponse(response)
 
 def logout_view(request):
     logout(request)
