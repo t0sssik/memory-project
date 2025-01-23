@@ -22,6 +22,8 @@ def create_user(request):
 
         user = User.objects.create_user(**info)
         User.save(user)
+
+        authenticate_user(request)
         return True
     else:
         return False
