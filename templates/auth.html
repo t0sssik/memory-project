@@ -11,7 +11,7 @@
         <div class="blocks">
             <div class="auth-block">
                 <h2>Войти в аккаунт</h2>
-                <form>
+                <form method="post">
                     {% csrf_token %}
                     <label for="login-auth">E-mail <strong>*</strong></label>
                     <input required id="login-auth" name="login-auth" type="email" placeholder="example@mail.ru"/>
@@ -21,12 +21,12 @@
                         <input type="checkbox" id="save" name="save" class="checkbox"/>
                         <label for="save" class="check-label">Запомнить вход</label>
                     </div>
-                    <button>Войти</button>
+                    <button type="submit">Войти</button>
                 </form>
             </div>
             <div class="reg-block">
                 <h2>Создать аккаунт</h2>
-                <form>
+                <form method="post">
                     {% csrf_token %}
                     <label for="name-reg">Имя <strong>*</strong></label>
                     <input required id="name-reg" name="name-reg" placeholder="Введите имя"/>
@@ -37,7 +37,7 @@
                     <label for="pass-reg">Придумайте пароль <strong>*</strong></label>
                     <input required id="pass-reg" type="password" name="pass-reg" placeholder="Введите пароль"/>
 
-                    <button>Создать аккаунт</button>
+                    <button type="submit">Создать аккаунт</button>
                     <p class="note">Нажимая кнопку «Создать аккаунт», я соглашаюсь с <a href="#">политикой<br>
                         конфиденциальности</a> сервиса и даю согласие на обработку персональных данных</p>
                 </form>
