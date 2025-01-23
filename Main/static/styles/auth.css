@@ -61,7 +61,7 @@ button:hover{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 94px 0 94px;
+    padding: 0 115px 0 115px;
 }
 
 form{
@@ -79,19 +79,20 @@ form strong{
 }
 
 form label{
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     font-size: 18px;
     color: var(--label-black);
+    font-weight: 600;
 }
 
 
 
 form input{
-    margin-bottom: 25px;
+    margin: 4px 0 4px 0;
     border-radius: 10px;
     border: 1px solid var(--font-color-secondary);
     background-color: white;
-    padding: 20px 15px 20px 15px;
+    padding: 18px 15px 18px 15px;
     transition: 0.2s ease all;
     font-size: 18px;
 }
@@ -100,12 +101,23 @@ form input::placeholder{
     color: var(--placeholder)
 }
 
-form input:focus{
-    font-size: 23px;
+form input.input-field:focus{
+    margin: 0;
+    padding: 22px 15px 22px 15px;
 }
 
-input[type='checkbox']{
-    margin: 0 10px 0 0;
+form .input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.checkbox{
+    margin-right: 10px;
+}
+
+#email-box {
+    margin: 0;
 }
 
 .auth-block{
@@ -183,14 +195,9 @@ label{
     border-color: var(--red-req);
 }
 
-.error input{
-    margin: 0;
-}
-
-
 label.error{
     font-size: 14px;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
 }
 
 .check-label:hover{
@@ -208,7 +215,7 @@ button{
     user-select: none;
     transition: 0.3s ease all;
     border: var(--font-color-secondary) 1px solid;
-    padding: 20px 0 20px 0;
+    padding: 18px 0 18px 0;
 }
 
 

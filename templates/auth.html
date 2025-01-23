@@ -13,10 +13,14 @@
                 <h2>Войти в аккаунт</h2>
                 <form method="post" name="auth_form">
                     {% csrf_token %}
-                    <label for="email">E-mail <strong>*</strong></label>
-                    <input required id="email" name="email" type="email" placeholder="example@mail.ru"/>
-                    <label for="password">Пароль <strong>*</strong></label>
-                    <input required id="password" type="password" name="password" placeholder="Введите пароль"/>
+                    <div class="input">
+                        <label for="email">E-mail <strong>*</strong></label>
+                        <input class="input-field" required id="email" name="email" type="email" placeholder="example@mail.ru"/>
+                    </div>
+                    <div class="input">
+                        <label for="password">Пароль <strong>*</strong></label>
+                        <input class="input-field" required id="password" type="password" name="password" placeholder="Введите пароль"/>
+                    </div>
                     <div class="check-container">
                         <input type="checkbox" id="save" name="save" class="checkbox"/>
                         <label for="save" class="check-label">Запомнить вход</label>
@@ -28,16 +32,24 @@
                 <h2>Создать аккаунт</h2>
                 <form method="post">
                     {% csrf_token %}
-                    <label for="first-name">Имя <strong>*</strong></label>
-                    <input required id="first-name" name="first-name" placeholder="Введите имя"/>
-                    <label for="last-name">Фамилия <strong>*</strong></label>
-                    <input required id="last-name" name="last-name" placeholder="Введите фамилию"/>
-                    <label for="id_email">E-mail <strong>*</strong></label>
-                    <input class="is-valid" required name="email" type="email" placeholder="example@mail.ru" id="id_email"/>
-                    <label class="error" id="email-error" style="display: none">Этот почтовый адрес недоступен!</label>
-                    <label for="password">Придумайте пароль <strong>*</strong></label>
-                    <input required id="password" type="password" name="password" placeholder="Введите пароль"/>
-                    <button type="submit" value="register" name="button">Создать аккаунт</button>
+                    <div class="input">
+                        <label for="first-name">Имя <strong>*</strong></label>
+                        <input class="input-field" required id="first-name" name="first-name" placeholder="Введите имя"/>
+                    </div>
+                    <div class="input">
+                        <label for="last-name">Фамилия <strong>*</strong></label>
+                        <input class="input-field" required id="last-name" name="last-name" placeholder="Введите фамилию"/>
+                    </div>
+                    <div class="input" id="email-box">
+                        <label for="id_email">E-mail <strong>*</strong></label>
+                        <input class="is-valid input-field" required name="email" type="email" placeholder="example@mail.ru" id="id_email"/>
+                        <label class="error" id="email-error" style="visibility: hidden">Этот почтовый адрес недоступен!</label>
+                    </div>
+                    <div class="input">
+                        <label for="password">Придумайте пароль <strong>*</strong></label>
+                        <input class="input-field" required id="password" type="password" name="password" placeholder="Введите пароль"/>
+                    </div>
+                    <button type="submit" value="register" name="button" id="register-btn">Создать аккаунт</button>
                     <p class="note">Нажимая кнопку «Создать аккаунт», я соглашаюсь с <a href="#">политикой<br>
                         конфиденциальности</a> сервиса и даю согласие на обработку персональных данных</p>
                 </form>
@@ -54,15 +66,19 @@
         url: "{% url 'validate_email' %}",
         // если успешно, то
         success: function (response) {
-            let errorblock = document.getElementById("email-error");
+            let errorBlock = document.getElementById("email-error");
+            let registerButton = document.getElementById('register-btn');
             if (response.is_taken == true) {
-
                 $('#id_email').removeClass('is-valid').addClass('error');
-                errorblock.style.display = 'block';
+                errorBlock.style.visibility = 'visible';
+                registerButton.setAttribute('disabled', '');
+                registerButton.style.backgroundColor = '#B0B9BF';
             }
             else {
                 $('#id_email').removeClass('error').addClass('is-valid');
-                errorblock.style.display = 'none';
+                errorBlock.style.visibility = 'hidden';
+                registerButton.removeAttribute('disabled');
+                registerButton.style.backgroundColor = 'var(--font-color-secondary)';
             }
         },
         // если ошибка, то
