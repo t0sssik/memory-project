@@ -5,7 +5,10 @@ from .functions import *
 # Create your views here.
 
 def home(request):
-    return render(request, 'home.html')
+    if request.user.is_authenticated:
+        return render(request, 'main.html')
+    else:
+        return render(request, 'home.html')
 
 def start(request):
     return render(request, 'start.html')
@@ -16,8 +19,13 @@ def main(request):
 def auth(request):
     if request.method == 'POST':
         if request.POST.get('button') == 'register':
-            if create_user(request.POST):
+            if create_user(request):
                 return redirect('/')
         elif request.POST.get('button') == 'auth':
-            pass
+            if authenticate_user(request):
+                return redirect('/')
     return render(request, 'auth.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')

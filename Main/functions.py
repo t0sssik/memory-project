@@ -1,14 +1,24 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
-def create_user(response):
-    if _validate_user(response):
+def _validate_user(request):
+    _email = request.POST.get('email')
+
+    try:
+        User.objects.get(username=_email)
+    except:
+        return True
+    else:
+        return False
+
+def create_user(request):
+    if _validate_user(request):
         info = dict()
-        info['first_name'] = response.get('first-name-reg')
-        info['last_name'] = response.get('last-name-reg')
-        info['email'] = response.get('email-reg')
-        info['username'] = response.get('email-reg')
-        info['password'] = response.get('password-reg')
+        info['first_name'] = request.POST.get('first-name')
+        info['last_name'] = request.POST.get('last-name')
+        info['email'] = request.POST.get('email')
+        info['username'] = request.POST.get('email')
+        info['password'] = request.POST.get('password')
 
         user = User.objects.create_user(**info)
         User.save(user)
@@ -16,12 +26,15 @@ def create_user(response):
     else:
         return False
 
-def _validate_user(response):
-    email = response.get('email-reg')
-
-    try:
-        User.objects.get(username=email)
-    except:
-        return True
+def authenticate_user(request):
+    if not _validate_user(request):
+        user = authenticate(request, username=request.POST.get('email'),
+                            password=request.POST.get('password'))
+        print(request, user)
+        if user is not None:
+            login(request, user)
+            return True
+        else:
+            return False
     else:
         return False
