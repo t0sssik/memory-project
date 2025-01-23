@@ -10,3 +10,6 @@ def start(request):
 
 def main(request):
     return render(request, 'main.html')
+
+def auth(request):
+    return render(request, 'auth.html')

@@ -223,7 +223,6 @@ button:first-child{
 }
 
 button:last-child{
-
     color: var(--font-color-secondary);
 }
 
