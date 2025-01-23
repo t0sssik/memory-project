@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 
 def _validate_user(request):
     _email = request.POST.get('email')

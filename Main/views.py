@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.http import JsonResponse
 from Main.functions.user_functions import *
-import json
 # Create your views here.
 
 def home(request):
