@@ -15,11 +15,13 @@
                     {% csrf_token %}
                     <div class="input">
                         <label for="id-email">E-mail <strong>*</strong></label>
-                        <input class="input-field" required id="id-email" name="email" type="email" placeholder="example@mail.ru"/>
+                        <input class="input-field" required id="id-email" name="email" type="email"
+                               placeholder="example@mail.ru" maxlength="32" minlength="6"/>
                     </div>
                     <div class="input">
                         <label for="id-password">Пароль <strong>*</strong></label>
-                        <input class="input-field" required id="id-password" type="password" name="password" placeholder="Введите пароль"/>
+                        <input class="input-field" required id="id-password" type="password" name="password"
+                               placeholder="Введите пароль" maxlength="32" minlength="6"/>
                         <label class="error" id="auth-error" style="visibility: hidden">Неверный e-mail или пароль!</label>
                     </div>
                     <div class="check-container">
@@ -35,20 +37,24 @@
                     {% csrf_token %}
                     <div class="input">
                         <label for="first-name">Имя <strong>*</strong></label>
-                        <input class="input-field" required id="first-name" name="first-name" placeholder="Введите имя"/>
+                        <input class="input-field" required id="first-name" name="first-name"
+                               placeholder="Введите имя" maxlength="32"/>
                     </div>
                     <div class="input">
                         <label for="last-name">Фамилия <strong>*</strong></label>
-                        <input class="input-field" required id="last-name" name="last-name" placeholder="Введите фамилию"/>
+                        <input class="input-field" required id="last-name" name="last-name"
+                               placeholder="Введите фамилию" maxlength="32"/>
                     </div>
                     <div class="input" id="email-box">
                         <label for="id_email">E-mail <strong>*</strong></label>
-                        <input class="is-valid input-field" required name="email" type="email" placeholder="example@mail.ru" id="id_email"/>
+                        <input class="is-valid input-field" required name="email" type="email"
+                               placeholder="example@mail.ru" id="id_email" maxlength="32" minlength="6"/>
                         <label class="error" id="email-error" style="visibility: hidden">Этот почтовый адрес недоступен!</label>
                     </div>
                     <div class="input">
                         <label for="password">Придумайте пароль <strong>*</strong></label>
-                        <input class="input-field" required id="password" type="password" name="password" placeholder="Введите пароль"/>
+                        <input class="input-field" required id="password" type="password" name="password"
+                               placeholder="Введите пароль" minlength="6" maxlength="32"/>
                     </div>
                     <button type="submit" value="register" name="button" id="register-btn">Создать аккаунт</button>
                     <p class="note">Нажимая кнопку «Создать аккаунт», я соглашаюсь с <a href="#">политикой<br>
