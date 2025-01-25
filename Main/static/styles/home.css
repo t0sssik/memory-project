@@ -89,6 +89,10 @@ nav a{
     font-size: 23px;
 }
 
+nav h2 a{
+    color: var(--font-color-secondary);
+}
+
 nav a:hover{
     text-decoration: underline;
 }

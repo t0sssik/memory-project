@@ -9,14 +9,7 @@
     <body>
     <main>
         <div class="hero">
-        <nav>
-            <h2>ТРЕНИРОВКИ</h2>
-            <ul>
-                <li><a href="#">Статистика</a></li>
-                <li><a href="#">{ИМЯ}</a></li>
-                <li><img alt="avatar" src="{% static "/images/avatar.jpg" %}" class="avatar"></li>
-            </ul>
-        </nav>
+            {% include 'nav.html' %}
             <div class="hero-container">
                 <div>
                     <h1>Когнитивные <br> тренировки <br>  с удовольствием</h1>
