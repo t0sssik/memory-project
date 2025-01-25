@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from Main.functions.user_functions import *
 # Create your views here.
 
-def home(request):
+def index(request):
     if request.user.is_authenticated:
         return render(request, 'main.html')
     else:
@@ -12,9 +12,6 @@ def home(request):
 
 def start(request):
     return render(request, 'start.html')
-
-def main(request):
-    return render(request, 'main.html')
 
 def auth(request):
     if request.method == 'POST':
