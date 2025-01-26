@@ -1,4 +1,4 @@
-population_size: 100
-num_of_candidates: 20
+population_size: 200
+num_of_candidates: 40
 mutation_rate: 0.01
-generations: 100
+generations: 500

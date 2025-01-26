@@ -16,9 +16,9 @@ class GeneticAlgorithm:
                  user_stat,
                  reference_difficulty,
                  hparams_conf_path: str,
-                 logger: Logger=None) -> None:
+                 logger: bool=True) -> None:
         if logger:
-            self.logger = logger
+            self.logger = Logger(hparams_conf_path)
         else:
             self.logger = None
         self.user_statistics = user_stat
@@ -152,12 +152,10 @@ if __name__ == '__main__':
     }
     test_ref_dif = 1.95
     
-    logger = Logger("hparams.yaml")
     ga = GeneticAlgorithm(
         user_stat=test_user_stat,
         reference_difficulty=test_ref_dif,
-        hparams_conf_path="hparams.yaml",
-        logger=logger
+        hparams_conf_path="hparams.yaml"
     )
     best = ga.evolve()
     print(best)
