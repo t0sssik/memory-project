@@ -68,6 +68,7 @@ class Logger():
         plt.legend()
         plt.xlabel("Номер итерации")
         plt.ylabel("Значение фитнес-функции")
+        plt.grid(True)
         plt.savefig(self.log_path / Path("progress_plot.png"))
         plt.close()
         
@@ -79,6 +80,7 @@ class Logger():
         plt.legend()
         plt.xlabel("Номер итерации")
         plt.ylabel("Средняя сложность набора")
+        plt.grid(True)
         plt.savefig(self.log_path / Path("avg_difficulty_plot.png"))
         plt.close()
         
@@ -94,5 +96,6 @@ class Logger():
         plt.legend()
         plt.xlabel("Номер итерации")
         plt.ylabel("Число заданий")
+        plt.grid(True)
         plt.savefig(self.log_path / Path("tasks_counter_plot.png"))
         plt.close()
