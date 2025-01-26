@@ -4,6 +4,7 @@ from task import Task
 from task_difficulty import TaskDifficulty
 from task_type import TaskType
 from typing import List, Tuple
+from logger import Logger
 import random
 
 
@@ -15,7 +16,12 @@ class GeneticAlgorithm:
                  population_size: int=100,
                  num_of_candidates: int=20,
                  mutation_rate: float=0.01,
-                 generations: int=100) -> None:
+                 generations: int=100,
+                 logger: Logger=None) -> None:
+        if logger:
+            self.logger = logger
+        else:
+            self.logger = None
         self.user_statistics = user_stat
         self.reference_difficulty = reference_difficulty
         self.population_size = population_size
@@ -23,7 +29,7 @@ class GeneticAlgorithm:
         self.mutation_rate = mutation_rate
         self.generations = generations
         self.population = self._create_initial_population()
-    
+        
     
     def _create_initial_population(self) -> List[TaskSet]:      
         population = []
@@ -56,7 +62,7 @@ class GeneticAlgorithm:
     
     
     def _sort_by_fitness(self) -> None:
-        self.population.sort(key=lambda x: x.fitness, reverse=True)
+        self.population.sort(key=lambda x: x.fitness)
         
         
     def _top_selection(self) -> List[TaskSet]:
@@ -101,8 +107,15 @@ class GeneticAlgorithm:
         '''
         TODO: реализовать выбор метода отбора кандидатов
         '''
-        for _ in range(self.generations):
+        for i in range(self.generations):
             self._sort_by_fitness()
+            if self.logger:
+                self.logger.add_data(
+                    i,
+                    self.population[0].fitness,
+                    self.population[0].avg_difficulty,
+                    self.population[0].tasks_counter,
+                )
             self.population = self.population[:self.population_size]
             candidates = self.population[:self.num_of_candidates]
             while candidates:
@@ -110,6 +123,17 @@ class GeneticAlgorithm:
                 children = self._crossover(parents)
                 self.population.extend(children)
         self._sort_by_fitness()
+        if self.logger:
+            self.logger.add_data(
+                i,
+                self.population[0].fitness,
+                self.population[0].avg_difficulty,
+                self.population[0].tasks_counter,
+            )
+            self.logger.save_data()
+            self.logger.show_progress_plot()
+            self.logger.show_avg_difficulty_plot()
+            self.logger.show_tasks_counter_plot()
         
         return self.population[0]
     
@@ -124,12 +148,14 @@ if __name__ == '__main__':
     }
     test_ref_dif = 1.95
     
+    logger = Logger("hparams.yaml")
     ga = GeneticAlgorithm(
         user_stat=test_user_stat,
         reference_difficulty=test_ref_dif,
-        population_size=20,
-        num_of_candidates=4,
-        generations=10
+        population_size=100,
+        num_of_candidates=20,
+        generations=100,
+        logger=logger
     )
     best = ga.evolve()
     print(best)
