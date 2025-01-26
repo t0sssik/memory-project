@@ -6,6 +6,8 @@ from task_type import TaskType
 from typing import List, Tuple
 from logger import Logger
 import random
+import yaml
+from pathlib import Path
 
 
 class GeneticAlgorithm:
@@ -13,10 +15,7 @@ class GeneticAlgorithm:
     def __init__(self,
                  user_stat,
                  reference_difficulty,
-                 population_size: int=100,
-                 num_of_candidates: int=20,
-                 mutation_rate: float=0.01,
-                 generations: int=100,
+                 hparams_conf_path: str,
                  logger: Logger=None) -> None:
         if logger:
             self.logger = logger
@@ -24,10 +23,15 @@ class GeneticAlgorithm:
             self.logger = None
         self.user_statistics = user_stat
         self.reference_difficulty = reference_difficulty
-        self.population_size = population_size
-        self.num_of_candidates = num_of_candidates
-        self.mutation_rate = mutation_rate
-        self.generations = generations
+        
+        with open(Path(hparams_conf_path), 'r') as f:
+            hparams = yaml.load(f, Loader=yaml.SafeLoader)
+            
+        self.population_size = hparams['population_size']
+        self.num_of_candidates = hparams['num_of_candidates']
+        self.mutation_rate = hparams['mutation_rate']
+        self.generations = hparams['generations']
+        
         self.population = self._create_initial_population()
         
     
@@ -152,9 +156,7 @@ if __name__ == '__main__':
     ga = GeneticAlgorithm(
         user_stat=test_user_stat,
         reference_difficulty=test_ref_dif,
-        population_size=100,
-        num_of_candidates=20,
-        generations=100,
+        hparams_conf_path="hparams.yaml",
         logger=logger
     )
     best = ga.evolve()
