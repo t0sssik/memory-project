@@ -40,7 +40,7 @@ class TaskSet:
     
     def _count_avg_difficulty(self) -> float:
         
-        return sum([task.difficulty.value for task in self.tasks])
+        return sum([task.difficulty.value for task in self.tasks]) / TASK_SET_SIZE
     
     
     # def _count_avg_duration(self) -> float:
