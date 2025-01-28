@@ -76,8 +76,8 @@
             <p class="note">Время: &nbsp; 15 мин.</p>
             <p class="note">Количество заданий: &nbsp; 8.</p>
             <div class="buttons">
-                <button type="submit" value="hello-form" name="hello-form">Начать упражнения</button>
-                <button>Распечатать бланк</button>
+                <button class="btn-start" type="submit" value="hello-form" name="hello-form">Начать упражнения</button>
+                <a download href="{% static "/tests/test.pdf" %}"><button type="button" class="btn-download">Распечатать бланк</button></a>
             </div>
             </form>
         </div>

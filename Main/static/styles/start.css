@@ -217,12 +217,12 @@ button{
     border: var(--font-color-secondary) 1px solid;
 }
 
-button:first-child{
+button.btn-start{
     background-color: var(--font-color-secondary);
     color: white;
 }
 
-button:last-child{
+button.btn-download{
     color: var(--font-color-secondary);
 }
 
