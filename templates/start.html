@@ -16,7 +16,7 @@
                         некоторые упражнения.</p>
         </div>
         <div class="info">
-            <form>
+            <form method="post">
             {% csrf_token %}
                 <ol>
                     <li>
@@ -44,12 +44,12 @@
                             <p>Наблюдались ли проблемы с вниманием, памятью, мышлением<br>
                             или другими когнитивными функциями:</p>
                             <div>
-                                <input type="radio" id='problems1' name='problems' value="yes" required
+                                <input type="radio" id='problems1' name='problems' value="1" required
                                 class="radio"/>
                                 <label for="problems1">Да</label>
                             </div>
                             <div>
-                                <input type="radio" id='problems2' name="problems" value="no" required
+                                <input type="radio" id='problems2' name="problems" value="0" required
                                 class="radio"/>
                                 <label for="problems2">Нет</label>
                             </div>
@@ -59,12 +59,12 @@
                         <div>
                             <p>Были ли диагностированы когнитивные отклонения от нормы:</p>
                             <div>
-                                <input type="radio" id='disease1' name='disease' value="yes" required
+                                <input type="radio" id='disease1' name='disease' value="1" required
                                 class="radio"/>
                                 <label for="disease1">Да</label>
                             </div>
                             <div>
-                                <input type="radio" id='disease2' name="disease" value="no" required
+                                <input type="radio" id='disease2' name="disease" value="0" required
                                 class="radio"/>
                                 <label for="disease2">Нет</label>
                             </div>

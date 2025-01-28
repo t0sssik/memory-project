@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import JsonResponse
 from Main.functions.user_functions import *
+from .functions.test_functions import *
 # Create your views here.
 
 def index(request):
@@ -11,6 +12,9 @@ def index(request):
         return render(request, 'home.html')
 
 def start(request):
+    if request.method == "POST":
+        info = get_start_info(request.POST)
+        print(info)
     return render(request, 'start.html')
 
 def auth(request):
