@@ -14,7 +14,6 @@ def index(request):
 def start(request):
     if request.method == "POST":
         info = get_start_info(request.POST)
-        print(info)
     return render(request, 'start.html')
 
 def auth(request):
