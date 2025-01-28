@@ -11,10 +11,10 @@ def index(request):
     else:
         return render(request, 'home.html')
 
-def start(request):
+def first(request):
     if request.method == "POST":
         info = get_start_info(request.POST)
-    return render(request, 'start.html')
+    return render(request, 'first.html')
 
 def auth(request):
     if request.method == 'POST':
@@ -31,3 +31,6 @@ def auth(request):
 def logout_view(request):
     logout(request)
     return redirect('/')
+
+def offer(request):
+    return render(request, 'offer.html')
