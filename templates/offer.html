@@ -3,34 +3,13 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="{% static "/styles/auth.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/offer.css" %}" type="text/css">
     <title>MemoryProject</title>
 </head>
     <body>
     <main>
+        {% include 'nav.html' %}
         <div class="blocks">
-            <div class="auth-block">
-                <h2>Войти в аккаунт</h2>
-                <form method="post" id="auth-form">
-                    {% csrf_token %}
-                    <div class="input">
-                        <label for="id-email">E-mail <strong>*</strong></label>
-                        <input class="input-field" required id="id-email" name="email" type="email"
-                               placeholder="example@mail.ru" maxlength="32" minlength="6"/>
-                    </div>
-                    <div class="input">
-                        <label for="id-password">Пароль <strong>*</strong></label>
-                        <input class="input-field" required id="id-password" type="password" name="password"
-                               placeholder="Введите пароль" maxlength="32" minlength="6"/>
-                        <label class="error" id="auth-error" style="visibility: hidden">Неверный e-mail или пароль!</label>
-                    </div>
-                    <div class="check-container">
-                        <input type="checkbox" id="save" name="save" class="checkbox"/>
-                        <label for="save" class="check-label">Запомнить вход</label>
-                    </div>
-                    <button type="submit" value="auth" name="button">Войти</button>
-                </form>
-            </div>
             <div class="reg-block">
                 <h2>Создать аккаунт</h2>
                 <form method="post">
@@ -65,40 +44,6 @@
     </main>
     {% block javascript %}
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    {# Authorization validate script #}
-    <script>
-      $(document).ready(function () {
-          // отслеживаем событие отправки формы
-          $('#auth-form').submit(function () {
-              // создаем AJAX-вызов
-              $.ajax({
-                  data: $(this).serialize(), // получаем данные формы
-                  type: $(this).attr('method'), // GET или POST
-                  url: "{% url 'auth' %}",
-                  // если успешно, то
-                  success: function (response) {
-                      let errorBlock = document.getElementById("auth-error");
-                      if (response.is_ok === true){
-                        errorBlock.style.visibility = 'hidden';
-                        window.location.href = "/";
-                      }
-                      else {
-                          $('#id-email').addClass('error');
-                          $('#id-password').addClass('error');
-                          errorBlock.style.visibility = 'visible';
-                      }
-                  },
-                  // если ошибка, то
-                  error: function (response) {
-                      // предупредим об ошибке
-                      let errorBlock = document.getElementById("auth-error");
-                      errorBlock.visibility = 'visible';
-                  }
-              });
-              return false;
-          });
-      })
-    </script>
     {# Registration validate script #}
     <script>
     $('#id_email').keyup(function () {
