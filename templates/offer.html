@@ -8,10 +8,14 @@
 </head>
     <body>
     <main>
-        {% include 'nav.html' %}
+        <div class="nav">
+            {% include 'nav.html' %}
+        </div>
         <div class="blocks">
             <div class="reg-block">
-                <h2>Создать аккаунт</h2>
+                <h1>Регулярность поможет<br>
+                    улучшить результат</h1>
+                <h2>Создайте аккаунт и отслеживайте прогресс</h2>
                 <form method="post">
                     {% csrf_token %}
                     <div class="input">
@@ -35,9 +39,14 @@
                         <input class="input-field" required id="password" type="password" name="password"
                                placeholder="Введите пароль" minlength="6" maxlength="32"/>
                     </div>
+                    <div class="check-container">
+                        <input type="checkbox" id="notice" name="notice" class="checkbox"/>
+                        <label for="notice" class="check-label">Я хочу получать напоминания о выполнении заданий и данные об обновлениях сервиса</label>
+                    </div>
                     <button type="submit" value="register" name="button" id="register-btn">Создать аккаунт</button>
-                    <p class="note">Нажимая кнопку «Создать аккаунт», я соглашаюсь с <a href="#">политикой<br>
-                        конфиденциальности</a> сервиса и даю согласие на обработку персональных данных</p>
+                    <p class="note">Нажимая кнопку «Создать аккаунт», я соглашаюсь с <a href="#">политикой
+                        конфиденциальности</a><br>
+                        сервиса и даю согласие на обработку персональных данных</p>
                 </form>
             </div>
         </div>
