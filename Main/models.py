@@ -1,3 +1,4 @@
+from datetime import datetime
 from symtable import Class
 from django.contrib.auth.models import User
 from django.db import models
@@ -12,6 +13,7 @@ class Test(models.Model): # Номер теста для юзера
     correct_recognition = models.FloatField(default=0)
     correct_action = models.FloatField(default=0)
     correct_speech = models.FloatField(default=0)
+    date = models.DateTimeField(default=datetime.now)
 
 class Task(models.Model): #Банк заданий
     type = models.CharField(max_length=30) # Тип задания: Memory, Attention,
