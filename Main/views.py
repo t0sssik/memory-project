@@ -42,3 +42,6 @@ def offer(request):
             if create_user(request):
                 return redirect('/')
     return render(request, 'offer.html')
+
+def test(request):
+    return render(request, 'test.html')

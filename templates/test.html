@@ -1,0 +1,103 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "/styles/test.css" %}" type="text/css">
+    <title>MemoryProject</title>
+</head>
+    <body>
+    <main>
+        <div class="hero">
+            {% include 'nav.html' %}
+            <h1>Первая тренировка</h1>
+                    <p class="description">Перед тем как перейти к первой тренировке, заполните необходимую<br>
+                        информацию о подопечном. На основе этих данных будут подбираться<br>
+                        некоторые упражнения.</p>
+        </div>
+        <div class="info">
+            <form method="post" name="form">
+            {% csrf_token %}
+                <ol>
+                    <li>
+                        <div>
+                        <p>Степень образования:</p>
+                            <div>
+                                <input type="radio" id='education1' name='education' value="higher" required
+                                       class="radio"/>
+                                <label for="education1">Высшее образование</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='education2' name="education" value="secondary" required
+                                class="radio"/>
+                                <label for="education2">Среднее образование</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='education3' name="education" value="none" required
+                                class="radio" checked/>
+                                <label for="education3">Без образования</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <p>Наблюдались ли проблемы с вниманием, памятью, мышлением<br>
+                            или другими когнитивными функциями:</p>
+                            <div>
+                                <input type="radio" id='problems1' name='problems' value="1" required
+                                class="radio"/>
+                                <label for="problems1">Да</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='problems2' name="problems" value="0" required
+                                class="radio" checked/>
+                                <label for="problems2">Нет</label>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div>
+                            <p>Были ли диагностированы когнитивные отклонения от нормы:</p>
+                            <div>
+                                <input type="radio" id='disease1' name='disease' value="1" required
+                                class="radio"/>
+                                <label for="disease1">Да</label>
+                            </div>
+                            <div>
+                                <input type="radio" id='disease2' name="disease" value="0" required
+                                class="radio" checked/>
+                                <label for="disease2">Нет</label>
+                            </div>
+                        </div>
+                    </li>
+                </ol>
+            <p class="description">Для тренировки необходимо распечатать бланк <br>
+            с упражнениями (рекомендуется в цветном формате).</p>
+            <p class="note">Время: &nbsp; 15 мин.</p>
+            <p class="note">Количество заданий: &nbsp; 8</p>
+            <div class="buttons">
+                <div class="tooltip">
+                    <button type="submit" id="btn-start" class="is-invalid" disabled>Начать упражнения</button>
+                    <span class="tooltip-text" id="tooltip-text">Перед началом тестирования необходимо распечатать
+                        бланк, воспользовавшись кнопкой ниже! 👇</span>
+                </div>
+                <a onclick="OpenButton()" id="download" download href="{% static "/tests/test.pdf" %}">
+                    <button type="button" class="btn-download is-valid">Распечатать бланк</button>
+                </a>
+            </div>
+            </form>
+        </div>
+    </main>
+    <script>
+        const startButton = document.getElementById('btn-start');
+        const tooltipText = document.getElementById('tooltip-text')
+
+        function OpenButton(){
+            startButton.removeAttribute('disabled');
+            startButton.setAttribute('class', 'btn-start is-valid');
+            tooltipText.className = '';
+            tooltipText.hidden = true;
+        }
+    </script>
+    </body>
+</html>
