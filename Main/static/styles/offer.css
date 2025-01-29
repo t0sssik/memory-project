@@ -23,13 +23,13 @@ html{
 body {
     --font-color: black;
     --font-color-hero: white;
-    --font-color-secondary: #6EA2C6;
+    --font-color-secondary: #6290af;
     --background-block: #EEF7FE;
     --background-blue: #5EB6F2;
     --red-req: #F21D2F;
     --label-black: #586166;
     --placeholder: #8D9396;
-    --nav-color: #F7F8F8;
+    --nav-color: #f1f1f1;
 }
 
 body{
