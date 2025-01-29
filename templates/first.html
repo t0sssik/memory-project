@@ -77,12 +77,12 @@
             <p class="note">Количество заданий: &nbsp; 8</p>
             <div class="buttons">
                 <div class="tooltip">
-                    <button type="submit" id="btn-start" class="is-invalid" disabled>Начать упражнения</button>
+                    <button type="submit" id="btn-start" class="is-invalid" disabled name="button" value="start">Начать упражнения</button>
                     <span class="tooltip-text" id="tooltip-text">Перед началом тестирования необходимо распечатать
                         бланк, воспользовавшись кнопкой ниже! 👇</span>
                 </div>
                 <a onclick="OpenButton()" id="download" download href="{% static "/tests/test.pdf" %}">
-                    <button type="button" class="btn-download is-valid">Распечатать бланк</button>
+                    <button name="button" value="download" type="button" class="btn-download is-valid">Распечатать бланк</button>
                 </a>
             </div>
             </form>

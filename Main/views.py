@@ -13,12 +13,16 @@ def index(request):
 
 def first(request):
     if request.user.is_authenticated:
-        return render(request, 'main.html')
+        return redirect('/')
     if request.method == "POST":
         info = get_start_info(request.POST)
+        if request.POST.get("button") == 'start':
+            return redirect('/test')
     return render(request, 'first.html')
 
 def auth(request):
+    if request.user.is_authenticated:
+        return redirect('/')
     if request.method == 'POST':
         if request.POST.get('button') == 'register':
             if create_user(request):
@@ -36,7 +40,7 @@ def logout_view(request):
 
 def offer(request):
     if request.user.is_authenticated:
-        return render(request, 'main.html')
+        return redirect('/')
     else:
         if request.method == 'POST':
             if create_user(request):

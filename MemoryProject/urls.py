@@ -28,5 +28,6 @@ urlpatterns = [
     path('auth/validate_login/', validation.validate_login_data, name='validate_login'),
     path('logout/', views.logout_view, name='logout'),
     path('offer/', views.offer, name='offer'),
+    path('test/', views.test, name='test'),
 
 ]
