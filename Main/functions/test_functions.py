@@ -1,3 +1,6 @@
+from django.contrib.auth.models import User
+from ..models import *
+from django.utils import timezone
 
 def get_start_info(data):
     info = dict()
@@ -5,3 +8,11 @@ def get_start_info(data):
     info['problem'] = int(data['problems'])
     info['disease'] = int(data['disease'])
     return info
+
+def get_today_test(user):
+    time = str(timezone.now())[:10]
+    username = user.username
+    data = time + ' ' + username
+    test = Test.objects.get(user=user)
+    tasks = TaskTest.objects.all().filter(test=test)
+    return tasks

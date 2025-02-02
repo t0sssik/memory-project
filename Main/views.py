@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import JsonResponse
-from Main.functions.user_functions import *
+from .functions.user_functions import *
 from .functions.test_functions import *
 # Create your views here.
 
@@ -48,4 +48,6 @@ def offer(request):
     return render(request, 'offer.html')
 
 def test(request):
-    return render(request, 'test.html')
+    user = request.user
+    test = get_today_test(user)
+    return render(request, 'test.html', {'test': test})
