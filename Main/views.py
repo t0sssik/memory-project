@@ -7,7 +7,8 @@ from .functions.test_functions import *
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'main.html')
+        stats = Stats.objects.get(user=request.user)
+        return render(request, 'main.html', {'stats':stats})
     else:
         return render(request, 'home.html')
 

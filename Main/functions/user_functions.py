@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from ..models import Stats
 
 def _validate_user(request):
     _email = request.POST.get('email')
@@ -22,6 +23,7 @@ def create_user(request):
 
         user = User.objects.create_user(**info)
         User.save(user)
+        create_stats(user)
 
         authenticate_user(request)
         return True
@@ -46,3 +48,6 @@ def validate_register_email(request):
         'is_taken': User.objects.filter(username__iexact=username).exists()
     }
     return response
+
+def create_stats(user):
+    Stats.objects.create(user=user)

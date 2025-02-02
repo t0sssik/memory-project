@@ -10,7 +10,7 @@
     <main>
         <div class="hero">
             {% include 'nav.html' %}
-                <h1>С возвращением, {ИМЯ}</h1>
+                <h1>С возвращением, {{ request.user.first_name }}</h1>
         </div>
         <div class="blocks">
             <div class="exercise-block">
@@ -32,9 +32,9 @@
                     <h3>Продолжайте в<br>
                         том же духе!</h3>
                     <div>
-                        <strong>{0}</strong>
+                        <strong>{{ stats.streak }}</strong>
                         <h4>Дней без перерыва<br>
-                        Рекорд — {7}</h4>
+                        Рекорд — {{ stats.best_streak }}</h4>
                     </div>
                 </div>
             </div>
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="stats">
-                    <h4>{10 тестов} решено</h4>
+                    <h4>{{ stats.completed }} решено</h4>
                     <h4>{3 показателя} улучшились</h4>
                 </div>
             </div>
