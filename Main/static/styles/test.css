@@ -180,6 +180,7 @@ nav a:hover{
 
 .description img{
     width: 700px;
+    height: 350px;
 }
 
 .rating{
@@ -330,11 +331,20 @@ button.previous.is-valid:hover{
 }
 
 button.is-invalid {
-    position: relative;
-    background: #e6e6e6;
-    color: #586166;
-    border-color: #586166;
+    background-color: #939393;
+    border: none;
     cursor: default;
-    z-index: -1;
+}
+
+button.previous.is-invalid:hover{
+    box-shadow: none;
+}
+
+button.next.is-invalid:hover{
+    box-shadow: none;
+}
+
+.block-hidden{
+    display: none;
 }
 
