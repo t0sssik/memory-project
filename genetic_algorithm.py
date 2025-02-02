@@ -29,8 +29,11 @@ class GeneticAlgorithm:
             
         self.population_size = hparams['population_size']
         self.num_of_candidates = hparams['num_of_candidates']
+        if self.num_of_candidates % 2 != 0 or self.num_of_candidates == 0:
+            raise Exception('num_of_candidates should be even')
         self.mutation_rate = hparams['mutation_rate']
         self.generations = hparams['generations']
+        self.candidates_selection_method = hparams['candidates_selection_method']
         
         self.population = self._create_initial_population()
         
@@ -72,14 +75,14 @@ class GeneticAlgorithm:
     def _top_selection(self) -> List[TaskSet]:
         self._sort_by_fitness()
         
-        return self.population[:2]
+        return self.population[:self.num_of_candidates]
     
     
     def _roulette_selection(self) -> List[TaskSet]:
-        '''
-        TODO: реализовать метод отбора рулеткой
-        '''
-        pass
+        total_fitness = sum(ts.fitness for ts in self.population)
+        selection_probs = [ts.fitness / total_fitness for ts in self.population]
+        
+        return random.choices(self.population, weights=selection_probs, k=self.num_of_candidates)
     
     
     def _competition_selection(self) -> List[TaskSet]:
@@ -104,12 +107,18 @@ class GeneticAlgorithm:
         return [TaskSet(child_1, self.user_statistics, self.reference_difficulty), TaskSet(child_2, self.user_statistics, self.reference_difficulty)]
 
     
-    def evolve(self, selection_method: str='top') -> TaskSet:
+    def _select_candidates(self) -> List[TaskSet]:
+        if self.candidates_selection_method == "top":
+            return self._top_selection()
+        elif self.candidates_selection_method == "roulette":
+            return self._roulette_selection()
+        else:
+            raise ValueError(f"Unknown selection method: {self.candidates_selection_method}")
+    
+    
+    def evolve(self) -> TaskSet:
         '''
         Основной цикл эволюции генетического алгоритма.
-        '''
-        '''
-        TODO: реализовать выбор метода отбора кандидатов
         '''
         for i in range(self.generations):
             self._sort_by_fitness()
@@ -120,12 +129,17 @@ class GeneticAlgorithm:
                     self.population[0].avg_difficulty,
                     self.population[0].tasks_counter,
                 )
-            self.population = self.population[:self.population_size]
-            candidates = self.population[:self.num_of_candidates]
+            
+            self.population = self.population[:self.population_size] # После скрещиваний оставляем исходный размер популяции
+            
+            candidates = self._select_candidates() # Выбор кандидатов для скрещивания
+            
+            # Цикл скрещивания
             while candidates:
                 parents = (candidates.pop(0), candidates.pop(0))
                 children = self._crossover(parents)
                 self.population.extend(children)
+                
         self._sort_by_fitness()
         if self.logger:
             self.logger.add_data(
@@ -144,13 +158,13 @@ class GeneticAlgorithm:
     
 if __name__ == '__main__':
     test_user_stat = {
-        'MEMORY': 0.1,
-        'ATTENTION':0.2,
-        'RECOGNITION':0.3,
-        'ACTION':0.4,
-        'SPEECH':0.5
+        'MEMORY': 0.9,
+        'ATTENTION':0.9,
+        'RECOGNITION':0.9,
+        'ACTION':0.9,
+        'SPEECH':0.9
     }
-    test_ref_dif = 1.95
+    test_ref_dif = 2.8
     
     ga = GeneticAlgorithm(
         user_stat=test_user_stat,
