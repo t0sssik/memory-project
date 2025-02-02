@@ -23,7 +23,7 @@ body {
     --background-block: #EEF7FE;
     --background-blue: #5EB6F2;
     --body-color: #FCFCFC;
-    --nav-color: #F7F8F8;
+    --nav-color: #f1f1f1;
 }
 
 body{
@@ -120,13 +120,14 @@ main{
 }
 
 .hero-image img{
-    width: 800px;
+    width: 750px;
     margin-bottom: 100px;
 }
 
 .hero h1{
     font-size: 68px;
     margin: 30px 0 0 80px;
+    line-height: 90%;
 }
 
 .hero p{

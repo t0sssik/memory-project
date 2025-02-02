@@ -23,7 +23,7 @@ body {
     --background-block: #EEF7FE;
     --background-blue: #5EB6F2;
     --body-color: #FCFCFC;
-    --nav-color: #F7F8F8;
+    --nav-color: #f1f1f1;
 }
 
 body{
@@ -208,7 +208,7 @@ label:hover{
 button{
     width: 300px;
     height: 60px;
-    margin: 20px 7px 63px 0;
+
     border-radius: 13px;
     background: white;
     font-size:25px;
@@ -217,16 +217,54 @@ button{
     border: var(--font-color-secondary) 1px solid;
 }
 
-button:first-child{
+button.btn-start{
     background-color: var(--font-color-secondary);
     color: white;
 }
 
-button:last-child{
+button.btn-download{
     color: var(--font-color-secondary);
 }
 
-button:hover{
+button.is-valid:hover{
     box-shadow: #4b81a6 3px 3px, #45779a 6px 6px;
     font-size: 26px;
 }
+
+button.is-invalid {
+    position: relative;
+    background: #e6e6e6;
+    color: #586166;
+    border-color: #586166;
+    cursor: default;
+    z-index: -1;
+}
+
+.buttons{
+    padding: 20px 0 63px 0;
+}
+
+.tooltip{
+    margin-right: 7px;
+    display: inline-block;
+    position: relative;
+}
+
+.tooltip .tooltip-text{
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    top:-130px;
+    right: -180px;
+    width: 150px;
+    font-size: 15px;
+    background-color: var(--font-color-secondary);
+    border-radius: 25%;
+    padding: 15px;
+    color: white;
+}
+
+.tooltip:hover .tooltip-text{
+    visibility: visible;
+}
+

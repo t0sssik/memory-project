@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "/styles/test.css" %}" type="text/css">
+    <title>MemoryProject</title>
+</head>
+    <body>
+    <main>
+        <div class="test">
+            {% include 'nav.html' %}
+            <div class="nav-test">
+                <button class="previous is-valid"></button>
+                <ul>
+                    <li><span class="exercises">Задание {1}/{24}</span></li>
+                    <li><a href="#" class="section selected">Память</a></li>
+                    <li><a href="#" class="section">Мышление</a></li>
+                    <li><a href="#" class="section">Внимание</a></li>
+                    <li><a href="#" class="exit">Завершить тест</a></li>
+                </ul>
+                <button class="next is-valid"></button>
+            </div>
+            <div class="description">
+                <img alt="exercise" src="{% static '/tasks/task1.png' %}" />
+            </div>
+            <div class="rating">
+                <div class="note">
+                    <h3>Оцените выполнения задания</h3>
+                    <p>{Цифры соответствуют количеству правильно отгаданных животных.}</p>
+                </div>
+                <div class="mark">
+                    <p class="incorrect-label">Не справился</p>
+                    <div class="incorrect">
+                        <input type="radio" id="1" name="answer" class="radio incorrect"/>
+                        <label for="1">1</label>
+                    </div>
+                    <div class="neutral">
+                        <input type="radio" id="2" name="answer" class="radio neutral"/>
+                        <label for="2">2</label>
+                    </div>
+                    <div class="correct">
+                        <input type="radio" id="3" name="answer" class="radio correct"/>
+                        <label for="3">3</label>
+                    </div>
+                    <p class="correct-label">Справился</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    </body>
+</html>

@@ -17,15 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Main import views
-
+from Main import validation
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path( '', views.index, name='index'),
-    path('start/', views.start, name='start'),
+    path('first/', views.first, name='first'),
     path('auth/', views.auth, name='auth'),
-    path('auth/validate_email/', views.validate_email, name='validate_email'),
-    path('auth/validate_login/', views.validate_login_data, name='validate_login'),
+    path('auth/validate_email/', validation.validate_email, name='validate_email'),
+    path('auth/validate_login/', validation.validate_login_data, name='validate_login'),
     path('logout/', views.logout_view, name='logout'),
+    path('offer/', views.offer, name='offer'),
+    path('test/', views.test, name='test'),
 
 ]
