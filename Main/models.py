@@ -15,15 +15,24 @@ class Test(models.Model): # Номер теста для юзера
     correct_speech = models.FloatField(default=0)
     date = models.DateTimeField(default=datetime.now)
 
+    def __str__(self):
+        return str(self.user) + ' ' + str(self.date)[:10]
+
 class Task(models.Model): #Банк заданий
     type = models.CharField(max_length=30) # Тип задания: Memory, Attention,
                                             # Recognition, Action, Speech, Extra
     difficulty = models.IntegerField() # Сложность от 1 до 3
-    question = models.IntegerField() # Формулировка вопроса
+    question = models.CharField(max_length=255) # Формулировка вопроса
     image = models.ImageField() # Изображение
     url = models.URLField() # Ссылка на изображения
+
+    def __str__(self):
+        return str(self.question) + ' ' + str(self.difficulty) + ' ' + str(self.type)
 
 class TaskTest(models.Model): # Для нахождения тасков каждого типа + Распределение по сложности для каждого типа
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     result = models.FloatField(default=0)
+
+    def __str__(self):
+        return str(self.test) + ' ' + str(self.task)[-10:] + ' ' + str(self.result)
