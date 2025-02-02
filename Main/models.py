@@ -25,6 +25,7 @@ class Task(models.Model): #Банк заданий
     question = models.CharField(max_length=255) # Формулировка вопроса
     image = models.ImageField() # Изображение
     url = models.URLField() # Ссылка на изображения
+    mark = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return str(self.question) + ' ' + str(self.difficulty) + ' ' + str(self.type)
