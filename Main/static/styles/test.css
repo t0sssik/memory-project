@@ -1,38 +1,6 @@
-@font-face {
-  font-family: "CoFo Sans";
-  src: local("Cofo Sans"), local("CoFoSans"),
-    url('../fonts/CoFoSans-Regular.ttf') format("truetype"),
-    url("../fonts/CoFoSans-Regular.woff") format("woff"),
-    url("../fonts/CoFoSans-Regular.woff2") format("woff2");
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "Graphik";
-  src: local("Graphik"), local("Graphik"),
-    url('../fonts/Graphik-Regular.ttf') format("truetype"),
-    url("../fonts/Graphik-Regular.woff") format("woff"),
-    url("../fonts/Graphik-Regular.woff2") format("woff2");
-  font-style: normal;
-}
-
 html{
     height: 100%;
     width: 100%;
-}
-
-body {
-    --font-color: black;
-    --font-color-hero: white;
-    --font-color-secondary: #6EA2C6;
-    --background-block: #EEF7FE;
-    --background-blue: #5EB6F2;
-    --body-color: #FCFCFC;
-    --nav-color: #f1f1f1;
-    --green-corect: #75DF68;
-    --neutral-gray: #C1B9B9;
-    --input-back: #F0F7F9;
-    --red-req: #e61c2d;
 }
 
 body{
