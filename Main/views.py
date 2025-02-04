@@ -52,3 +52,6 @@ def test(request):
     user = request.user
     test = get_today_test(user)
     return render(request, 'test.html', {'test': test})
+
+def end(request):
+    return render(request, 'end.html')
