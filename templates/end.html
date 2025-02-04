@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="{% static "/styles/end.css" %}" type="text/css">
     <link rel="stylesheet" href="{% static "/styles/nav.css" %}" type="text/css">
     <title>MemoryProject</title>
+    <style>
+        .progress-bar{
+            background:
+                radial-gradient(closest-side, var(--nav-color) 79%, transparent 80% 100%),
+                conic-gradient(var(--font-color-secondary) 80%, rgba(0, 125, 153, 15%) 0);
+        }
+        .progress-bar::before{
+            content: '16 из 27';
+            font-size: 32px;
+        }
+    </style>
 </head>
     <body>
     <main>
@@ -18,28 +29,42 @@
         <div class="blocks">
             <div class="result-block">
                 <h3>Результат прохождения:</h3>
-                <div class="progress-bar">
-                    <progress id="completion" max="100" value="5">5%</progress>
+                <div class="progress-bar" style="  ">
+                    <progress id="completion" max="100" value="5" >5%</progress>
                 </div>
-                <p>В пределах нормы</p>
+
+                <div class="res-note neutral">
+                    <img alt="" src="{% static "images/tick.svg" %}">
+                    <p>В пределах нормы</p>
+                </div>
             </div>
 
             <div class="stats-block">
                 <h3>Статистика</h3>
-                <div>
-                    <strong>{{ stats.streak }}</strong>
-                    <h4>Дней без перерыва<br>
-                    Рекорд — {{ stats.best_streak }}</h4>
-                </div>
+                <h4>Верно выполненные упражнения<br>
+                    в каждой из категорий:</h4>
+                <img src="{% static '/images/diagram_test.svg' %}" alt="diagram">
+
+                <h4>Следует обратить внимание на <span class="memory">Память</span>,
+                    <span class="mind">Мышление</span>, <span class="attention">Внимание</span>
+                    (категории с показателем < 75% верных ответов)</h4>
+
             </div>
             <div class="rec-block">
                 <div class="rec-container">
                     <h3>Наши рекомендации</h3>
-                    <h3>Как концентрироваться?</h3>
-                    <p>Мы собираем статистику, чтобы вы отслеживали<br>
-                        результат</p>
+                    <ol>
+                        <li>
+                            <p>Проходите ежедневные тесты для профилактики, активность будет храниться в вашем
+                                личном кабинете</p>
+                        </li>
+                        <li>
+                            <p>Развивайте: <span class="memory">Память</span>,
+                            <span class="mind">Мышление</span>, <span class="attention">Внимание</span></p>
+                        </li>
+                    </ol>
                 </div>
-                <button>Читать подробнее</button>
+                <button>Сохранить результат</button>
             </div>
         </div>
     </main>
