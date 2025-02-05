@@ -29,7 +29,6 @@ class Task(models.Model): #Банк заданий
     mark_incorrect = models.CharField(max_length=30, blank=True)
     mark_neutral = models.CharField(max_length=30, blank=True)
     mark_correct = models.CharField(max_length=30, blank=True)
-    number = models.IntegerField()
 
     def __str__(self):
         return str(self.question) + ' ' + str(self.difficulty) + ' ' + str(self.type)
@@ -48,6 +47,7 @@ class TaskTest(models.Model): # Для нахождения тасков каж�
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
     result = models.FloatField(default=0)
+    number = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.test) + ' ' + str(self.task)[-10:] + ' ' + str(self.result)

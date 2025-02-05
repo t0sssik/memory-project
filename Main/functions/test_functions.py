@@ -12,5 +12,5 @@ def get_start_info(data):
 def get_today_test(user):
     time = str(timezone.now())[:10]
     test = Test.objects.get(user=user)
-    tasks = TaskTest.objects.all().filter(test=test).order_by('task__number')
+    tasks = TaskTest.objects.all().filter(test=test).order_by('number')
     return tasks
