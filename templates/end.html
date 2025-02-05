@@ -43,8 +43,42 @@
                 <h3>Статистика</h3>
                 <h4>Верно выполненные упражнения<br>
                     в каждой из категорий:</h4>
-                <img src="{% static '/images/diagram_test.svg' %}" alt="diagram">
+                <div class="diagram-container">
+                    <div class="diagram-back">
+                        <p>100%</p>
+                        <p style="height: 25%">75%</p>
+                        <p style="height: 25%">50%</p>
+                        <p style="height: 25%">25%</p>
+                        <p style="height: 25%"></p>
+                    </div>
+                    <div class="diagram">
+                        <div class="bar-container">
+                            <div class="bar logic" style="height: 88%">
+                                <p class="logic">88%</p>
+                                <p class="note logic">Логика</p>
+                            </div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar memory" style="height: 67%">
+                                <p class="memory">67%</p>
+                                <p class="note memory">Память</p>
+                            </div>
+                        </div>
+                        <div class="bar-container">
 
+                            <div class="bar mind" style="height: 61%">
+                                <p class="mind">61%</p>
+                                <p class="note mind">Мышление</p>
+                            </div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar attention" style="height: 38%">
+                                <p class="attention">38%</p>
+                                <p class="note attention">Внимание</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h4>Следует обратить внимание на <span class="memory">Память</span>,
                     <span class="mind">Мышление</span>, <span class="attention">Внимание</span>
                     (категории с показателем < 75% верных ответов)</h4>
