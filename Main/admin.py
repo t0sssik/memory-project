@@ -8,3 +8,4 @@ from django.contrib.auth.models import User
 admin.site.register(Task)
 admin.site.register(Test)
 admin.site.register(TaskTest)
+admin.site.register(Stats)

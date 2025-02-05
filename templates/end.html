@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "/styles/base.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/end.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/nav.css" %}" type="text/css">
+    <title>MemoryProject</title>
+    <style>
+        .progress-bar{
+            background:
+                radial-gradient(closest-side, var(--nav-color) 79%, transparent 80% 100%),
+                conic-gradient(var(--font-color-secondary) 80%, rgba(0, 125, 153, 15%) 0);
+        }
+        .progress-bar::before{
+            content: '16 из 27';
+            font-size: 32px;
+        }
+    </style>
+</head>
+    <body>
+    <main>
+        <div class="hero">
+            {% include 'nav.html' %}
+                <h1>Поздравляем, <br>
+                Вы завершили тренировку</h1>
+        </div>
+        <div class="blocks">
+            <div class="result-block">
+                <h3>Результат прохождения:</h3>
+                <div class="progress-bar" style="  ">
+                    <progress id="completion" max="100" value="5" >5%</progress>
+                </div>
+
+                <div class="res-note neutral">
+                    <img alt="" src="{% static "images/tick.svg" %}">
+                    <p>В пределах нормы</p>
+                </div>
+            </div>
+
+            <div class="stats-block">
+                <h3>Статистика</h3>
+                <h4>Верно выполненные упражнения<br>
+                    в каждой из категорий:</h4>
+                <div class="diagram-container">
+                    <div class="diagram-back">
+                        <p>100%</p>
+                        <p style="height: 25%">75%</p>
+                        <p style="height: 25%">50%</p>
+                        <p style="height: 25%">25%</p>
+                        <p style="height: 25%"></p>
+                    </div>
+                    <div class="diagram">
+                        <div class="bar-container">
+                            <div class="bar logic" style="height: 88%">
+                                <p class="logic">88%</p>
+                                <p class="note logic">Логика</p>
+                            </div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar memory" style="height: 67%">
+                                <p class="memory">67%</p>
+                                <p class="note memory">Память</p>
+                            </div>
+                        </div>
+                        <div class="bar-container">
+
+                            <div class="bar mind" style="height: 61%">
+                                <p class="mind">61%</p>
+                                <p class="note mind">Мышление</p>
+                            </div>
+                        </div>
+                        <div class="bar-container">
+                            <div class="bar attention" style="height: 38%">
+                                <p class="attention">38%</p>
+                                <p class="note attention">Внимание</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h4>Следует обратить внимание на <span class="memory">Память</span>,
+                    <span class="mind">Мышление</span>, <span class="attention">Внимание</span>
+                    (категории с показателем < 75% верных ответов)</h4>
+
+            </div>
+            <div class="rec-block">
+                <div class="rec-container">
+                    <h3>Наши рекомендации</h3>
+                    <ol>
+                        <li>
+                            <p>Проходите ежедневные тесты для профилактики, активность будет храниться в вашем
+                                личном кабинете</p>
+                        </li>
+                        <li>
+                            <p>Развивайте: <span class="memory">Память</span>,
+                            <span class="mind">Мышление</span>, <span class="attention">Внимание</span></p>
+                        </li>
+                    </ol>
+                </div>
+                {% if request.user.is_authenticated %}
+                    <button><a href="/">Завершить тестирование</a></button>
+                {% else %}
+                    <button><a href="/offer">Сохранить результат</a></button>
+                {% endif %}
+
+            </div>
+        </div>
+    </main>
+    </body>
+</html>

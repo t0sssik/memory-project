@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import JsonResponse
-from Main.functions.user_functions import *
+from .functions.user_functions import *
 from .functions.test_functions import *
 # Create your views here.
 
 def index(request):
     if request.user.is_authenticated:
-        return render(request, 'main.html')
+        stats = Stats.objects.get(user=request.user)
+        return render(request, 'main.html', {'stats':stats})
     else:
         return render(request, 'home.html')
 
@@ -48,4 +49,12 @@ def offer(request):
     return render(request, 'offer.html')
 
 def test(request):
-    return render(request, 'test.html')
+    if request.method == 'POST':
+        print(request.POST)
+        return redirect('/test/end')
+    user = request.user
+    test = get_today_test(user)
+    return render(request, 'test.html', {'test': test})
+
+def end(request):
+    return render(request, 'end.html')

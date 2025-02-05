@@ -25,9 +25,24 @@ class Task(models.Model): #Банк заданий
     question = models.CharField(max_length=255) # Формулировка вопроса
     image = models.ImageField() # Изображение
     url = models.URLField() # Ссылка на изображения
+    mark = models.CharField(max_length=255, blank=True)
+    mark_incorrect = models.CharField(max_length=30, blank=True)
+    mark_neutral = models.CharField(max_length=30, blank=True)
+    mark_correct = models.CharField(max_length=30, blank=True)
+    number = models.IntegerField()
 
     def __str__(self):
         return str(self.question) + ' ' + str(self.difficulty) + ' ' + str(self.type)
+
+# Модель, которая хранит в себе статистику о пользователе
+class Stats(models.Model):
+    streak = models.IntegerField(default=0)
+    best_streak = models.IntegerField(default=0)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    completed = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.user)
 
 class TaskTest(models.Model): # Для нахождения тасков каждого типа + Распределение по сложности для каждого типа
     test = models.ForeignKey(Test, on_delete=models.CASCADE)
