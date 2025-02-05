@@ -299,3 +299,7 @@ button:hover{
     font-size: 26px;
 }
 
+button a{
+    text-decoration: none;
+    color: inherit;
+}

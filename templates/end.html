@@ -98,7 +98,12 @@
                         </li>
                     </ol>
                 </div>
-                <button>Сохранить результат</button>
+                {% if request.user.is_authenticated %}
+                    <button><a href="/">Завершить тестирование</a></button>
+                {% else %}
+                    <button><a href="/offer">Сохранить результат</a></button>
+                {% endif %}
+
             </div>
         </div>
     </main>
