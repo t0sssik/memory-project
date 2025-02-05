@@ -49,6 +49,9 @@ def offer(request):
     return render(request, 'offer.html')
 
 def test(request):
+    if request.method == 'POST':
+        print(request.POST)
+        return redirect('/test/end')
     user = request.user
     test = get_today_test(user)
     return render(request, 'test.html', {'test': test})

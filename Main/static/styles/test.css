@@ -67,6 +67,7 @@ button:hover{
 }
 
 .nav-test a.exit{
+    cursor: pointer;
     color: var(--red-req);
     text-decoration: underline;
 }
@@ -225,7 +226,7 @@ button:hover{
     border-width: 10px;
 }
 
-button{
+button.selector{
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -279,3 +280,65 @@ button.next.is-invalid:hover{
     display: none;
 }
 
+#alert{
+    width: 100%;
+    min-height: 100%;
+    position: fixed;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 17%);
+}
+
+.alert-box{
+    background: white;
+    border-radius: 22px;
+    border: 1px solid var(--font-color-secondary);
+    padding: 33px;
+    width: 60%;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.alert-box h2{
+    font-size: 55px;
+    line-height: 95%;
+    letter-spacing: -4px;
+    font-weight: normal;
+    margin: 0;
+}
+
+.alert-box p{
+    font-size: 32px;
+    line-height: 36px;
+    margin: 20px 0 105px 0;
+}
+
+.alert-box button{
+    width: 300px;
+    height: 60px;
+    border-radius: 13px;
+    background: white;
+    font-size:25px;
+    user-select: none;
+    transition: 0.3s ease all;
+    border: var(--font-color-secondary) 1px solid;
+    margin: 0 15px 0 0;
+}
+
+button.btn-continue{
+    background-color: var(--font-color-secondary);
+    color: white;
+}
+
+button.btn-exit{
+    color: var(--font-color-secondary);
+}
+
+button:hover{
+    box-shadow: #4b81a6 3px 3px, #45779a 6px 6px;
+    font-size: 26px;
+}
