@@ -51,13 +51,11 @@ class TaskSet:
     def _calculate_fitness(self, user_statistics: Dict[str, float], reference_difficulty: float) -> float:
         a = 1
         b = 1
-        #g = 1
         '''
-        TODO: добавить аргумент с реальными коэффициентами альфа, бета, гамма
+        TODO: добавить аргумент с реальными коэффициентами альфа, бета
         '''
         f1 = self._calculate_mean_absolute_error_of_tasks_distribution(user_statistics) # -> min
         f2 = self._calculate_mean_absolute_error_of_difficulty(reference_difficulty) # -> min
-        #f3 = self._calculate_f3()
         
         return a*f1 + b*f2
     
@@ -84,35 +82,16 @@ class TaskSet:
         return mae
     
     
-    def _calculate_f3(self) -> float:
-        '''
-        TODO: свзяать с user_statistics
-        '''
-        pass
-    
-    
     def mutate(self) -> None:
+        '''
+        TODO: реаизовать мутацию
+        '''
         pass
     
     
-    # @staticmethod
-    # def generate_viable_set() -> 'TaskSet':
-    #     task_set = []
-    #     size = 0
+    def to_list(self) -> list:
+        tasks = []
+        for task in self.tasks:
+            tasks.append((task.task_type.name, task.difficulty.value))
         
-    #     # добавляем по 1 заданию каждого типа.
-    #     for task_type in list(TaskType):
-    #         rand_difficulty = random.choice(list(TaskDifficulty))
-    #         task = Task(task_type, rand_difficulty)
-    #         task_set.append(task)
-    #         size += 1
-            
-    #     # добавляем случайные задания, пока есть место    
-    #     while size < TASK_SET_SIZE:
-    #         rand_type = random.choice(list(TaskType))
-    #         rand_difficulty = random.choice(list(TaskDifficulty))
-    #         task = Task(rand_type, rand_difficulty)
-    #         task_set.append(task)
-    #         size += 1
-        
-    #     return TaskSet(task_set)
+        return tasks

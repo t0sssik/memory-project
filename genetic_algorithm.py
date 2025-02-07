@@ -172,4 +172,4 @@ if __name__ == '__main__':
         hparams_conf_path="hparams.yaml"
     )
     best = ga.evolve()
-    print(best)
+    print(best.to_list())
