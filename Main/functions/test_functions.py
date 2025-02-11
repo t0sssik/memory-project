@@ -46,3 +46,25 @@ def get_latest_tests(user):
     """
     tests = Test.objects.filter(user=user).order_by('-date')[:10]
     return tests
+
+def update_test(user, data):
+    test = get_today_test(user)
+    tasks = get_today_tasks(user).order_by('number')
+    for i in range(min(24,len(tasks))):
+        task = tasks[i]
+        task.result = float(data['answer' + str(i+1)])
+        task.save()
+
+        if task.task.type == 'memory':
+            test.correct_memory += task.result
+        elif task.task.type == 'attention':
+            test.correct_attention += task.result
+        elif task.task.type == 'recognition':
+            test.correct_recognition += task.result
+        elif task.task.type == 'speech':
+            test.correct_speech += task.result
+        elif task.task.type == 'action':
+            test.correct_action += task.result
+    test.is_completed = True
+    test.save()
+    return

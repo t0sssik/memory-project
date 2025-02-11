@@ -7,7 +7,7 @@ from django.db import models
 
 class Test(models.Model): # Номер теста для юзера
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    is_completed = models.BooleanField(default=False)
+    is_completed = models.BooleanField()
     correct_memory = models.FloatField(default=0)
     correct_attention = models.FloatField(default=0)
     correct_recognition = models.FloatField(default=0)
@@ -16,7 +16,7 @@ class Test(models.Model): # Номер теста для юзера
     date = models.DateTimeField(default=datetime.now)
 
     def __str__(self):
-        return str(self.user) + ' ' + str(self.date)[:10]
+        return str(self.user) + ' ' + str(self.date)[:10] + ' ' + str(self.correct_memory + self.correct_attention + self.correct_recognition + self.correct_action + self.correct_speech)
 
 class Task(models.Model): #Банк заданий
     type = models.CharField(max_length=30) # Тип задания: memory, attention,
@@ -32,7 +32,6 @@ class Task(models.Model): #Банк заданий
 
     def __str__(self):
         return str(self.question) + ' ' + str(self.difficulty) + ' ' + str(self.type)
-
 # Модель, которая хранит в себе статистику о пользователе
 class Stats(models.Model):
     streak = models.IntegerField(default=0)
@@ -50,4 +49,4 @@ class TaskTest(models.Model): # Для нахождения тасков каж�
     number = models.IntegerField(default=0)
 
     def __str__(self):
-        return str(self.test) + ' ' + str(self.task)[-10:] + ' ' + str(self.result)
+        return str(self.number) + ' ' + str(self.test) + ' ' + str(self.task)[-10:] + ' ' + str(self.result)

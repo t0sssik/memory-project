@@ -51,11 +51,12 @@ def offer(request):
     return render(request, 'offer.html')
 
 def test(request):
-    if request.method == 'POST':
-        if request.POST.get('button') == 'exit':
-            return redirect('/test/end')
     user = request.user
     tasks = get_today_tasks(user)
+    if request.method == 'POST':
+        if request.POST.get('button') == 'exit':
+            update_test(user, request.POST)
+            return redirect('/test/end')
     return render(request, 'test.html', {'test': tasks})
 
 def end(request):
