@@ -19,11 +19,11 @@ class Test(models.Model): # Номер теста для юзера
         return str(self.user) + ' ' + str(self.date)[:10]
 
 class Task(models.Model): #Банк заданий
-    type = models.CharField(max_length=30) # Тип задания: Memory, Attention,
-                                            # Recognition, Action, Speech, Extra
+    type = models.CharField(max_length=30) # Тип задания: memory, attention,
+                                            # recognition, action, speech, extra
     difficulty = models.IntegerField() # Сложность от 1 до 3
     question = models.CharField(max_length=255) # Формулировка вопроса
-    image = models.ImageField() # Изображение
+    image = models.ImageField(null=True) # Изображение
     url = models.URLField() # Ссылка на изображения
     mark = models.CharField(max_length=255, blank=True)
     mark_incorrect = models.CharField(max_length=30, blank=True)
