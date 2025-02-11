@@ -11,10 +11,10 @@
         .progress-bar{
             background:
                 radial-gradient(closest-side, var(--nav-color) 79%, transparent 80% 100%),
-                conic-gradient(var(--font-color-secondary) 80%, rgba(0, 125, 153, 15%) 0);
+                conic-gradient(var(--font-color-secondary) {{ proportion }}%, rgba(0, 125, 153, 15%) 0);
         }
         .progress-bar::before{
-            content: '16 из 27';
+            content: '{{ correct }} из 24';
             font-size: 32px;
         }
     </style>
@@ -30,7 +30,7 @@
             <div class="result-block">
                 <h3>Результат прохождения:</h3>
                 <div class="progress-bar" style="  ">
-                    <progress id="completion" max="100" value="5" >5%</progress>
+                    <progress id="completion" max="100"></progress>
                 </div>
 
                 <div class="res-note neutral">

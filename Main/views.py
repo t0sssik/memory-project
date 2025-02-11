@@ -68,5 +68,8 @@ def end(request):
         'recognition': math.trunc(data['result_recognition'] / max(1, data['max_recognition']) * 100),
         'attention': math.trunc(data['result_attention'] / max(1, data['max_attention']) * 100),
         'action': math.trunc(data['result_action'] / max(1, data['max_action']) * 100),
+        'correct' : data['result_memory'] + data['result_recognition'] + data['result_attention'] + data['result_action'],
+        'proportion': math.trunc((data['result_memory'] + data['result_recognition'] + data['result_attention']
+                                 + data['result_action']) / 24 * 100),
     }
     return render(request, 'end.html', context)
