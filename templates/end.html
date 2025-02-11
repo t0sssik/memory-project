@@ -29,14 +29,25 @@
         <div class="blocks">
             <div class="result-block">
                 <h3>Результат прохождения:</h3>
-                <div class="progress-bar" style="  ">
+                <div class="progress-bar">
                     <progress id="completion" max="100"></progress>
                 </div>
-
-                <div class="res-note neutral">
-                    <img alt="" src="{% static "images/tick.svg" %}">
-                    <p>В пределах нормы</p>
-                </div>
+                    {% if proportion > 75 %}
+                        <div class="res-note good">
+                            <img alt="" src="{% static "images/tick.svg" %}">
+                            <p>Выше нормы</p>
+                        </div>
+                    {% elif proportion > 50 %}
+                        <div class="res-note neutral">
+                            <img alt="" src="{% static "images/tick.svg" %}">
+                            <p>В пределах нормы</p>
+                        </div>
+                    {% else %}
+                        <div class="res-note bad">
+                            <img alt="" src="{% static "images/tick.svg" %}" class="bad">
+                            <p>Ниже нормы</p>
+                        </div>
+                    {% endif %}
             </div>
 
             <div class="stats-block">
@@ -79,10 +90,24 @@
                         </div>
                     </div>
                 </div>
-                <h4>Следует обратить внимание на <span class="memory">Память</span>,
-                    <span class="mind">Мышление</span>, <span class="attention">Внимание</span>
-                    (категории с показателем < 75% верных ответов)</h4>
+                {% if action < 75 or memory < 75 or recognition < 75 or attention < 75 %}
+                <h4>Следует обратить внимание на
+                    {% if action < 75 %}
+                        <span class="logic">Логику</span>
+                    {% endif %}
+                    {% if memory < 75 %}
+                        <span class="memory">Память</span>
+                    {% endif %}
+                    {% if recognition < 75 %}
+                        <span class="mind">Мышление</span>
+                    {% endif %}
+                    {% if attention < 75 %}
+                        <span class="attention">Внимание</span>
+                    {% endif %}
 
+
+                    (категории с показателем < 75% верных ответов)</h4>
+                {% endif %}
             </div>
             <div class="rec-block">
                 <div class="rec-container">
@@ -93,8 +118,20 @@
                                 личном кабинете</p>
                         </li>
                         <li>
-                            <p>Развивайте: <span class="memory">Память</span>,
-                            <span class="mind">Мышление</span>, <span class="attention">Внимание</span></p>
+                            <p>Развивайте:
+                            {% if action < 75 %}
+                                <span class="logic">Логику</span>
+                            {% endif %}
+                            {% if memory < 75 %}
+                                <span class="memory">Память</span>
+                            {% endif %}
+                            {% if recognition < 75 %}
+                                <span class="mind">Мышление</span>
+                            {% endif %}
+                            {% if attention < 75 %}
+                                <span class="attention">Внимание</span>
+                            {% endif %}
+                            </p>
                         </li>
                     </ol>
                 </div>
