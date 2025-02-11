@@ -11,6 +11,9 @@ def get_start_info(data):
 
 def get_today_test(user):
     time = str(timezone.now())[:10]
+    day = time[-2:]
+    month = time[5:7]
+    year = time[:4]
     test = Test.objects.get(user=user)
-    tasks = TaskTest.objects.all().filter(test=test).order_by('number')
+    tasks = TaskTest.objects.all().filter(test=test, test__date__day=day, test__date__month=month, test__date__year=year).order_by('number')
     return tasks
