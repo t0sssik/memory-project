@@ -3,6 +3,8 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from .functions.user_functions import *
 from .functions.test_functions import *
+from .functions.stats_functions import *
+
 # Create your views here.
 
 def index(request):
@@ -53,8 +55,8 @@ def test(request):
         if request.POST.get('button') == 'exit':
             return redirect('/test/end')
     user = request.user
-    test = get_today_test(user)
-    return render(request, 'test.html', {'test': test})
+    tasks = get_today_tasks(user)
+    return render(request, 'test.html', {'test': tasks})
 
 def end(request):
     return render(request, 'end.html')
