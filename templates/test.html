@@ -19,7 +19,7 @@
                 </div>
                 <div>
                     <button class="btn-continue" onclick="HideAlert()">Продолжить тест</button>
-                    <button form="test" class='btn-exit' type="submit">Завершить</button>
+                    <button form="test" class='btn-exit' type="submit" name="button" value="exit">Завершить</button>
                 </div>
             </div>
         </div>
@@ -30,7 +30,7 @@
             {% csrf_token %}
             {% include 'nav.html' %}
             <div class="nav-test">
-                <button class="selector previous is-valid" id="btn-previous" onclick="PreviousTask()"></button>
+                <button class="selector previous is-valid" id="btn-previous" onclick="PreviousTask()" type="button"></button>
                 <ul>
                     <li><span class="exercises">Задание <span class="curr-task" id="curr-task">1</span>/{{ test.count }}</span></li>
                     <li><a href="#" class="section selected">Память</a></li>
@@ -40,7 +40,7 @@
                     <li><a href="#" class="section">Действие</a></li>
                     <li><a class="exit" onclick="ShowAlert()">Завершить тест</a></li>
                 </ul>
-                <button class="selector next is-valid" id="btn-next" onclick="NextTask()"></button>
+                <button class="selector next is-valid" id="btn-next" onclick="NextTask()" type="button"></button>
             </div>
 
 

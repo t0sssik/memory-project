@@ -14,6 +14,6 @@ def get_today_test(user):
     day = time[-2:]
     month = time[5:7]
     year = time[:4]
-    test = Test.objects.get(user=user)
-    tasks = TaskTest.objects.all().filter(test=test, test__date__day=day, test__date__month=month, test__date__year=year).order_by('number')
+    test = Test.objects.get(user=user, date__day=day, date__month=month, date__year=year)
+    tasks = TaskTest.objects.all().filter(test=test).order_by('number')
     return tasks
