@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from .functions.user_functions import *
 from .functions.test_functions import *
 from .functions.stats_functions import *
+import math
 
 # Create your views here.
 
@@ -60,4 +61,12 @@ def test(request):
     return render(request, 'test.html', {'test': tasks})
 
 def end(request):
-    return render(request, 'end.html')
+    user = request.user
+    data = get_test_data(user)
+    context = {
+        'memory': math.trunc(data['result_memory'] / max(1, data['max_memory']) * 100),
+        'recognition': math.trunc(data['result_recognition'] / max(1, data['max_recognition']) * 100),
+        'attention': math.trunc(data['result_attention'] / max(1, data['max_attention']) * 100),
+        'action': math.trunc(data['result_action'] / max(1, data['max_action']) * 100),
+    }
+    return render(request, 'end.html', context)
