@@ -212,3 +212,14 @@ button:hover{
     box-shadow: #4b81a6 3px 3px, #45779a 6px 6px;
     font-size: 26px;
 }
+
+button#timer-button{
+    background-color: var(--neutral-gray);
+    border: none;
+}
+
+button#timer-button:hover{
+    cursor: default;
+    box-shadow: none;
+    font-size: 25px;
+}

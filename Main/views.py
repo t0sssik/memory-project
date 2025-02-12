@@ -11,7 +11,19 @@ import math
 def index(request):
     if request.user.is_authenticated:
         stats = Stats.objects.get(user=request.user)
-        return render(request, 'main.html', {'stats':stats})
+        is_completed = get_completion_status(user=request.user)
+        if is_completed:
+            result, value = get_test_result(user=request.user)
+        else:
+            result = 0
+            value = 0
+        context = {
+            'stats': stats,
+            'test': is_completed,
+            'result': result,
+            'value': value,
+        }
+        return render(request, 'main.html', context)
     else:
         return render(request, 'home.html')
 

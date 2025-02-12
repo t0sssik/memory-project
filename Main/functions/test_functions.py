@@ -1,3 +1,5 @@
+import math
+
 from django.contrib.auth.models import User
 from ..models import *
 from django.utils import timezone
@@ -24,8 +26,12 @@ def get_today_test(user):
     day = time[-2:]
     month = time[5:7]
     year = time[:4]
-    test = Test.objects.get(user=user, date__day=day, date__month=month, date__year=year)
-    return test
+    try:
+        test = Test.objects.get(user=user, date__day=day, date__month=month, date__year=year)
+    except:
+        return False
+    else:
+        return Test.objects.get(user=user, date__day=day, date__month=month, date__year=year)
 
 def get_today_tasks(user):
     """
@@ -68,3 +74,18 @@ def update_test(user, data):
     test.is_completed = True
     test.save()
     return
+
+def get_completion_status(user):
+    test = get_today_test(user=user)
+    if test is False:
+        is_completed = False
+    else:
+        is_completed = test.is_completed
+    return is_completed
+
+def get_test_result(user):
+    test = get_today_test(user)
+    value = (test.correct_memory + test.correct_attention + test.correct_recognition + test.correct_speech
+              + test.correct_action)
+    result = math.trunc(value / 24 * 100)
+    return result, value

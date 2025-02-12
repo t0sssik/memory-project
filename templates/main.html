@@ -15,20 +15,37 @@
                 <h1>С возвращением, {{ request.user.first_name }}</h1>
         </div>
         <div class="blocks">
-            <div class="exercise-block">
-                <h3 style="margin-bottom: 90px">Упражнение на сегодня</h3>
-                <h2 style="margin-bottom: 42px">Сегодня вам предстоит<br>
-                    пройти 24 задания</h2>
-                <div class="progress-bar">
-                    <progress id="completion" max="100" value="5">5%</progress>
+            {% if not test %}
+                <div class="exercise-block">
+                    <h3 style="margin-bottom: 90px">Упражнение на сегодня</h3>
+                    <h2 style="margin-bottom: 42px">Сегодня предстоит<br>
+                        пройти 24 задания</h2>
+                    <div class="progress-bar">
+                        <progress id="completion" max="100" value="0">0</progress>
+                    </div>
+                    <div class="progress">
+                        <h4>Пройдено 0%</h4>
+                        <h4>0/24<br>
+                            набрано</h4>
+                    </div>
+                    <a href="/test"><button>К прохождению</button></a>
                 </div>
-                <div class="progress">
-                    <h4>Пройдено {0}%</h4>
-                    <h4>{0/24}<br>
-                        пройдено</h4>
+            {% else %}
+                <div class="exercise-block">
+                    <h3 style="margin-bottom: 90px">Упражнение на сегодня</h3>
+                    <h2 style="margin-bottom: 42px">Задание на сегодня выполнено,<br>
+                    завтра появится новый тест</h2>
+                    <div class="progress-bar">
+                        <progress id="completion" max="100" value="{{ result }}"></progress>
+                    </div>
+                    <div class="progress">
+                        <h4>Пройдено {{ result }}%</h4>
+                        <h4>{{ value }}/24<br>
+                            набрано</h4>
+                    </div>
+                    <a><button disabled id="timer-button">К прохождению</button></a>
                 </div>
-                <a href="/test"><button>К прохождению</button></a>
-            </div>
+            {% endif %}
             <div class="streak-block">
                 <div class="streak-container">
                     <h3>Продолжайте в<br>
@@ -99,5 +116,28 @@
             </div>
         </div>
     </main>
+    <script>
+        const timerBtn = document.getElementById('timer-button');
+        ChangeTimerBtn(timerBtn);
+
+
+        function ChangeTimerBtn(timerBtn){
+            const currentTime = new Date();
+            let hours = 23 - currentTime.getUTCHours() - 3;
+            let minutes = 59 - currentTime.getUTCMinutes();
+            let seconds = 59 - currentTime.getUTCSeconds();
+
+            if (minutes<10){
+                minutes = '0' + minutes;
+            }
+            if (seconds<10){
+                seconds = '0' + seconds;
+            }
+            timerBtn.innerText = hours + ':' + minutes + ':' + seconds;
+        }
+
+        setInterval(ChangeTimerBtn, 1000, timerBtn);
+
+    </script>
     </body>
 </html>
