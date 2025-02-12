@@ -1,4 +1,3 @@
-from django.utils import timezone
 from ..models import *
 from .test_functions import *
 
@@ -100,3 +99,9 @@ def get_difficulty_values(data, tasks):
     data['medium'] = len(tasks.filter(task__difficulty=2))
     data['hard'] = len(tasks.filter(task__difficulty=3))
     return data
+
+def update_stat(user):
+    stat = Stats.objects.get(user=user)
+    stat.completed = Test.objects.all().filter(user=user, is_completed=True).count()
+    stat.save()
+    return

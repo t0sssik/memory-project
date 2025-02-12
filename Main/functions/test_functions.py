@@ -1,6 +1,7 @@
+import datetime
 import math
-
-from django.contrib.auth.models import User
+from datetime import timedelta
+from collections import deque
 from ..models import *
 from django.utils import timezone
 
@@ -89,3 +90,16 @@ def get_test_result(user):
               + test.correct_action)
     result = math.trunc(value / 24 * 100)
     return result, value
+
+def get_last_ten_days(user):
+    data = deque()
+    week_days = ["ПН", "ВТ",
+                   "СР", "ЧТ",
+                   "ПТ", "СБ",
+                   "ВС"]
+    for i in range(10):
+        day = datetime.now() + timedelta(hours=3) - timedelta(days=i)
+        test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year).count()
+        data.appendleft([week_days[day.weekday()], test])
+    print(data)
+    return data

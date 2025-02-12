@@ -17,11 +17,13 @@ def index(request):
         else:
             result = 0
             value = 0
+        days = get_last_ten_days(user=request.user)
         context = {
             'stats': stats,
             'test': is_completed,
             'result': result,
             'value': value,
+            'days': days,
         }
         return render(request, 'main.html', context)
     else:
@@ -69,6 +71,7 @@ def test(request):
     if request.method == 'POST':
         if request.POST.get('button') == 'exit':
             update_test(user, request.POST)
+            update_stat(user)
             return redirect('/test/end')
     return render(request, 'test.html', {'test': tasks})
 

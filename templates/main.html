@@ -68,46 +68,19 @@
                 <h3>Ваша активность</h3>
                 <h4>Последние 10 дней:</h4>
                 <div class="days">
-                    <div class="day">
-                        <div class="rectangle"></div>
-                        <p>{ПН}</p>
-                    </div>
-                    <div class="day complete">
-                        <div class="rectangle"></div>
-                        <p>{ВТ}</p>
-                    </div>
-                    <div class="day complete">
-                    <div class="rectangle"></div>
-                        <p>{СР}</p>
-                    </div>
-                    <div class="day complete">
-                        <div class="rectangle"></div>
-                        <p>{ЧТ}</p>
-                    </div>
-                    <div class="day complete">
-                        <div class="rectangle"></div>
-                        <p>{ПТ}</p>
-                    </div>
-                    <div class="day complete">
-                        <div class="rectangle"></div>
-                        <p>{СБ}</p>
-                    </div>
-                    <div class="day complete">
-                        <div class="rectangle"></div>
-                        <p>{ВС}</p>
-                    </div>
-                    <div class="day">
-                        <div class="rectangle"></div>
-                        <p>{ПН}</p>
-                    </div>
-                    <div class="day complete">
-                        <div class="rectangle"></div>
-                        <p>{ВТ}</p>
-                    </div>
-                    <div class="day complete">
-                    <div class="rectangle"></div>
-                        <p>{СР}</p>
-                    </div>
+                {% for day in days %}
+                    {% if day.1 == 0 %}
+                        <div class="day">
+                            <div class="rectangle"></div>
+                            <p>{{ day.0 }}</p>
+                        </div>
+                    {% else %}
+                        <div class="day complete">
+                            <div class="rectangle"></div>
+                            <p>{{ day.0 }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
                 </div>
                 <div class="stats">
                     <h4>{{ stats.completed }} решено</h4>
