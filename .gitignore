@@ -1,3 +1,1 @@
-/loggs
-/__pycache__
-hparams.yaml
+db.sqlite3

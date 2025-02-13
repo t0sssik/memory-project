@@ -1,0 +1,284 @@
+body{
+    font-family: "CoFo Sans", "Arial", sans-serif;
+    margin: 0;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--body-color);
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+nav{
+    display: flex;
+    justify-content: space-between;
+    margin: 38px 0 0 80px;
+    width: 86%;
+    color: var(--font-color);
+    border-radius: 20px;
+    padding: 0 20px 0 20px;
+    background-color: var(--nav-color);
+}
+
+nav ul{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 10px 0 0;
+    margin: 0;
+}
+
+nav li{
+    padding: 0 30px 0 0;
+}
+
+div.hero{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background-size: contain;
+    background: linear-gradient(-45deg,#5EB5F2, #91CFFB);
+}
+
+div.hero p, h1{
+    color: var(--font-color-hero);
+    font-weight: normal;
+}
+
+div.hero h2, button{
+    color: var(--font-color-hero-secondary);
+}
+
+nav a{
+    color: black;
+    text-decoration: none;
+    font-size: 23px;
+}
+
+nav h2 a{
+    color: var(--font-color-secondary);
+}
+
+nav a:hover{
+    text-decoration: underline;
+}
+
+main{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.hero button{
+    width: 300px;
+    height: 60px;
+    margin: 25px 0 80px 80px;
+    border:0;
+    border-radius: 20px;
+    background: white;
+    font-size:25px;
+}
+
+.hero-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.hero-image img{
+    width: 750px;
+    margin-bottom: 100px;
+}
+
+.hero h1{
+    font-size: 68px;
+    margin: 30px 0 0 80px;
+    line-height: 90%;
+}
+
+.hero p{
+    font-size: 27px;
+    margin: 90px 0 0 80px;
+}
+
+.avatar{
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    margin: 0;
+}
+
+nav h2{
+    color: var(--font-color-hero-secondary)
+}
+
+.info h2{
+    font-size: 50px;
+    margin: 6vh 0 2vh 10vh;
+}
+
+.info p{
+    font-size: 26px;
+    margin: 0;
+    padding: 20px 0 0 20px;
+
+}
+
+.info{
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    user-select: none;
+}
+
+.blocks{
+    display: flex;
+    align-items: center;
+    margin: 3vh 0 0 10vh;
+}
+
+.blocks div{
+    margin-left: 2px;
+    margin-right: 2px;
+    padding: 0 5px 0 5px;
+}
+
+.small-block{
+    background: var(--background-block);
+    min-height: 223px;
+    min-width: 400px;
+    border-radius: 25px;
+}
+
+.small-block:first-child{
+    margin-bottom: 10px;
+}
+
+.huge-block{
+    border-radius: 25px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 442px;
+    min-width: 400px;
+    max-width: 400px;
+}
+
+.huge-block:first-child{
+    background-image: url('../images/block-svg.svg');
+}
+
+.huge-block:last-child{
+    background-image: url('../images/block-2-svg.svg');
+    color: var(--font-color-hero);
+    margin-right: 104px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.video-block{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.info h3{
+    font-size: 24px;
+    font-weight: normal;
+    background: var(--background-blue);
+    color: white;
+    margin: 0 500px 0 0;
+    padding: 10px 30px 10px 30px;
+    border-radius: 15px 15px 0 0;
+}
+
+
+.video-block video{
+    max-width: 1232px;
+    max-height: 639px;
+    min-width: 1232px;
+    min-height: 639px;
+    border-radius: 25px;
+
+}
+
+.diseases{
+    background: var(--background-blue);
+    color: white;
+
+}
+
+.diseases h4, .diseases h2{
+    font-weight: normal;
+    font-size: 48px;
+}
+
+.diseases ol {
+    list-style-type: none;
+    counter-reset: num;
+   }
+
+.diseases li::before {
+    content: '0' counter(num);
+    counter-increment: num;
+    font-size: 33px;
+   }
+
+.diseases li{
+    display: flex;
+    margin: 6vh 0 2vh 5vh;
+}
+
+.diseases h4, .diseases p{
+    padding: 0;
+    margin: 0;
+}
+
+.diseases h2{
+    font-size: 50px;
+    margin: 6vh 0 12vh 10vh;
+    line-height: 0.95;
+}
+
+.diseases div{
+    margin: 0 0 20px 168px;
+}
+
+.diseases h4{
+    line-height: 0.9;
+}
+
+.diseases p{
+    font-size: 22px;
+    margin-top: 20px;
+}
+
+.huge-block button{
+    width: 100%;
+    border: none;
+    font-size: 18px;
+    margin: 0 0 18px 0;
+    padding: 15px 100px;
+    border-radius: 15px;
+}
+
+button{
+    transition: 0.3s ease all;
+}
+
+button:hover{
+    box-shadow: #4b81a6 3px 3px, #45779a 6px 6px;
+    font-size: 26px;
+}
+
+.huge-block button:hover{
+    font-size: 19px;
+}

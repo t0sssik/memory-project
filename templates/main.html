@@ -1,0 +1,115 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "/styles/base.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/main.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/nav.css" %}" type="text/css">
+    <title>MemoryProject</title>
+</head>
+    <body>
+    <main>
+        <div class="hero">
+            {% include 'nav.html' %}
+                <h1>С возвращением, {{ request.user.first_name }}</h1>
+        </div>
+        <div class="blocks">
+            {% if not test %}
+                <div class="exercise-block">
+                    <h3 style="margin-bottom: 90px">Упражнение на сегодня</h3>
+                    <h2 style="margin-bottom: 42px">Сегодня предстоит<br>
+                        пройти 24 задания</h2>
+                    <div class="progress-bar">
+                        <progress id="completion" max="100" value="0">0</progress>
+                    </div>
+                    <div class="progress">
+                        <h4>Пройдено 0%</h4>
+                        <h4>0/24<br>
+                            набрано</h4>
+                    </div>
+                    <a href="/test"><button>К прохождению</button></a>
+                </div>
+            {% else %}
+                <div class="exercise-block">
+                    <h3 style="margin-bottom: 90px">Упражнение на сегодня</h3>
+                    <h2 style="margin-bottom: 42px">Задание на сегодня выполнено,<br>
+                    завтра появится новый тест</h2>
+                    <div class="progress-bar">
+                        <progress id="completion" max="100" value="{{ result }}"></progress>
+                    </div>
+                    <div class="progress">
+                        <h4>Пройдено {{ result }}%</h4>
+                        <h4>{{ value }}/24<br>
+                            набрано</h4>
+                    </div>
+                    <a><button disabled id="timer-button">К прохождению</button></a>
+                </div>
+            {% endif %}
+            <div class="streak-block">
+                <div class="streak-container">
+                    <h3>Продолжайте в<br>
+                        том же духе!</h3>
+                    <div>
+                        <strong>{{ stats.streak }}</strong>
+                        <h4>Дней без перерыва<br>
+                        Рекорд — {{ stats.best_streak }}</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="rec-block">
+                <h3 style="margin-bottom: 125px">Наши рекомендации</h3>
+                <h3 style="margin-bottom: 14px">Как концентрироваться?</h3>
+                <p style="margin-bottom: 38px">Мы собираем статистику, чтобы вы отслеживали<br>
+                    результат</p>
+                <button>Читать подробнее</button>
+            </div>
+            <div class="stats-block">
+                <h3>Ваша активность</h3>
+                <h4>Последние 10 дней:</h4>
+                <div class="days">
+                {% for day in days %}
+                    {% if day.1 == 0 %}
+                        <div class="day">
+                            <div class="rectangle"></div>
+                            <p>{{ day.0 }}</p>
+                        </div>
+                    {% else %}
+                        <div class="day complete">
+                            <div class="rectangle"></div>
+                            <p>{{ day.0 }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                </div>
+                <div class="stats">
+                    <h4>{{ stats.completed }} решено за всё время</h4>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        const timerBtn = document.getElementById('timer-button');
+        ChangeTimerBtn(timerBtn);
+
+
+        function ChangeTimerBtn(timerBtn){
+            const currentTime = new Date();
+            let hours = 23 - currentTime.getUTCHours() - 3;
+            let minutes = 59 - currentTime.getUTCMinutes();
+            let seconds = 59 - currentTime.getUTCSeconds();
+
+            if (minutes<10){
+                minutes = '0' + minutes;
+            }
+            if (seconds<10){
+                seconds = '0' + seconds;
+            }
+            timerBtn.innerText = hours + ':' + minutes + ':' + seconds;
+        }
+
+        setInterval(ChangeTimerBtn, 1000, timerBtn);
+
+    </script>
+    </body>
+</html>

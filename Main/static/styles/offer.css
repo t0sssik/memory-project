@@ -1,0 +1,200 @@
+html{
+    height: 100%;
+}
+
+body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-family: "CoFo Sans", "Arial", sans-serif;
+    margin: 0;
+    background-color: white;
+    height: 100%;
+    width: 100%;
+}
+
+main{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+button:hover{
+    cursor: pointer;
+}
+
+.nav, .reg-block{
+    margin: 0 40px 0 40px;
+}
+
+.blocks{
+    display: flex;
+    height: 100%;
+}
+
+.reg-block{
+    display: flex;
+    flex-direction: column;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    width: 100%;
+}
+
+.avatar{
+    width: 41px;
+    height: 41px;
+    border-radius: 50%;
+    margin: 0;
+}
+
+form strong{
+    color: var(--red-req);
+    margin-left: 5px;
+}
+
+form label{
+    margin-bottom: 10px;
+    font-size: 18px;
+    color: var(--label-black);
+    font-weight: 600;
+}
+
+form input{
+    margin: 4px 0 4px 0;
+    border-radius: 10px;
+    border: 1px solid var(--font-color-secondary);
+    background-color: white;
+    padding: 18px 15px 18px 15px;
+    width: 100%;
+    transition: 0.2s ease all;
+    font-size: 18px;
+}
+
+form input::placeholder{
+    color: var(--placeholder)
+}
+
+form input.input-field:focus{
+    margin: 0;
+    padding: 22px 15px 22px 15px;
+}
+
+form .input{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.checkbox{
+    margin-right: 10px;
+}
+
+#email-box {
+    margin: 0;
+}
+
+.reg-block h1{
+    margin: 38px 0 24px 0;
+    font-size: 55px;
+    font-weight: normal;
+    line-height: 90%;
+}
+
+.reg-block h2{
+    font-size: 32px;
+    font-weight: normal;
+    margin: 0 0 20px 0;
+}
+
+.note{
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.note a{
+    color: inherit;
+    transition: 0.2s ease all;
+}
+
+.note a:hover{
+    color: black;
+}
+
+.check-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.checkbox {
+    cursor: pointer;
+    appearance: none;
+    border: 2px var(--font-color-secondary) solid;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+    transition: 0.2s ease-in all;
+    padding: 0;
+}
+
+.checkbox:checked{
+    background-image: url("../images/tick.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.checkbox:hover{
+    border: 4px var(--font-color-secondary) solid;
+}
+
+label{
+    transition: 0.2s ease-in all;
+}
+
+.check-label{
+    margin: 0;
+    color: black;
+    font-weight: normal;
+}
+
+.error{
+    margin: initial;
+    color: var(--red-req);
+    border-color: var(--red-req);
+}
+
+label.error{
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.check-label:hover{
+    cursor: pointer;
+    color: var(--font-color-secondary);
+    text-decoration: underline;
+}
+
+button{
+    width: 80%;
+    border-radius: 10px;
+    background-color: var(--font-color-secondary);
+    color: white;
+    font-size: 25px;
+    user-select: none;
+    transition: 0.3s ease all;
+    border: var(--font-color-secondary) 1px solid;
+    padding: 18px 0 18px 0;
+}
+
+
+button:hover{
+    box-shadow: #4b81a6 3px 3px, #45779a 6px 6px;
+    font-size: 26px;
+}

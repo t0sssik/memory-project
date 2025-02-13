@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "/styles/base.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/test.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/nav.css" %}" type="text/css">
+    <title>MemoryProject</title>
+</head>
+    <body>
+
+    <main>
+        <div id="alert" style="display: none">
+            <div class="alert-box">
+                <div>
+                    <h2>Вы уверены, что хотите завершить тренировку?</h2>
+                    <p>При завершении Вы не сможете вернуться к заданиям до завтра</p>
+                </div>
+                <div>
+                    <button class="btn-continue" onclick="HideAlert()">Продолжить тест</button>
+                    <button form="test" class='btn-exit' type="submit" name="button" value="exit">Завершить</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="test">
+            <form method="post" id="test">
+            {% csrf_token %}
+            {% include 'nav.html' %}
+            <div class="nav-test">
+                <button class="selector previous is-valid" id="btn-previous" onclick="PreviousTask()" type="button"></button>
+                <ul>
+                    <li><span class="exercises">Задание <span class="curr-task" id="curr-task">1</span>/{{ test.count }}</span></li>
+                    <li><a href="#" class="section selected">Память</a></li>
+                    <li><a href="#" class="section">Мышление</a></li>
+                    <li><a href="#" class="section">Внимание</a></li>
+                    <li><a href="#" class="section">Речь</a></li>
+                    <li><a href="#" class="section">Действие</a></li>
+                    <li><a class="exit" onclick="ShowAlert()">Завершить тест</a></li>
+                </ul>
+                <button class="selector next is-valid" id="btn-next" onclick="NextTask()" type="button"></button>
+            </div>
+
+
+            {% for task in test %}
+            <div id="{{ task.number }}" class="block-hidden">
+                <div class="description">
+                    <img alt="exercise" src="{{ task.task.url }}" />
+                </div>
+                <div class="rating">
+                    <div class="note">
+                        <h3>Оцените выполнения задания</h3>
+                        <p>{{ task.task.mark }}</p>
+                    </div>
+                    <div class="mark">
+                        <p class="incorrect-label">Не справился</p>
+                        <div class="incorrect">
+                            <input checked type="radio" value="0" id="1-answer" name="answer{{ task.number }}" class="radio incorrect"/>
+                            <label for="1-answer">{{ task.task.mark_incorrect }}</label>
+                        </div>
+                        <div class="neutral">
+                            <input type="radio" value="0.5" id="2-answer" name="answer{{ task.number }}" class="radio neutral"/>
+                            <label for="2-answer">{{ task.task.mark_neutral }}</label>
+                        </div>
+                        <div class="correct">
+                            <input type="radio" value='1' id="3-answer" name="answer{{ task.number }}" class="radio correct"/>
+                            <label for="3-answer">{{ task.task.mark_correct }}</label>
+                        </div>
+                        <p class="correct-label">Справился</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </form>
+        </div>
+
+    </main>
+    <script>
+        let count = 1;
+        const taskNumber = document.getElementById('curr-task');
+        const previousButton = document.getElementById('btn-previous');
+        const nextButton = document.getElementById('btn-next');
+        const maxLength = {{ test.count }};
+        const alertBlock = document.getElementById('alert');
+
+        ShowBlock(count);
+        CheckButtons();
+
+        function HideBlock(number){
+            const taskBlock = document.getElementById(number.toString());
+            taskBlock.setAttribute('class', 'block-hidden');
+        }
+
+        function ShowBlock(number){
+            const newBlock = document.getElementById(number);
+            newBlock.removeAttribute('class');
+        }
+
+        function CheckButtons(){
+            if (count === maxLength){
+                nextButton.setAttribute('disabled', '');
+                nextButton.classList.add('is-invalid');
+            }
+            else{
+                nextButton.removeAttribute('disabled');
+                nextButton.classList.remove('is-invalid');
+            }
+
+            if (count === 1){
+                previousButton.setAttribute('disabled', '');
+                previousButton.classList.add('is-invalid');
+            }
+            else{
+                previousButton.removeAttribute('disabled');
+                previousButton.classList.remove('is-invalid');
+            }
+        }
+
+        function NextTask(){
+            HideBlock(count);
+            count += 1;
+            ShowBlock(count);
+            taskNumber.textContent = count;
+            CheckButtons();
+        }
+
+        function PreviousTask(){
+            HideBlock(count);
+            count -= 1;
+            ShowBlock(count);
+            taskNumber.textContent = count;
+            CheckButtons();
+        }
+
+        function ShowAlert(){
+            alertBlock.style.display = 'flex';
+        }
+
+        function HideAlert(){
+            alertBlock.style.display = 'none';
+        }
+    </script>
+    </body>
+</html>

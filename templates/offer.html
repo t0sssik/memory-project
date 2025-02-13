@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "/styles/base.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/offer.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/nav.css" %}" type="text/css">
+    <title>MemoryProject</title>
+</head>
+    <body>
+    <main>
+        <div class="nav">
+            {% include 'nav.html' %}
+        </div>
+        <div class="blocks">
+            <div class="reg-block">
+                <h1>Регулярность поможет<br>
+                    улучшить результат</h1>
+                <h2>Создайте аккаунт и отслеживайте прогресс</h2>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input">
+                        <label for="first-name">Имя <strong>*</strong></label>
+                        <input class="input-field" required id="first-name" name="first-name"
+                               placeholder="Введите имя" maxlength="32"/>
+                    </div>
+                    <div class="input">
+                        <label for="last-name">Фамилия <strong>*</strong></label>
+                        <input class="input-field" required id="last-name" name="last-name"
+                               placeholder="Введите фамилию" maxlength="32"/>
+                    </div>
+                    <div class="input" id="email-box">
+                        <label for="id_email">E-mail <strong>*</strong></label>
+                        <input class="is-valid input-field" required name="email" type="email"
+                               placeholder="example@mail.ru" id="id_email" maxlength="32" minlength="6"/>
+                        <label class="error" id="email-error" style="visibility: hidden">Этот почтовый адрес недоступен!</label>
+                    </div>
+                    <div class="input">
+                        <label for="password">Придумайте пароль <strong>*</strong></label>
+                        <input class="input-field" required id="password" type="password" name="password"
+                               placeholder="Введите пароль" minlength="6" maxlength="32"/>
+                    </div>
+                    <div class="check-container">
+                        <input type="checkbox" id="notice" name="notice" class="checkbox"/>
+                        <label for="notice" class="check-label">Я хочу получать напоминания о выполнении заданий и данные об обновлениях сервиса</label>
+                    </div>
+                    <button type="submit" value="register" name="button" id="register-btn">Создать аккаунт</button>
+                    <p class="note">Нажимая кнопку «Создать аккаунт», я соглашаюсь с <a href="#">политикой
+                        конфиденциальности</a><br>
+                        сервиса и даю согласие на обработку персональных данных</p>
+                </form>
+            </div>
+        </div>
+    </main>
+    {% block javascript %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    {# Registration validate script #}
+    <script>
+    $('#id_email').keyup(function () {
+    // создаем AJAX-вызов
+    $.ajax({
+        data: $(this).serialize(), // получаем данные формы
+        url: "{% url 'validate_email' %}",
+        // если успешно, то
+        success: function (response) {
+            let errorBlock = document.getElementById("email-error");
+            let registerButton = document.getElementById('register-btn');
+            if (response.is_taken == true) {
+                $('#id_email').removeClass('is-valid').addClass('error');
+                errorBlock.style.visibility = 'visible';
+                registerButton.setAttribute('disabled', '');
+                registerButton.style.backgroundColor = '#B0B9BF';
+            }
+            else {
+                $('#id_email').removeClass('error').addClass('is-valid');
+                errorBlock.style.visibility = 'hidden';
+                registerButton.removeAttribute('disabled');
+                registerButton.style.backgroundColor = 'var(--font-color-secondary)';
+            }
+        },
+        // если ошибка, то
+        error: function (response) {
+            // предупредим об ошибке
+            console.log(response.responseJSON.errors)
+        }
+    });
+    return false;
+});
+    </script>
+    {% endblock %}
+    </body>
+</html>
