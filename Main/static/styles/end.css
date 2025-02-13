@@ -123,8 +123,24 @@ progress#completion{
     width: 25px;
 }
 
-.res-note.neutral{
+.neutral{
     color: var(--font-color-secondary);
+}
+
+.good{
+    color: var(--green-corect);
+}
+
+.good img{
+    filter: hue-rotate(290deg);
+}
+
+.bad{
+    color: var(--red-req);
+}
+
+.bad img{
+    filter: hue-rotate(130deg);
 }
 
 .stats-block{
@@ -302,4 +318,12 @@ button:hover{
 button a{
     text-decoration: none;
     color: inherit;
+}
+
+span::after{
+    content: ',';
+}
+
+span:last-child::after{
+    content: none;
 }

@@ -11,10 +11,10 @@
         .progress-bar{
             background:
                 radial-gradient(closest-side, var(--nav-color) 79%, transparent 80% 100%),
-                conic-gradient(var(--font-color-secondary) 80%, rgba(0, 125, 153, 15%) 0);
+                conic-gradient(var(--font-color-secondary) {{ proportion }}%, rgba(0, 125, 153, 15%) 0);
         }
         .progress-bar::before{
-            content: '16 из 27';
+            content: '{{ correct }} из 24';
             font-size: 32px;
         }
     </style>
@@ -29,14 +29,25 @@
         <div class="blocks">
             <div class="result-block">
                 <h3>Результат прохождения:</h3>
-                <div class="progress-bar" style="  ">
-                    <progress id="completion" max="100" value="5" >5%</progress>
+                <div class="progress-bar">
+                    <progress id="completion" max="100"></progress>
                 </div>
-
-                <div class="res-note neutral">
-                    <img alt="" src="{% static "images/tick.svg" %}">
-                    <p>В пределах нормы</p>
-                </div>
+                    {% if proportion > 75 %}
+                        <div class="res-note good">
+                            <img alt="" src="{% static "images/tick.svg" %}">
+                            <p>Выше нормы</p>
+                        </div>
+                    {% elif proportion > 50 %}
+                        <div class="res-note neutral">
+                            <img alt="" src="{% static "images/tick.svg" %}">
+                            <p>В пределах нормы</p>
+                        </div>
+                    {% else %}
+                        <div class="res-note bad">
+                            <img alt="" src="{% static "images/tick.svg" %}" class="bad">
+                            <p>Ниже нормы</p>
+                        </div>
+                    {% endif %}
             </div>
 
             <div class="stats-block">
@@ -53,36 +64,50 @@
                     </div>
                     <div class="diagram">
                         <div class="bar-container">
-                            <div class="bar logic" style="height: 88%">
-                                <p class="logic">88%</p>
+                            <div class="bar logic" style="height: {{ recognition }}%">
+                                <p class="logic">{{ recognition }}%</p>
                                 <p class="note logic">Логика</p>
                             </div>
                         </div>
                         <div class="bar-container">
-                            <div class="bar memory" style="height: 67%">
-                                <p class="memory">67%</p>
+                            <div class="bar memory" style="height: {{ memory }}%">
+                                <p class="memory">{{ memory }}%</p>
                                 <p class="note memory">Память</p>
                             </div>
                         </div>
                         <div class="bar-container">
 
-                            <div class="bar mind" style="height: 61%">
-                                <p class="mind">61%</p>
+                            <div class="bar mind" style="height: {{ action }}%">
+                                <p class="mind">{{ action }}%</p>
                                 <p class="note mind">Мышление</p>
                             </div>
                         </div>
                         <div class="bar-container">
-                            <div class="bar attention" style="height: 38%">
-                                <p class="attention">38%</p>
+                            <div class="bar attention" style="height: {{ attention }}%">
+                                <p class="attention">{{ attention }}%</p>
                                 <p class="note attention">Внимание</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <h4>Следует обратить внимание на <span class="memory">Память</span>,
-                    <span class="mind">Мышление</span>, <span class="attention">Внимание</span>
-                    (категории с показателем < 75% верных ответов)</h4>
+                {% if action < 75 or memory < 75 or recognition < 75 or attention < 75 %}
+                <h4>Следует обратить внимание на
+                    {% if action < 75 %}
+                        <span class="logic">Логику</span>
+                    {% endif %}
+                    {% if memory < 75 %}
+                        <span class="memory">Память</span>
+                    {% endif %}
+                    {% if recognition < 75 %}
+                        <span class="mind">Мышление</span>
+                    {% endif %}
+                    {% if attention < 75 %}
+                        <span class="attention">Внимание</span>
+                    {% endif %}
 
+
+                    (категории с показателем < 75% верных ответов)</h4>
+                {% endif %}
             </div>
             <div class="rec-block">
                 <div class="rec-container">
@@ -93,8 +118,20 @@
                                 личном кабинете</p>
                         </li>
                         <li>
-                            <p>Развивайте: <span class="memory">Память</span>,
-                            <span class="mind">Мышление</span>, <span class="attention">Внимание</span></p>
+                            <p>Развивайте:
+                            {% if action < 75 %}
+                                <span class="logic">Логику</span>
+                            {% endif %}
+                            {% if memory < 75 %}
+                                <span class="memory">Память</span>
+                            {% endif %}
+                            {% if recognition < 75 %}
+                                <span class="mind">Мышление</span>
+                            {% endif %}
+                            {% if attention < 75 %}
+                                <span class="attention">Внимание</span>
+                            {% endif %}
+                            </p>
                         </li>
                     </ol>
                 </div>
