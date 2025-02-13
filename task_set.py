@@ -2,7 +2,6 @@ from typing import List, Dict
 from task import Task
 from task_type import TaskType
 from task_difficulty import TaskDifficulty
-from user_statistics import UserStatistics
 from collections import Counter
 import random
 
