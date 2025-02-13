@@ -105,3 +105,17 @@ def update_stat(user):
     stat.completed = Test.objects.all().filter(user=user, is_completed=True).count()
     stat.save()
     return
+
+def check_streak(user):
+    previous_day = datetime.now() + timedelta(hours=3, days=-1)
+    test = Test.objects.get(user=user, date=previous_day)
+    stat = Stats.objects.get(user=user)
+
+    if test is not None and test.is_completed:
+        stat.streak += 1
+        stat.best_streak = max(stat.best_streak, stat.streak)
+    else:
+        stat.best_streak = max(stat.best_streak, stat.streak)
+        stat.streak = 0
+    stat.save()
+    return

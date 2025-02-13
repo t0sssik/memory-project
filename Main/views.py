@@ -18,6 +18,7 @@ def index(request):
             result = 0
             value = 0
         days = get_last_ten_days(user=request.user)
+        # check_streak(user=request.user)
         context = {
             'stats': stats,
             'test': is_completed,

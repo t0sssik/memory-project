@@ -99,7 +99,11 @@ def get_last_ten_days(user):
                    "ВС"]
     for i in range(10):
         day = datetime.now() + timedelta(hours=3) - timedelta(days=i)
-        test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year).count()
-        data.appendleft([week_days[day.weekday()], test])
+        test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year)
+        if test.count()>0:
+            is_completed = Test.objects.get(date__day=day.day, date__month=day.month, date__year=day.year).is_completed
+        else:
+            is_completed = False
+        data.appendleft([week_days[day.weekday()], is_completed])
     print(data)
     return data
