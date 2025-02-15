@@ -47,6 +47,7 @@
             {% for task in test %}
             <div id="{{ task.number }}" class="block-hidden">
                 <div class="description">
+                    <h3>{{ task.task.question }}</h3>
                     <img alt="exercise" src="{{ task.task.url }}" />
                 </div>
                 <div class="rating">

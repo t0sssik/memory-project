@@ -105,5 +105,4 @@ def get_last_ten_days(user):
         else:
             is_completed = False
         data.appendleft([week_days[day.weekday()], is_completed])
-    print(data)
     return data
