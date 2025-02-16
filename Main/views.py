@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from .functions.user_functions import *
 from .functions.test_functions import *
 from .functions.stats_functions import *
+from alg.user_statistics import *
+from alg.genetic_algorithm import *
 import math
 
 # Create your views here.
@@ -17,6 +19,8 @@ def index(request):
         else:
             result = 0
             value = 0
+            ga = generate_test(request)
+            print(ga)
         days = get_last_ten_days(user=request.user)
         # check_streak(user=request.user)
         context = {

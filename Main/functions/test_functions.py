@@ -4,6 +4,9 @@ from datetime import timedelta
 from collections import deque
 from ..models import *
 from django.utils import timezone
+from alg.genetic_algorithm import *
+from alg.user_statistics import *
+from .stats_functions import get_latest_test_data
 
 def get_start_info(data):
     """
@@ -106,3 +109,13 @@ def get_last_ten_days(user):
             is_completed = False
         data.appendleft([week_days[day.weekday()], is_completed])
     return data
+
+def generate_test(request):
+    tests = get_latest_tests(user=request.user)
+    data = get_latest_test_data(tests)
+    user_stats = UserStatistics(data)
+    user_stat = user_stats.user_stat
+    user_ref_diff = user_stats.user_reference_difficulty
+    ga = GeneticAlgorithm(user_stat, user_ref_diff, hparams_conf_path='alg/hparams.yaml')
+    best = ga.evolve()
+    return  best.to_list()

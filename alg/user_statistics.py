@@ -1,6 +1,6 @@
 from typing import Dict
 import pandas as pd
-from task_set import TASK_SET_SIZE
+from .task_set import TASK_SET_SIZE
 
 
 class UserStatistics:

@@ -1,10 +1,10 @@
-from task_set import TaskSet
-from task_set import TASK_SET_SIZE
-from task import Task
-from task_difficulty import TaskDifficulty
-from task_type import TaskType
+from .task_set import TaskSet
+from .task_set import TASK_SET_SIZE
+from .task import Task
+from .task_difficulty import TaskDifficulty
+from .task_type import TaskType
 from typing import List, Tuple
-from logger import Logger
+from .logger import Logger
 import random
 import yaml
 from pathlib import Path
