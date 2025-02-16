@@ -3,6 +3,7 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from .functions.user_functions import *
 from .functions.test_functions import *
+from .functions.test_functions import get_today_test
 from .functions.stats_functions import *
 from alg.user_statistics import *
 from alg.genetic_algorithm import *
@@ -19,8 +20,8 @@ def index(request):
         else:
             result = 0
             value = 0
-            ga = generate_test(request)
-            print(ga)
+            if get_today_test(user=request.user) == False:
+                ga = generate_test(request)
         days = get_last_ten_days(user=request.user)
         # check_streak(user=request.user)
         context = {
@@ -90,6 +91,6 @@ def end(request):
         'action': math.trunc(data['result_action'] / max(1, data['max_action']) * 100),
         'correct' : data['result_memory'] + data['result_recognition'] + data['result_attention'] + data['result_action'],
         'proportion': math.trunc((data['result_memory'] + data['result_recognition'] + data['result_attention']
-                                 + data['result_action']) / 24 * 100),
+                                 + data['result_action']) / 20 * 100),
     }
     return render(request, 'end.html', context)
