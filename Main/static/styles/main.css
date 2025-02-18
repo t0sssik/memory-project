@@ -206,6 +206,7 @@ button{
     user-select: none;
     transition: 0.3s ease all;
     border: var(--font-color-secondary) 1px solid;
+    margin: 0 10px 0 0;
 }
 
 button:hover{
@@ -222,4 +223,42 @@ button#timer-button:hover{
     cursor: default;
     box-shadow: none;
     font-size: 25px;
+}
+
+button.is-invalid {
+    position: relative;
+    background: #e6e6e6;
+    color: #586166;
+    border-color: #586166;
+    cursor: default;
+    z-index: 5;
+}
+
+button.is-invalid:hover{
+    box-shadow: none;
+    font-size: 25px;
+}
+
+.tooltip{
+    margin-right: 7px;
+    display: inline-block;
+    position: relative;
+}
+
+.tooltip .tooltip-text{
+    visibility: hidden;
+    position: absolute;
+    z-index: 6;
+    top:-150px;
+    right: -180px;
+    width: 150px;
+    font-size: 15px;
+    background-color: var(--font-color-secondary);
+    border-radius: 25%;
+    padding: 15px;
+    color: white;
+}
+
+.tooltip:hover .tooltip-text{
+    visibility: visible;
 }

@@ -13,6 +13,11 @@ import math
 
 def index(request):
     if request.user.is_authenticated:
+        if request.method == "POST":
+            print(request.POST)
+            if request.POST.get("button") == 'start':
+
+                return redirect(test)
         stats = Stats.objects.get(user=request.user)
         if not Test.objects.all().filter(user=request.user, is_completed=True).exists():
             assign_first_test(request.user)
