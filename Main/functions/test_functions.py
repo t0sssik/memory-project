@@ -7,7 +7,7 @@ from ..models import Task as TaskModel
 from django.utils import timezone
 from alg.genetic_algorithm import *
 from alg.user_statistics import *
-from .stats_functions import get_latest_test_data, create_empty_dict
+from .stats_functions import get_latest_test_data
 import random
 
 def get_start_info(data):
@@ -28,7 +28,7 @@ def get_today_test(user):
     :param user: ID Пользователя
     :return: ID теста
     """
-    time = str(timezone.now())[:10]
+    time = str(datetime.now() + timedelta(hours=3))[:10]
     day = time[-2:]
     month = time[5:7]
     year = time[:4]
@@ -104,9 +104,9 @@ def get_last_ten_days(user):
                    "ВС"]
     for i in range(10):
         day = datetime.now() + timedelta(hours=3) - timedelta(days=i)
-        test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year)
+        test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year, user=user)
         if test.count()>0:
-            is_completed = Test.objects.get(date__day=day.day, date__month=day.month, date__year=day.year).is_completed
+            is_completed = Test.objects.get(date__day=day.day, date__month=day.month, date__year=day.year, user=user).is_completed
         else:
             is_completed = False
         data.appendleft([week_days[day.weekday()], is_completed])
@@ -224,3 +224,18 @@ def get_first_test_result(request):
             result['result_action'] += float(task)
 
     return result
+
+def save_first_test(user, result):
+    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=True)
+    test.correct_memory = result['result_memory']
+    test.correct_attention = result['result_attention']
+    test.correct_recognition = result['result_recognition']
+    test.correct_speech = result['result_speech']
+    test.correct_action = result['result_action']
+    test.save()
+    anon_user = User.objects.get(username='Anon')
+    anon_tasks = get_first_test()
+    for anon_task in anon_tasks:
+        TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
+
+    return True

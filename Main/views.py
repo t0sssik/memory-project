@@ -62,12 +62,14 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-def offer(request, result):
+def offer(request):
     if request.user.is_authenticated:
         return redirect('/')
     else:
         if request.method == 'POST':
+            result = request.session['result']
             if create_user(request):
+                save_first_test(user=request.user, result=result)
                 return redirect('/')
     return render(request, 'offer.html')
 
@@ -81,18 +83,23 @@ def test(request):
         if request.POST.get('button') == 'exit':
             if not user.is_authenticated:
                 result = get_first_test_result(request.POST)
-                return end(request, result)
+                request.session['result'] = result
+                return redirect(end)
             else:
                 update_test(user, request.POST)
                 update_stat(user)
                 return redirect('/test/end')
     return render(request, 'test.html', {'test': tasks})
 
-def end(request, result = 1):
+def end(request):
     user = request.user
+    if request.method == 'POST':
+        if request.POST.get('button') == 'save':
+            return redirect(offer)
     if user.is_authenticated:
         data = get_test_data(user)
     else:
+        result = request.session['result']
         data = result
     context = {
         'memory': math.trunc(data['result_memory'] / max(1, data['max_memory']) * 100),

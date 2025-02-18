@@ -50,4 +50,5 @@ def validate_register_email(request):
     return response
 
 def create_stats(user):
-    Stats.objects.create(user=user)
+    stats = Stats.objects.create(user=user)
+    return stats.save()
