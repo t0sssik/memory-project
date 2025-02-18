@@ -20,7 +20,7 @@ def index(request):
         else:
             result = 0
             value = 0
-            if get_today_test(user=request.user) == False:
+            if get_today_test(user=request.user) == False and Test.objects.filter(user=request.user).exists():
                 ga = generate_test(request)
         days = get_last_ten_days(user=request.user)
         # check_streak(user=request.user)
@@ -62,7 +62,7 @@ def logout_view(request):
     logout(request)
     return redirect('/')
 
-def offer(request):
+def offer(request, result):
     if request.user.is_authenticated:
         return redirect('/')
     else:
@@ -73,24 +73,36 @@ def offer(request):
 
 def test(request):
     user = request.user
-    tasks = get_today_tasks(user)
+    if not user.is_authenticated:
+        tasks = get_first_test()
+    else:
+        tasks = get_today_tasks(user)
     if request.method == 'POST':
         if request.POST.get('button') == 'exit':
-            update_test(user, request.POST)
-            update_stat(user)
-            return redirect('/test/end')
+            if not user.is_authenticated:
+                result = get_first_test_result(request.POST)
+                return end(request, result)
+            else:
+                update_test(user, request.POST)
+                update_stat(user)
+                return redirect('/test/end')
     return render(request, 'test.html', {'test': tasks})
 
-def end(request):
+def end(request, result = 1):
     user = request.user
-    data = get_test_data(user)
+    if user.is_authenticated:
+        data = get_test_data(user)
+    else:
+        data = result
     context = {
         'memory': math.trunc(data['result_memory'] / max(1, data['max_memory']) * 100),
         'recognition': math.trunc(data['result_recognition'] / max(1, data['max_recognition']) * 100),
         'attention': math.trunc(data['result_attention'] / max(1, data['max_attention']) * 100),
         'action': math.trunc(data['result_action'] / max(1, data['max_action']) * 100),
-        'correct' : data['result_memory'] + data['result_recognition'] + data['result_attention'] + data['result_action'],
+        'speech': math.trunc(data['result_speech'] / max(1, data['max_speech']) * 100),
+        'correct': data['result_memory'] + data['result_recognition'] + data['result_attention'] + data[
+            'result_action'] + data['result_speech'],
         'proportion': math.trunc((data['result_memory'] + data['result_recognition'] + data['result_attention']
-                                 + data['result_action']) / 20 * 100),
+                                  + data['result_action'] + data['result_speech']) / 20 * 100),
     }
     return render(request, 'end.html', context)

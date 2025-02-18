@@ -7,7 +7,7 @@ from ..models import Task as TaskModel
 from django.utils import timezone
 from alg.genetic_algorithm import *
 from alg.user_statistics import *
-from .stats_functions import get_latest_test_data
+from .stats_functions import get_latest_test_data, create_empty_dict
 import random
 
 def get_start_info(data):
@@ -186,3 +186,41 @@ def get_difficulty_values(data, tasks):
     data['medium'] = len(tasks.filter(task__difficulty=2))
     data['hard'] = len(tasks.filter(task__difficulty=3))
     return data
+
+def get_first_test():
+    user = User.objects.get(username='Anon')
+    test = Test.objects.get(user=user)
+    tasks = TaskTest.objects.all().filter(test=test).order_by('number')
+    return tasks
+
+def get_first_test_result(request):
+    result = dict()
+    tasks = request
+    user = User.objects.get(username='Anon')
+    task_types = TaskTest.objects.all().filter(test__user=user)
+    result['result_recognition'] = 0
+    result['result_memory'] = 0
+    result['result_speech'] = 0
+    result['result_attention'] = 0
+    result['result_action'] = 0
+    result['max_recognition'] = task_types.filter(task__type='recognition').count()
+    result['max_memory'] = task_types.filter(task__type='memory').count()
+    result['max_speech'] = task_types.filter(task__type='speech').count()
+    result['max_attention'] = task_types.filter(task__type='attention').count()
+    result['max_action'] = task_types.filter(task__type='action').count()
+    for i in range(20):
+        task = tasks.get('answer'+str(i+1))
+        task_type = task_types.get(number=i+1).task.type
+
+        if task_type == 'memory':
+            result['result_memory'] += float(task)
+        elif task_type == 'attention':
+            result['result_attention'] += float(task)
+        elif task_type == 'recognition':
+            result['result_recognition'] += float(task)
+        elif task_type == 'speech':
+            result['result_speech'] += float(task)
+        elif task_type == 'action':
+            result['result_action'] += float(task)
+
+    return result

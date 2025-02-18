@@ -31,6 +31,7 @@ class Task(models.Model): #Банк заданий
 
     def __str__(self):
         return str(self.difficulty) + ' ' + str(self.type)
+
 # Модель, которая хранит в себе статистику о пользователе
 class Stats(models.Model):
     streak = models.IntegerField(default=0)
