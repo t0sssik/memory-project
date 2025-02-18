@@ -14,6 +14,8 @@ import math
 def index(request):
     if request.user.is_authenticated:
         stats = Stats.objects.get(user=request.user)
+        if not Test.objects.all().filter(user=request.user, is_completed=True).exists():
+            assign_first_test(request.user)
         is_completed = get_completion_status(user=request.user)
         if is_completed:
             result, value = get_test_result(user=request.user)

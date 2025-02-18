@@ -121,7 +121,7 @@ def generate_test(request):
     ga = GeneticAlgorithm(user_stat, user_ref_diff, hparams_conf_path='alg/hparams.yaml')
     best = ga.evolve().to_list()
     user = request.user
-    date = timezone.now() + timedelta(hours=3)
+    date = datetime.now() + timedelta(hours=3)
     test = Test.objects.create(user=user, date=date, is_completed=False)
     test.save()
     number = 0
@@ -129,6 +129,12 @@ def generate_test(request):
         number = number + 1
         task = TaskModel.objects.all().filter(type=cell[0].lower(), difficulty=cell[1])
         random_task = random.choice(task)
+        count = 0
+        while TaskTest.objects.filter(task=random_task, test=test).exists():
+            if count > len(task):
+                break
+            random_task = random.choice(task)
+            count += 1
         TaskTest.objects.create(task=random_task, test=test, number=number)
     return best
 
@@ -238,4 +244,12 @@ def save_first_test(user, result):
     for anon_task in anon_tasks:
         TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
 
+    return True
+
+def assign_first_test(user):
+    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=False)
+    anon_user = User.objects.get(username='Anon')
+    anon_tasks = get_first_test()
+    for anon_task in anon_tasks:
+        TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
     return True

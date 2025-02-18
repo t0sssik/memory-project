@@ -117,8 +117,9 @@ button:hover{
 }
 
 .description img{
-    width: 700px;
     height: 350px;
+    width: auto;
+    max-width: 80%;
 }
 
 .rating{
