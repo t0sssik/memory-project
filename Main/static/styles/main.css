@@ -16,6 +16,11 @@ button:hover{
     cursor: pointer;
 }
 
+#settings{
+    top:105px;
+    right: 70px;
+}
+
 div.hero{
     display: flex;
     flex-direction: column;
