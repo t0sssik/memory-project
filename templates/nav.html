@@ -41,6 +41,16 @@
                 }
                 else{
                     settingsBlock.style.display = 'flex';
+                    settingsBlock.animate([
+                            { opacity: [0, 1],
+                                transform: 'translateY(-60px)'},
+                            {transform: 'translateY(0)'},
+                    ],
+                        {
+                            duration: 200,
+                            iterations: 1,
+                            easing: 'linear',
+                        });
                     setTimeout(() => {body.addEventListener('click', CloseSettings)}, 1);
                 }
             }
