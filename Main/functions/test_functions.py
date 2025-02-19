@@ -3,7 +3,12 @@ import math
 from datetime import timedelta
 from collections import deque
 from ..models import *
+from ..models import Task as TaskModel
 from django.utils import timezone
+from alg.genetic_algorithm import *
+from alg.user_statistics import *
+from .stats_functions import get_latest_test_data
+import random
 
 def get_start_info(data):
     """
@@ -23,7 +28,7 @@ def get_today_test(user):
     :param user: ID Пользователя
     :return: ID теста
     """
-    time = str(timezone.now())[:10]
+    time = str(datetime.now() + timedelta(hours=3))[:10]
     day = time[-2:]
     month = time[5:7]
     year = time[:4]
@@ -99,11 +104,152 @@ def get_last_ten_days(user):
                    "ВС"]
     for i in range(10):
         day = datetime.now() + timedelta(hours=3) - timedelta(days=i)
-        test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year)
+        test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year, user=user)
         if test.count()>0:
-            is_completed = Test.objects.get(date__day=day.day, date__month=day.month, date__year=day.year).is_completed
+            is_completed = Test.objects.get(date__day=day.day, date__month=day.month, date__year=day.year, user=user).is_completed
         else:
             is_completed = False
         data.appendleft([week_days[day.weekday()], is_completed])
-    print(data)
     return data
+
+def generate_test(request):
+    tests = get_latest_tests(user=request.user)
+    data = get_latest_test_data(tests)
+    user_stats = UserStatistics(data)
+    user_stat = user_stats.user_stat
+    user_ref_diff = user_stats.user_reference_difficulty
+    ga = GeneticAlgorithm(user_stat, user_ref_diff, hparams_conf_path='alg/hparams.yaml')
+    best = ga.evolve().to_list()
+    user = request.user
+    date = datetime.now() + timedelta(hours=3)
+    test = Test.objects.create(user=user, date=date, is_completed=False)
+    test.save()
+    number = 0
+    for cell in best:
+        number = number + 1
+        task = TaskModel.objects.all().filter(type=cell[0].lower(), difficulty=cell[1])
+        random_task = random.choice(task)
+        count = 0
+        while TaskTest.objects.filter(task=random_task, test=test).exists():
+            if count > len(task):
+                break
+            random_task = random.choice(task)
+            count += 1
+        TaskTest.objects.create(task=random_task, test=test, number=number)
+    return best
+
+
+def get_test_data(user):
+    """
+    Функция возвращает данные о сегодняшнем тесте в виде словаря
+    :param user: ID пользователя
+    :return: Словарь с данными
+    """
+    data = dict()
+    test = get_today_test(user)
+    tasks = get_today_tasks(user)
+    data = get_max_values(data, tasks)
+    data = get_current_values(data, test)
+    data = get_difficulty_values(data, tasks)
+    return data
+
+def get_max_values(data, tasks):
+    """
+    Функция возвращает данные в виде словаря о максимально возможных баллах по видам заданий
+    :param data: Словарь для добавления данных
+    :param tasks: Список заданий в виде QuerySet
+    :return: Словарь с новыми данными
+    """
+    data['max_memory'] = len(tasks.filter(task__type='memory'))
+    data['max_attention'] = len(tasks.filter(task__type='attention'))
+    data['max_recognition'] = len(tasks.filter(task__type='recognition'))
+    data['max_speech'] = len(tasks.filter(task__type='speech'))
+    data['max_action'] = len(tasks.filter(task__type='action'))
+    return data
+
+def get_current_values(data, test):
+    """
+    Функция возвращает полученные пользователем результаты
+    :param data: Словарь с данными
+    :param test: ID теста
+    :return: Обновлённый словарь с данными
+    """
+    data['result_memory'] = test.correct_memory
+    data['result_attention'] = test.correct_attention
+    data['result_recognition'] = test.correct_recognition
+    data['result_speech'] = test.correct_speech
+    data['result_action'] = test.correct_action
+    return data
+
+def get_difficulty_values(data, tasks):
+    """
+    Функция возвращает словарь с обновлёнными данными о количестве заданий разного уровня сложности
+    :param data: Словарь с данными
+    :param tasks: Список заданий в виде QuerySet
+    :return: Словарь с обновлёнными данными
+    """
+    data['easy'] = len(tasks.filter(task__difficulty=1))
+    data['medium'] = len(tasks.filter(task__difficulty=2))
+    data['hard'] = len(tasks.filter(task__difficulty=3))
+    return data
+
+def get_first_test():
+    user = User.objects.get(username='Anon')
+    test = Test.objects.get(user=user)
+    tasks = TaskTest.objects.all().filter(test=test).order_by('number')
+    return tasks
+
+def get_first_test_result(request):
+    result = dict()
+    tasks = request
+    user = User.objects.get(username='Anon')
+    task_types = TaskTest.objects.all().filter(test__user=user)
+    result['result_recognition'] = 0
+    result['result_memory'] = 0
+    result['result_speech'] = 0
+    result['result_attention'] = 0
+    result['result_action'] = 0
+    result['max_recognition'] = task_types.filter(task__type='recognition').count()
+    result['max_memory'] = task_types.filter(task__type='memory').count()
+    result['max_speech'] = task_types.filter(task__type='speech').count()
+    result['max_attention'] = task_types.filter(task__type='attention').count()
+    result['max_action'] = task_types.filter(task__type='action').count()
+    for i in range(20):
+        task = tasks.get('answer'+str(i+1))
+        task_type = task_types.get(number=i+1).task.type
+
+        if task_type == 'memory':
+            result['result_memory'] += float(task)
+        elif task_type == 'attention':
+            result['result_attention'] += float(task)
+        elif task_type == 'recognition':
+            result['result_recognition'] += float(task)
+        elif task_type == 'speech':
+            result['result_speech'] += float(task)
+        elif task_type == 'action':
+            result['result_action'] += float(task)
+
+    return result
+
+def save_first_test(user, result):
+    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=True)
+    test.correct_memory = result['result_memory']
+    test.correct_attention = result['result_attention']
+    test.correct_recognition = result['result_recognition']
+    test.correct_speech = result['result_speech']
+    test.correct_action = result['result_action']
+    test.save()
+    anon_user = User.objects.get(username='Anon')
+    anon_tasks = get_first_test()
+    for anon_task in anon_tasks:
+        TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
+
+    return True
+
+def assign_first_test(user):
+    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=False)
+    anon_user = User.objects.get(username='Anon')
+    anon_tasks = get_first_test()
+    for anon_task in anon_tasks:
+        TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
+    return True

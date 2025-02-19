@@ -1,5 +1,5 @@
-from task_type import TaskType
-from task_difficulty import TaskDifficulty
+from .task_type import TaskType
+from .task_difficulty import TaskDifficulty
 
 
 class Task:

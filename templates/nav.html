@@ -1,20 +1,62 @@
 {% load static %}
-
         {% if request.user.is_authenticated %}
             <nav>
                 <h2><a href="/">ТРЕНИРОВКИ</a></h2>
-                <ul>
-                    <li><a href="#">Статистика</a></li>
-                    <li><a href="#">{{ request.user.first_name }}</a></li>
-                    <li><img alt="avatar" src="{% static "/images/avatar.jpg" %}" class="avatar"></li>
+                <ul id="profile">
+                    {#<li><a href="#">Статистика</a></li>#}
+                    <li onclick="OpenSettings()"><a href="#">{{ request.user.first_name }}</a>
+                    </li>
                 </ul>
             </nav>
+            <div id="settings">
+                <ul>
+                    <li class="setting">
+                        <a href="#">
+                            <img class="icon" alt="settings" src="{% static '/images/settings.png' %}"/>Настройки
+                        </a>
+                    </li>
+                    <li class="setting">
+                        <a href="/logout">
+                            <img class="icon" alt="settings" src="{% static '/images/exit.png' %}"/>Выйти
+                        </a>
+                    </li>
+                </ul>
+            </div>
         {% else %}
             <nav>
                 <h2><a href="/">ТРЕНИРОВКИ</a></h2>
                 <ul>
-                    <li><a href="#">Статистика</a></li>
                     <li><a href="/auth">Войти</a></li>
                 </ul>
             </nav>
         {% endif %}
+        <script>
+
+            const settingsBlock = document.getElementById('settings');
+            const body = document.querySelector('body');
+
+            function OpenSettings(){
+                if (settingsBlock.style.display === 'flex'){
+                    CloseSettings();
+                }
+                else{
+                    settingsBlock.style.display = 'flex';
+                    settingsBlock.animate([
+                            { opacity: [0, 1],
+                                transform: 'translateY(-60px)'},
+                            {transform: 'translateY(0)'},
+                    ],
+                        {
+                            duration: 200,
+                            iterations: 1,
+                            easing: 'linear',
+                        });
+                    setTimeout(() => {body.addEventListener('click', CloseSettings)}, 1);
+                }
+            }
+            function CloseSettings(){
+                settingsBlock.style.display = 'none';
+                body.removeEventListener('click', CloseSettings);
+            }
+
+        </script>

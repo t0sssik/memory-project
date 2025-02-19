@@ -8,4 +8,3 @@ class TaskType(Enum):
     RECOGNITION = 3
     ACTION = 4
     SPEECH = 5
-    EXTRA = 0

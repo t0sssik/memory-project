@@ -33,11 +33,14 @@
                 <button class="selector previous is-valid" id="btn-previous" onclick="PreviousTask()" type="button"></button>
                 <ul>
                     <li><span class="exercises">Задание <span class="curr-task" id="curr-task">1</span>/{{ test.count }}</span></li>
-                    <li><a href="#" class="section selected">Память</a></li>
-                    <li><a href="#" class="section">Мышление</a></li>
-                    <li><a href="#" class="section">Внимание</a></li>
-                    <li><a href="#" class="section">Речь</a></li>
-                    <li><a href="#" class="section">Действие</a></li>
+{#                    <li><a href="#" class="section selected">Память</a></li>#}
+{#                    <li><a href="#" class="section">Мышление</a></li>#}
+{#                    <li><a href="#" class="section">Внимание</a></li>#}
+{#                    <li><a href="#" class="section">Речь</a></li>#}
+{#                    <li><a href="#" class="section">Действие</a></li>#}
+                    <li>
+                        <progress id="completion" max="100" value="0"></progress>
+                    </li>
                     <li><a class="exit" onclick="ShowAlert()">Завершить тест</a></li>
                 </ul>
                 <button class="selector next is-valid" id="btn-next" onclick="NextTask()" type="button"></button>
@@ -47,6 +50,7 @@
             {% for task in test %}
             <div id="{{ task.number }}" class="block-hidden">
                 <div class="description">
+                    <h3>{{ task.task.question }}</h3>
                     <img alt="exercise" src="{{ task.task.url }}" />
                 </div>
                 <div class="rating">
@@ -84,9 +88,11 @@
         const nextButton = document.getElementById('btn-next');
         const maxLength = {{ test.count }};
         const alertBlock = document.getElementById('alert');
+        const progressBar = document.getElementById('completion')
 
         ShowBlock(count);
         CheckButtons();
+        progressBar.setAttribute('value', (count/24*100).toString());
 
         function HideBlock(number){
             const taskBlock = document.getElementById(number.toString());
@@ -124,6 +130,7 @@
             ShowBlock(count);
             taskNumber.textContent = count;
             CheckButtons();
+            progressBar.setAttribute('value', (count/24*100).toString());
         }
 
         function PreviousTask(){
@@ -132,6 +139,7 @@
             ShowBlock(count);
             taskNumber.textContent = count;
             CheckButtons();
+            progressBar.setAttribute('value', (count/24*100).toString());
         }
 
         function ShowAlert(){

@@ -19,16 +19,29 @@
                 <div class="exercise-block">
                     <h3 style="margin-bottom: 90px">Упражнение на сегодня</h3>
                     <h2 style="margin-bottom: 42px">Сегодня предстоит<br>
-                        пройти 24 задания</h2>
+                        пройти 20 заданий</h2>
                     <div class="progress-bar">
                         <progress id="completion" max="100" value="0">0</progress>
                     </div>
                     <div class="progress">
                         <h4>Пройдено 0%</h4>
-                        <h4>0/24<br>
+                        <h4>0/20<br>
                             набрано</h4>
                     </div>
-                    <a href="/test"><button>К прохождению</button></a>
+                    <div class="buttons">
+                        <form method="post">
+                            {% csrf_token %}
+
+                            <div class="tooltip">
+                                <button type="submit" name='button' value="start" disabled class="is-invalid" id="btn-start">К прохождению</button>
+                                <span class="tooltip-text" id="tooltip-text">Перед началом тестирования необходимо распечатать
+                                    бланк, воспользовавшись кнопкой ниже! 👇</span>
+                            </div>
+                            <a onclick="OpenButton()" id="download" download href="{% static "/tests/test.pdf" %}">
+                                <button name="button" value="download" type="button" class="btn-download is-valid">Распечатать бланк</button>
+                            </a>
+                        </form>
+                    </div>
                 </div>
             {% else %}
                 <div class="exercise-block">
@@ -40,7 +53,7 @@
                     </div>
                     <div class="progress">
                         <h4>Пройдено {{ result }}%</h4>
-                        <h4>{{ value }}/24<br>
+                        <h4>{{ value }}/20<br>
                             набрано</h4>
                     </div>
                     <a><button disabled id="timer-button">К прохождению</button></a>
@@ -90,6 +103,8 @@
     </main>
     <script>
         const timerBtn = document.getElementById('timer-button');
+        const startButton = document.getElementById('btn-start');
+        const tooltipText = document.getElementById('tooltip-text')
         ChangeTimerBtn(timerBtn);
 
 
@@ -109,6 +124,15 @@
         }
 
         setInterval(ChangeTimerBtn, 1000, timerBtn);
+
+
+
+        function OpenButton(){
+            startButton.removeAttribute('disabled');
+            startButton.setAttribute('class', 'btn-start is-valid');
+            tooltipText.className = '';
+            tooltipText.hidden = true;
+        }
 
     </script>
     </body>

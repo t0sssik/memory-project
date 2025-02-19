@@ -108,11 +108,18 @@ button:hover{
     padding: 28px 21px 28px 21px;
     margin-bottom: 25px;
     justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.description h3{
+    font-weight: normal;
 }
 
 .description img{
-    width: 700px;
     height: 350px;
+    width: auto;
+    max-width: 80%;
 }
 
 .rating{
@@ -341,4 +348,26 @@ button.btn-exit{
 button:hover{
     box-shadow: #4b81a6 3px 3px, #45779a 6px 6px;
     font-size: 26px;
+}
+
+progress{
+    height: 6px;
+    border-radius: 5px;
+    margin-bottom: 5px;
+}
+
+progress::-webkit-progress-bar {
+    background-color: var(--day-incomplete);
+    border-radius: 5px;
+}
+
+progress::-webkit-progress-value {
+    background-color: var(--font-color-secondary);
+    border-radius: 5px;
+}
+
+div.progress{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
 }

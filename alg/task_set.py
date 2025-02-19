@@ -1,9 +1,9 @@
 from typing import List, Dict
-from task import Task
-from task_type import TaskType
-from task_difficulty import TaskDifficulty
-from collections import Counter
-import random
+from .task import Task
+# from task_type import TaskType
+# from task_difficulty import TaskDifficulty
+# from collections import Counter
+# import random
 
 
 TASK_SET_SIZE = 20

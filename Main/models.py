@@ -1,5 +1,4 @@
 from datetime import datetime
-from symtable import Class
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -22,8 +21,7 @@ class Task(models.Model): #Банк заданий
     type = models.CharField(max_length=30) # Тип задания: memory, attention,
                                             # recognition, action, speech, extra
     difficulty = models.IntegerField() # Сложность от 1 до 3
-    question = models.CharField(max_length=255) # Формулировка вопроса
-    image = models.ImageField(null=True) # Изображение
+    question = models.CharField(max_length=500) # Формулировка вопроса
     url = models.URLField() # Ссылка на изображения
     mark = models.CharField(max_length=255, blank=True)
     mark_incorrect = models.CharField(max_length=30, blank=True)
@@ -31,7 +29,8 @@ class Task(models.Model): #Банк заданий
     mark_correct = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
-        return str(self.question) + ' ' + str(self.difficulty) + ' ' + str(self.type)
+        return str(self.difficulty) + ' ' + str(self.type)
+
 # Модель, которая хранит в себе статистику о пользователе
 class Stats(models.Model):
     streak = models.IntegerField(default=0)

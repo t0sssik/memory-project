@@ -197,18 +197,18 @@ div.diagram{
     flex-direction: column;
     justify-content: flex-end;
     height: auto;
-    margin: 42px 60px 0 0;
+    margin: 42px 45px 0 0;
 }
 
 div.diagram .bar{
-    width: 60px;
+    width: 55px;
     border-radius: 5px 5px 0 0;
 }
 
 .bar p{
     position: relative;
     top: -25px;
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .bar p.note{
@@ -230,6 +230,10 @@ div.diagram .bar{
 
 .bar.attention{
     background-color: var(--stats-attention);
+}
+
+.bar.speech{
+    background-color: var(--stats-speech);
 }
 
 .diagram-notes{
@@ -265,6 +269,10 @@ div.rec-container{
 
 .logic{
     color: var(--font-color-secondary);
+}
+
+.speech{
+    color: var(--stats-speech);
 }
 
 div.rec-block{

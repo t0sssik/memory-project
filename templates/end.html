@@ -14,7 +14,7 @@
                 conic-gradient(var(--font-color-secondary) {{ proportion }}%, rgba(0, 125, 153, 15%) 0);
         }
         .progress-bar::before{
-            content: '{{ correct }} из 24';
+            content: '{{ correct }} из 20';
             font-size: 32px;
         }
     </style>
@@ -88,9 +88,15 @@
                                 <p class="note attention">Внимание</p>
                             </div>
                         </div>
+                        <div class="bar-container">
+                            <div class="bar speech" style="height: {{ speech }}%">
+                                <p class="speech">{{ speech }}%</p>
+                                <p class="note speech">Речь</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                {% if action < 75 or memory < 75 or recognition < 75 or attention < 75 %}
+                {% if action < 75 or memory < 75 or recognition < 75 or attention < 75 or speech < 75 %}
                 <h4>Следует обратить внимание на
                     {% if action < 75 %}
                         <span class="logic">Логику</span>
@@ -104,7 +110,9 @@
                     {% if attention < 75 %}
                         <span class="attention">Внимание</span>
                     {% endif %}
-
+                    {% if speech < 75 %}
+                        <span class="speech">Речь</span>
+                    {% endif %}
 
                     (категории с показателем < 75% верных ответов)</h4>
                 {% endif %}
@@ -117,6 +125,7 @@
                             <p>Проходите ежедневные тесты для профилактики, активность будет храниться в вашем
                                 личном кабинете</p>
                         </li>
+                    {% if action < 75 or memory < 75 or recognition < 75 or attention < 75 or speech < 75 %}
                         <li>
                             <p>Развивайте:
                             {% if action < 75 %}
@@ -131,14 +140,21 @@
                             {% if attention < 75 %}
                                 <span class="attention">Внимание</span>
                             {% endif %}
+                            {% if speech < 75 %}
+                                <span class="speech">Речь</span>
+                            {% endif %}
                             </p>
                         </li>
+                    {% endif %}
                     </ol>
                 </div>
                 {% if request.user.is_authenticated %}
                     <button><a href="/">Завершить тестирование</a></button>
                 {% else %}
-                    <button><a href="/offer">Сохранить результат</a></button>
+                    <form method="post">
+                    {% csrf_token %}
+                        <button name="button" value="save">Сохранить результат</button>
+                    </form>
                 {% endif %}
 
             </div>
