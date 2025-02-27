@@ -38,6 +38,7 @@ def index(request):
             'value': value,
             'days': days,
         }
+        generate_pdf(request.user)
         return render(request, 'main.html', context)
     else:
         return render(request, 'home.html')

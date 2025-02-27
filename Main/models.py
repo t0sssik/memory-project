@@ -22,7 +22,9 @@ class Task(models.Model): #Банк заданий
                                             # recognition, action, speech, extra
     difficulty = models.IntegerField() # Сложность от 1 до 3
     question = models.CharField(max_length=500) # Формулировка вопроса
+    test_question = models.CharField(max_length=126, default=question)
     url = models.URLField() # Ссылка на изображения
+    path = models.CharField(max_length=500, blank=True)
     mark = models.CharField(max_length=255, blank=True)
     mark_incorrect = models.CharField(max_length=30, blank=True)
     mark_neutral = models.CharField(max_length=30, blank=True)

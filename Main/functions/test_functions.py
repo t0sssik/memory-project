@@ -2,6 +2,9 @@ import datetime
 import math
 from datetime import timedelta
 from collections import deque
+
+from reportlab.pdfgen.textobject import PDFTextObject
+
 from ..models import *
 from ..models import Task as TaskModel
 from django.utils import timezone
@@ -9,6 +12,18 @@ from alg.genetic_algorithm import *
 from alg.user_statistics import *
 from .stats_functions import get_latest_test_data
 import random
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.units import cm
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.platypus import Paragraph
+
+pdfmetrics.registerFont(TTFont('CoFoSans', 'Main/static/fonts/CoFoSans-Regular.ttf'))
+
+PAGE_WIDTH = defaultPageSize[0]
+PAGE_HEIGHT = defaultPageSize[1]
+
 
 def get_start_info(data):
     """
@@ -253,3 +268,29 @@ def assign_first_test(user):
     for anon_task in anon_tasks:
         TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
     return True
+
+def generate_pdf(user):
+    tasks = get_today_tasks(user)
+    c = canvas.Canvas('Hello.pdf')
+    c.translate(1 * cm, -1 * cm)
+    c.setFont('CoFoSans', 16)
+    count = 0
+    y = PAGE_HEIGHT
+    for task in tasks:
+        count += 1
+        text_object = c.beginText(0, y)
+        if len(task.task.question) > 78:
+            text_object.textLines(str(task.number) + ') ' + task.task.question[:66] + '\n' +
+                                  task.task.question[66:len(task.task.question)])
+        else:
+            text_object.textLines(str(task.number) + ') ' + task.task.question)
+        c.drawText(text_object)
+        c.drawImage('Main/static/images/avatar.jpg', 0, y-255, width=400, height=230)
+        y -= 275
+        if count % 3 == 0 and count != len(tasks):
+            c.showPage()
+            c.setFont('CoFoSans', 16)
+            c.translate(1 * cm, -1 * cm)
+            y = PAGE_HEIGHT
+    c.showPage()
+    c.save()
