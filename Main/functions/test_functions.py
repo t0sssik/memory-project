@@ -17,7 +17,6 @@ from reportlab.lib.units import cm
 from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.platypus import Paragraph
 
 pdfmetrics.registerFont(TTFont('CoFoSans', 'Main/static/fonts/CoFoSans-Regular.ttf'))
 
@@ -271,7 +270,8 @@ def assign_first_test(user):
 
 def generate_pdf(user):
     tasks = get_today_tasks(user)
-    c = canvas.Canvas('Hello.pdf')
+    test = get_today_test(user)
+    c = canvas.Canvas('Main/static/tests/' + str(test.id) + '.pdf')
     c.translate(1 * cm, -1 * cm)
     c.setFont('CoFoSans', 16)
     count = 0

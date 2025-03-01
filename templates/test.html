@@ -33,11 +33,6 @@
                 <button class="selector previous is-valid" id="btn-previous" onclick="PreviousTask()" type="button"></button>
                 <ul>
                     <li><span class="exercises">Задание <span class="curr-task" id="curr-task">1</span>/{{ test.count }}</span></li>
-{#                    <li><a href="#" class="section selected">Память</a></li>#}
-{#                    <li><a href="#" class="section">Мышление</a></li>#}
-{#                    <li><a href="#" class="section">Внимание</a></li>#}
-{#                    <li><a href="#" class="section">Речь</a></li>#}
-{#                    <li><a href="#" class="section">Действие</a></li>#}
                     <li>
                         <progress id="completion" max="100" value="0"></progress>
                     </li>
@@ -51,7 +46,7 @@
             <div id="{{ task.number }}" class="block-hidden">
                 <div class="description">
                     <h3>{{ task.task.question }}</h3>
-                    <img alt="exercise" src="{{ task.task.url }}" />
+                    <img alt="exercise" src="{% static task.task.path %}" />
                 </div>
                 <div class="rating">
                     <div class="note">

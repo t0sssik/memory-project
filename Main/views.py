@@ -37,9 +37,9 @@ def index(request):
             'result': result,
             'value': value,
             'days': days,
+            'test_url' : 'tests/' + str(get_today_test(user=request.user).id) + '.pdf',
         }
         generate_pdf(request.user)
-        generate_all_pdf(request.user)
         return render(request, 'main.html', context)
     else:
         return render(request, 'home.html')
