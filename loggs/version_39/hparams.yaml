@@ -1,5 +1,0 @@
-population_size: 60
-num_of_candidates: 10
-mutation_rate: 0.01
-generations: 20
-candidates_selection_method: "roulette"
