@@ -98,13 +98,13 @@
                 </div>
                 {% if action < 75 or memory < 75 or recognition < 75 or attention < 75 or speech < 75 %}
                 <h4>Следует обратить внимание на
-                    {% if action < 75 %}
+                    {% if recognition < 75 %}
                         <span class="logic">Логику</span>
                     {% endif %}
                     {% if memory < 75 %}
                         <span class="memory">Память</span>
                     {% endif %}
-                    {% if recognition < 75 %}
+                    {% if action < 75 %}
                         <span class="mind">Мышление</span>
                     {% endif %}
                     {% if attention < 75 %}
@@ -128,13 +128,13 @@
                     {% if action < 75 or memory < 75 or recognition < 75 or attention < 75 or speech < 75 %}
                         <li>
                             <p>Развивайте:
-                            {% if action < 75 %}
+                            {% if recognition < 75 %}
                                 <span class="logic">Логику</span>
                             {% endif %}
                             {% if memory < 75 %}
                                 <span class="memory">Память</span>
                             {% endif %}
-                            {% if recognition < 75 %}
+                            {% if action < 75 %}
                                 <span class="mind">Мышление</span>
                             {% endif %}
                             {% if attention < 75 %}

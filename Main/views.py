@@ -16,11 +16,12 @@ def index(request):
         if request.method == "POST":
             print(request.POST)
             if request.POST.get("button") == 'start':
-
                 return redirect(test)
         stats = Stats.objects.get(user=request.user)
+        # Если пользователь не прошёл, то выдаётся первый тест
         if not Test.objects.all().filter(user=request.user, is_completed=True).exists():
             assign_first_test(request.user)
+            generate_pdf(request.user)
         is_completed = get_completion_status(user=request.user)
         if is_completed:
             result, value = get_test_result(user=request.user)
@@ -29,6 +30,7 @@ def index(request):
             value = 0
             if get_today_test(user=request.user) == False and Test.objects.filter(user=request.user).exists():
                 ga = generate_test(request)
+                generate_pdf(request.user)
         days = get_last_ten_days(user=request.user)
         # check_streak(user=request.user)
         context = {
@@ -37,6 +39,7 @@ def index(request):
             'result': result,
             'value': value,
             'days': days,
+            'test_url' : 'tests/' + str(get_today_test(user=request.user).id) + '.pdf',
         }
         return render(request, 'main.html', context)
     else:

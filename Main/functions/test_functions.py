@@ -1,5 +1,5 @@
-import datetime
 import math
+from datetime import datetime
 from datetime import timedelta
 from collections import deque
 from ..models import *
@@ -9,6 +9,17 @@ from alg.genetic_algorithm import *
 from alg.user_statistics import *
 from .stats_functions import get_latest_test_data
 import random
+from reportlab.rl_config import defaultPageSize
+from reportlab.lib.units import cm
+from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+
+pdfmetrics.registerFont(TTFont('CoFoSans', 'Main/static/fonts/CoFoSans-Regular.ttf'))
+
+PAGE_WIDTH = defaultPageSize[0]
+PAGE_HEIGHT = defaultPageSize[1]
+
 
 def get_start_info(data):
     """
@@ -28,7 +39,8 @@ def get_today_test(user):
     :param user: ID Пользователя
     :return: ID теста
     """
-    time = str(datetime.now() + timedelta(hours=3))[:10]
+    time = str(timezone.now())[:10]
+    timedate = str(datetime.now())
     day = time[-2:]
     month = time[5:7]
     year = time[:4]
@@ -103,7 +115,7 @@ def get_last_ten_days(user):
                    "ПТ", "СБ",
                    "ВС"]
     for i in range(10):
-        day = datetime.now() + timedelta(hours=3) - timedelta(days=i)
+        day = timezone.now() - timedelta(days=i)
         test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year, user=user)
         if test.count()>0:
             is_completed = Test.objects.get(date__day=day.day, date__month=day.month, date__year=day.year, user=user).is_completed
@@ -121,7 +133,7 @@ def generate_test(request):
     ga = GeneticAlgorithm(user_stat, user_ref_diff, hparams_conf_path='alg/hparams.yaml')
     best = ga.evolve().to_list()
     user = request.user
-    date = datetime.now() + timedelta(hours=3)
+    date = timezone.now()
     test = Test.objects.create(user=user, date=date, is_completed=False)
     test.save()
     number = 0
@@ -136,6 +148,14 @@ def generate_test(request):
             random_task = random.choice(task)
             count += 1
         TaskTest.objects.create(task=random_task, test=test, number=number)
+        if number % 5 == 0:
+            extra_task = TaskModel.objects.all().filter(type='extra')
+            random_task = random.choice(extra_task)
+            while TaskTest.objects.filter(task=random_task, test=test).exists():
+                random_task = random.choice(task)
+            number += 1
+            TaskTest.objects.create(task=random_task, test=test, number=number)
+
     return best
 
 
@@ -232,7 +252,7 @@ def get_first_test_result(request):
     return result
 
 def save_first_test(user, result):
-    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=True)
+    test = Test.objects.create(user=user, date=timezone.now(), is_completed=True)
     test.correct_memory = result['result_memory']
     test.correct_attention = result['result_attention']
     test.correct_recognition = result['result_recognition']
@@ -247,9 +267,36 @@ def save_first_test(user, result):
     return True
 
 def assign_first_test(user):
-    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=False)
+    test = Test.objects.create(user=user, date=timezone.now(), is_completed=False)
     anon_user = User.objects.get(username='Anon')
     anon_tasks = get_first_test()
     for anon_task in anon_tasks:
         TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
     return True
+
+def generate_pdf(user):
+    tasks = get_today_tasks(user)
+    test = get_today_test(user)
+    c = canvas.Canvas('Main/static/tests/' + str(test.id) + '.pdf')
+    c.translate(1 * cm, -1 * cm)
+    c.setFont('CoFoSans', 16)
+    count = 0
+    y = PAGE_HEIGHT
+    for task in tasks:
+        count += 1
+        text_object = c.beginText(0, y)
+        if len(task.task.test_question) > 66:
+            text_object.textLines(str(task.number) + ') ' + task.task.test_question[:66] + '\n' +
+                                  task.task.test_question[66:len(task.task.test_question)])
+        else:
+            text_object.textLines(str(task.number) + ') ' + task.task.test_question)
+        c.drawText(text_object)
+        c.drawImage('Main/static/tasks/task' + str(task.task.id) + '.png', 0, y-255, width=400, height=230)
+        y -= 275
+        if count % 3 == 0 and count != len(tasks):
+            c.showPage()
+            c.setFont('CoFoSans', 16)
+            c.translate(1 * cm, -1 * cm)
+            y = PAGE_HEIGHT
+    c.showPage()
+    c.save()

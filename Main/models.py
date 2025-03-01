@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -12,7 +12,7 @@ class Test(models.Model): # Номер теста для юзера
     correct_recognition = models.FloatField(default=0)
     correct_action = models.FloatField(default=0)
     correct_speech = models.FloatField(default=0)
-    date = models.DateTimeField(default=datetime.now)
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.user) + ' ' + str(self.date)[:10] + ' ' + str(self.correct_memory + self.correct_attention + self.correct_recognition + self.correct_action + self.correct_speech)
@@ -22,14 +22,16 @@ class Task(models.Model): #Банк заданий
                                             # recognition, action, speech, extra
     difficulty = models.IntegerField() # Сложность от 1 до 3
     question = models.CharField(max_length=500) # Формулировка вопроса
+    test_question = models.CharField(max_length=126, default=question)
     url = models.URLField() # Ссылка на изображения
+    path = models.CharField(max_length=500, blank=True)
     mark = models.CharField(max_length=255, blank=True)
     mark_incorrect = models.CharField(max_length=30, blank=True)
     mark_neutral = models.CharField(max_length=30, blank=True)
     mark_correct = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
-        return str(self.difficulty) + ' ' + str(self.type)
+        return str(self.id) +  ' ' + str(self.type) +  ' ' + str(self.difficulty)
 
 # Модель, которая хранит в себе статистику о пользователе
 class Stats(models.Model):

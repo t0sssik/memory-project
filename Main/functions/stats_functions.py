@@ -54,7 +54,7 @@ def update_stat(user):
     return
 
 def check_streak(user):
-    previous_day = datetime.now() + timedelta(hours=3, days=-1)
+    previous_day = timezone.now() + timedelta(days=-1)
     test = Test.objects.get(user=user, date=previous_day)
     stat = Stats.objects.get(user=user)
 
