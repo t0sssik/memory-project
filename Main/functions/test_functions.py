@@ -280,12 +280,12 @@ def generate_pdf(user):
         count += 1
         text_object = c.beginText(0, y)
         if len(task.task.question) > 78:
-            text_object.textLines(str(task.number) + ') ' + task.task.question[:66] + '\n' +
-                                  task.task.question[66:len(task.task.question)])
+            text_object.textLines(str(task.number) + ') ' + task.task.test_question[:66] + '\n' +
+                                  task.task.test_question[66:len(task.task.test_question)])
         else:
-            text_object.textLines(str(task.number) + ') ' + task.task.question)
+            text_object.textLines(str(task.number) + ') ' + task.task.test_question)
         c.drawText(text_object)
-        c.drawImage('Main/static/images/avatar.jpg', 0, y-255, width=400, height=230)
+        c.drawImage('Main/static/tasks/task' + str(task.task.id) + '.png', 0, y-255, width=400, height=230)
         y -= 275
         if count % 3 == 0 and count != len(tasks):
             c.showPage()

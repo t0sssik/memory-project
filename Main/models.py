@@ -31,7 +31,7 @@ class Task(models.Model): #Банк заданий
     mark_correct = models.CharField(max_length=30, blank=True)
 
     def __str__(self):
-        return str(self.difficulty) + ' ' + str(self.type)
+        return str(self.id) +  ' ' + str(self.type) +  ' ' + str(self.difficulty)
 
 # Модель, которая хранит в себе статистику о пользователе
 class Stats(models.Model):
