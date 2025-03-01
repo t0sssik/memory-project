@@ -1,4 +1,4 @@
-from datetime import datetime
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 
@@ -12,7 +12,7 @@ class Test(models.Model): # Номер теста для юзера
     correct_recognition = models.FloatField(default=0)
     correct_action = models.FloatField(default=0)
     correct_speech = models.FloatField(default=0)
-    date = models.DateTimeField(default=datetime.now)
+    date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return str(self.user) + ' ' + str(self.date)[:10] + ' ' + str(self.correct_memory + self.correct_attention + self.correct_recognition + self.correct_action + self.correct_speech)

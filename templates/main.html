@@ -19,7 +19,7 @@
                 <div class="exercise-block">
                     <h3 style="margin-bottom: 90px">Упражнение на сегодня</h3>
                     <h2 style="margin-bottom: 42px">Сегодня предстоит<br>
-                        пройти 20 заданий</h2>
+                        пройти 24 задания</h2>
                     <div class="progress-bar">
                         <progress id="completion" max="100" value="0">0</progress>
                     </div>
@@ -110,7 +110,7 @@
 
         function ChangeTimerBtn(timerBtn){
             const currentTime = new Date();
-            let hours = 23 - currentTime.getUTCHours() - 3;
+            let hours = 23 - currentTime.getUTCHours();
             let minutes = 59 - currentTime.getUTCMinutes();
             let seconds = 59 - currentTime.getUTCSeconds();
 

@@ -1,10 +1,7 @@
-import datetime
 import math
+from datetime import datetime
 from datetime import timedelta
 from collections import deque
-
-from reportlab.pdfgen.textobject import PDFTextObject
-
 from ..models import *
 from ..models import Task as TaskModel
 from django.utils import timezone
@@ -42,7 +39,8 @@ def get_today_test(user):
     :param user: ID Пользователя
     :return: ID теста
     """
-    time = str(datetime.now() + timedelta(hours=3))[:10]
+    time = str(timezone.now())[:10]
+    timedate = str(datetime.now())
     day = time[-2:]
     month = time[5:7]
     year = time[:4]
@@ -117,7 +115,7 @@ def get_last_ten_days(user):
                    "ПТ", "СБ",
                    "ВС"]
     for i in range(10):
-        day = datetime.now() + timedelta(hours=3) - timedelta(days=i)
+        day = timezone.now() - timedelta(days=i)
         test = Test.objects.all().filter(date__day=day.day, date__month=day.month, date__year=day.year, user=user)
         if test.count()>0:
             is_completed = Test.objects.get(date__day=day.day, date__month=day.month, date__year=day.year, user=user).is_completed
@@ -135,7 +133,7 @@ def generate_test(request):
     ga = GeneticAlgorithm(user_stat, user_ref_diff, hparams_conf_path='alg/hparams.yaml')
     best = ga.evolve().to_list()
     user = request.user
-    date = datetime.now() + timedelta(hours=3)
+    date = timezone.now()
     test = Test.objects.create(user=user, date=date, is_completed=False)
     test.save()
     number = 0
@@ -150,6 +148,14 @@ def generate_test(request):
             random_task = random.choice(task)
             count += 1
         TaskTest.objects.create(task=random_task, test=test, number=number)
+        if number % 5 == 0:
+            extra_task = TaskModel.objects.all().filter(type='extra')
+            random_task = random.choice(extra_task)
+            while TaskTest.objects.filter(task=random_task, test=test).exists():
+                random_task = random.choice(task)
+            number += 1
+            TaskTest.objects.create(task=random_task, test=test, number=number)
+
     return best
 
 
@@ -246,7 +252,7 @@ def get_first_test_result(request):
     return result
 
 def save_first_test(user, result):
-    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=True)
+    test = Test.objects.create(user=user, date=timezone.now(), is_completed=True)
     test.correct_memory = result['result_memory']
     test.correct_attention = result['result_attention']
     test.correct_recognition = result['result_recognition']
@@ -261,7 +267,7 @@ def save_first_test(user, result):
     return True
 
 def assign_first_test(user):
-    test = Test.objects.create(user=user, date=datetime.now() + timedelta(hours=3), is_completed=False)
+    test = Test.objects.create(user=user, date=timezone.now(), is_completed=False)
     anon_user = User.objects.get(username='Anon')
     anon_tasks = get_first_test()
     for anon_task in anon_tasks:
@@ -279,7 +285,7 @@ def generate_pdf(user):
     for task in tasks:
         count += 1
         text_object = c.beginText(0, y)
-        if len(task.task.question) > 78:
+        if len(task.task.test_question) > 66:
             text_object.textLines(str(task.number) + ') ' + task.task.test_question[:66] + '\n' +
                                   task.task.test_question[66:len(task.task.test_question)])
         else:
