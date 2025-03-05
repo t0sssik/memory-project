@@ -3,6 +3,11 @@ from django.contrib.auth import authenticate, login
 from ..models import Stats
 
 def _validate_user(request):
+    """
+    Функция проверяет данные пользователя на уникальность
+    :param request: Запрос из браузера
+    :return: True или False в зависимости от результата
+    """
     _email = request.POST.get('email')
 
     try:
@@ -13,6 +18,11 @@ def _validate_user(request):
         return False
 
 def create_user(request):
+    """
+    Функция обрабатывает запроси и создаёт объект User в модель User
+    :param request: Запрос из браузера
+    :return: True или False в случае успеха или неудачи
+    """
     if _validate_user(request):
         info = dict()
         info['first_name'] = request.POST.get('first-name')
@@ -31,6 +41,11 @@ def create_user(request):
         return False
 
 def authenticate_user(request):
+    """
+    Функция авторизует пользователя, если пользователь существует
+    :param request: Запрос из браузера
+    :return: True в случае успеха, иначе False
+    """
     if not _validate_user(request):
         user = authenticate(request, username=request.POST.get('email'),
                             password=request.POST.get('password'))
@@ -43,6 +58,11 @@ def authenticate_user(request):
         return False
 
 def validate_register_email(request):
+    """
+    Функция проверяет данные пользователя на уникальность
+    :param request: Запрос из браузера
+    :return: True или False в зависимости от результата
+    """
     username = request.GET.get('email')
     response = {
         'is_taken': User.objects.filter(username__iexact=username).exists()
@@ -50,5 +70,10 @@ def validate_register_email(request):
     return response
 
 def create_stats(user):
+    """
+    Создаёт данные о статистике пользователя в БД
+    :param user: данные о пользователе
+    :return: Данные сохранённые в модели Stats
+    """
     stats = Stats.objects.create(user=user)
     return stats.save()

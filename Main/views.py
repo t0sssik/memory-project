@@ -1,51 +1,42 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout
 from django.http import JsonResponse
-from .functions.user_functions import *
-from .functions.test_functions import *
-from .functions.test_functions import get_today_test
-from .functions.stats_functions import *
 from alg.user_statistics import *
 from alg.genetic_algorithm import *
-import math
+from .models import Test
+from .functions.stats_functions import (assign_first_test, generate_pdf, get_start_info, get_first_test, save_first_test,
+                                       get_today_tasks, get_first_test_result, update_test, update_stat, get_test_data)
+from .functions.user_functions import create_user, authenticate_user
+from .functions.context_functions import get_end_context, get_index_context
 
-# Create your views here.
 
 def index(request):
+    """
+    Главное представление, которое отображает лэндинг в случае неавторизованного пользователя, либо основную страницу,
+    если пользователь вошёл в аккаунт
+    :param request: Запрос от браузера
+    :return: Отображает страницу по шаблону в зависимости от данных
+    """
     if request.user.is_authenticated:
         if request.method == "POST":
-            print(request.POST)
             if request.POST.get("button") == 'start':
                 return redirect(test)
-        stats = Stats.objects.get(user=request.user)
         # Если пользователь не прошёл, то выдаётся первый тест
         if not Test.objects.all().filter(user=request.user, is_completed=True).exists():
             assign_first_test(request.user)
             generate_pdf(request.user)
-        is_completed = get_completion_status(user=request.user)
-        if is_completed:
-            result, value = get_test_result(user=request.user)
-        else:
-            result = 0
-            value = 0
-            if get_today_test(user=request.user) == False and Test.objects.filter(user=request.user).exists():
-                ga = generate_test(request)
-                generate_pdf(request.user)
-        days = get_last_ten_days(user=request.user)
         # check_streak(user=request.user)
-        context = {
-            'stats': stats,
-            'test': is_completed,
-            'result': result,
-            'value': value,
-            'days': days,
-            'test_url' : 'tests/' + str(get_today_test(user=request.user).id) + '.pdf',
-        }
+        context = get_index_context(request)
         return render(request, 'main.html', context)
     else:
         return render(request, 'home.html')
 
 def first(request):
+    """
+    Представление для формы данных для прохождения теста в первый раз
+    :param request: Запрос от браузера
+    :return: Отображает страницу анкеты первого тестирования, если пользователь не авторизован
+    """
     if request.user.is_authenticated:
         return redirect('/')
     if request.method == "POST":
@@ -55,6 +46,11 @@ def first(request):
     return render(request, 'first.html')
 
 def auth(request):
+    """
+    Представление для страницы регистрации\авторизации неавторизованного пользователя
+    :param request: Запрос от браузера
+    :return: Отображает страницу с шаблоном регистрации\авторизации
+    """
     if request.user.is_authenticated:
         return redirect('/')
     if request.method == 'POST':
@@ -69,10 +65,20 @@ def auth(request):
     return render(request, 'auth.html')
 
 def logout_view(request):
+    """
+    Представление, которое пользователю выйти из аккаунта (без отображения)
+    :param request: Запрос браузера
+    :return:
+    """
     logout(request)
     return redirect('/')
 
 def offer(request):
+    """
+    Представление со страницей предложения зарегистрироваться после прохождения первого теста
+    :param request: Запрос из браузера
+    :return: Отображает страницу по шаблону
+    """
     if request.user.is_authenticated:
         return redirect('/')
     else:
@@ -84,6 +90,11 @@ def offer(request):
     return render(request, 'offer.html')
 
 def test(request):
+    """
+    Представление с основным тестовым экраном для оценивания заданий
+    :param request: Запрос браузера
+    :return: Отображает страницу по шаблону и переадресует в случае необходимости
+    """
     user = request.user
     if not user.is_authenticated:
         tasks = get_first_test()
@@ -102,6 +113,11 @@ def test(request):
     return render(request, 'test.html', {'test': tasks})
 
 def end(request):
+    """
+    Отображение для страницы статистики после оценки тестирования с результатами
+    :param request: Запрос из браузера
+    :return: Отображает страницу с графиками и результатами тестирования или переадресует в случае необходимости
+    """
     user = request.user
     if request.method == 'POST':
         if request.POST.get('button') == 'save':
@@ -111,15 +127,5 @@ def end(request):
     else:
         result = request.session['result']
         data = result
-    context = {
-        'memory': math.trunc(data['result_memory'] / max(1, data['max_memory']) * 100),
-        'recognition': math.trunc(data['result_recognition'] / max(1, data['max_recognition']) * 100),
-        'attention': math.trunc(data['result_attention'] / max(1, data['max_attention']) * 100),
-        'action': math.trunc(data['result_action'] / max(1, data['max_action']) * 100),
-        'speech': math.trunc(data['result_speech'] / max(1, data['max_speech']) * 100),
-        'correct': data['result_memory'] + data['result_recognition'] + data['result_attention'] + data[
-            'result_action'] + data['result_speech'],
-        'proportion': math.trunc((data['result_memory'] + data['result_recognition'] + data['result_attention']
-                                  + data['result_action'] + data['result_speech']) / 20 * 100),
-    }
+    context = get_end_context(data)
     return render(request, 'end.html', context)

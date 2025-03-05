@@ -2,12 +2,12 @@ import math
 from datetime import datetime
 from datetime import timedelta
 from collections import deque
-from ..models import *
+from ..models import Stats, TaskTest, Test
 from ..models import Task as TaskModel
 from django.utils import timezone
 from alg.genetic_algorithm import *
 from alg.user_statistics import *
-from .stats_functions import get_latest_test_data
+from .stats_functions import *
 import random
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.units import cm
@@ -15,8 +15,8 @@ from reportlab.pdfgen import canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
+# Константы и подгрузка шрифта для библиотеки reportlab
 pdfmetrics.registerFont(TTFont('CoFoSans', 'Main/static/fonts/CoFoSans-Regular.ttf'))
-
 PAGE_WIDTH = defaultPageSize[0]
 PAGE_HEIGHT = defaultPageSize[1]
 
@@ -94,6 +94,11 @@ def update_test(user, data):
     return
 
 def get_completion_status(user):
+    """
+    Функция возвращает информацию статусе прохождения сегодняшнего теста
+    :param user: данные о пользователе
+    :return: True или False в зависимости от результата прохождения
+    """
     test = get_today_test(user=user)
     if test is False:
         is_completed = False
@@ -102,13 +107,23 @@ def get_completion_status(user):
     return is_completed
 
 def get_test_result(user):
+    """
+    Функция возвращает результат прохождения за тест в виде процентов и абсолютного значения
+    :param user: Данные о пользователе
+    :return: result - данные в процентном отношении, value - абсолютное значение
+    """
     test = get_today_test(user)
     value = (test.correct_memory + test.correct_attention + test.correct_recognition + test.correct_speech
               + test.correct_action)
-    result = math.trunc(value / 24 * 100)
+    result = math.trunc(value / 20 * 100)
     return result, value
 
 def get_last_ten_days(user):
+    """
+    Функция возвращает данные о прохождении пользователем тестов за последние 10 дней
+    :param user: Данные о пользователе
+    :return: data - список списков, которые содержат в себе данные о номере дня недели, а также о статусе прохождения
+    """
     data = deque()
     week_days = ["ПН", "ВТ",
                    "СР", "ЧТ",
@@ -125,6 +140,11 @@ def get_last_ten_days(user):
     return data
 
 def generate_test(request):
+    """
+    Функция с помощью генетического алгоритма собирает список заданий для пользователя и присваивает эти задания в БД
+    :param request: Данные запроса
+    :return: список сгенерированных заданий с типом и сложностью
+    """
     tests = get_latest_tests(user=request.user)
     data = get_latest_test_data(tests)
     user_stats = UserStatistics(data)
@@ -155,7 +175,6 @@ def generate_test(request):
                 random_task = random.choice(task)
             number += 1
             TaskTest.objects.create(task=random_task, test=test, number=number)
-
     return best
 
 
@@ -214,12 +233,21 @@ def get_difficulty_values(data, tasks):
     return data
 
 def get_first_test():
+    """
+    Функция возвращает QuerySet с заранее подготовленными заданиями для первого теста
+    :return: QuerySet с заданиями
+    """
     user = User.objects.get(username='Anon')
     test = Test.objects.get(user=user)
     tasks = TaskTest.objects.all().filter(test=test).order_by('number')
     return tasks
 
 def get_first_test_result(request):
+    """
+    Функция обрабатывает результата запроса и сохраняет данные в словаре для будущего сохранения в кэше браузера
+    :param request: полученный запрос
+    :return: Словарь с данными result
+    """
     result = dict()
     tasks = request
     user = User.objects.get(username='Anon')
@@ -252,6 +280,13 @@ def get_first_test_result(request):
     return result
 
 def save_first_test(user, result):
+    """
+    Функция сохраняет данные для нового пользователя из кэша браузера, в котором сохранены результаты прохождения
+    анонимного пользователя
+    :param user: данные о созданном пользователе
+    :param result: Данные о прохождении теста в кэше браузера
+    :return: True
+    """
     test = Test.objects.create(user=user, date=timezone.now(), is_completed=True)
     test.correct_memory = result['result_memory']
     test.correct_attention = result['result_attention']
@@ -263,10 +298,14 @@ def save_first_test(user, result):
     anon_tasks = get_first_test()
     for anon_task in anon_tasks:
         TaskTest.objects.create(test=test, number=anon_task.number, task=anon_task.task)
-
     return True
 
 def assign_first_test(user):
+    """
+    Функция создаёт первый тест для пользователя из заранее созданного теста для анонимного пользователя
+    :param user: данные о пользователе
+    :return: True
+    """
     test = Test.objects.create(user=user, date=timezone.now(), is_completed=False)
     anon_user = User.objects.get(username='Anon')
     anon_tasks = get_first_test()
@@ -275,6 +314,11 @@ def assign_first_test(user):
     return True
 
 def generate_pdf(user):
+    """
+    Функция генерирует PDF с помощью библиотеки reportlab
+    :param user: Объект пользователя
+    :return: True
+    """
     tasks = get_today_tasks(user)
     test = get_today_test(user)
     c = canvas.Canvas('Main/static/tests/' + str(test.id) + '.pdf')
@@ -300,3 +344,4 @@ def generate_pdf(user):
             y = PAGE_HEIGHT
     c.showPage()
     c.save()
+    return True
