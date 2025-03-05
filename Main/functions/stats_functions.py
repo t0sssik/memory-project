@@ -1,6 +1,6 @@
 from ..models import *
-from .test_functions import *
 from datetime import timedelta
+from .test_functions import get_completion_status
 
 def create_empty_dict():
     """
@@ -47,22 +47,31 @@ def get_latest_test_data(tests):
         data['hard'].append(len(tasks.filter(task__difficulty=3)))
     return data
 
-def update_stat(user):
+def update_stats(user):
+    """
+    Функция обновляет данные статистики после прохождения теста
+    :param user: Данные о пользователе
+    :return:
+    """
+    stats = Stats.objects.get(user=user)
+    time = timezone.now().date() - timedelta(days=1)
+    previous_test = Test.objects.filter(user=user, date = time)
+    if previous_test.count() > 0 is not None and Test.objects.get(user=user, date=time).is_completed:
+        streak = stats.streak + 1
+        stats.best_streak = max(streak, stats.best_streak)
+    else:
+        stats.streak = 1
+        stats.best_streak = max(stats.streak, stats.best_streak)
+    stats.save()
+    return
+
+def check_stats(user):
+    """
+    Получает и проверяет данные о статистике пользователя
+    :param user: Данные о пользователе
+    :return: Возвращает данные о пользователе
+    """
     stat = Stats.objects.get(user=user)
     stat.completed = Test.objects.all().filter(user=user, is_completed=True).count()
     stat.save()
-    return
-
-def check_streak(user):
-    previous_day = timezone.now() + timedelta(days=-1)
-    test = Test.objects.get(user=user, date=previous_day)
-    stat = Stats.objects.get(user=user)
-
-    if test is not None and test.is_completed:
-        stat.streak += 1
-        stat.best_streak = max(stat.best_streak, stat.streak)
-    else:
-        stat.best_streak = max(stat.best_streak, stat.streak)
-        stat.streak = 0
-    stat.save()
-    return
+    return Stats.objects.get(user=user)

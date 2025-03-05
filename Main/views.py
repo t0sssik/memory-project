@@ -3,12 +3,13 @@ from django.contrib.auth import logout
 from django.http import JsonResponse
 from alg.user_statistics import *
 from alg.genetic_algorithm import *
+from .functions.stats_functions import update_stats, check_stats
 from .models import Test
-from .functions.stats_functions import (assign_first_test, generate_pdf, get_start_info, get_first_test, save_first_test,
-                                       get_today_tasks, get_first_test_result, update_test, update_stat, get_test_data)
+from .functions.test_functions import (assign_first_test, generate_pdf, get_start_info, get_first_test, save_first_test,
+                                       get_today_tasks, get_first_test_result, update_test, get_test_data,
+                                       get_completion_status)
 from .functions.user_functions import create_user, authenticate_user
 from .functions.context_functions import get_end_context, get_index_context
-
 
 def index(request):
     """
@@ -25,7 +26,6 @@ def index(request):
         if not Test.objects.all().filter(user=request.user, is_completed=True).exists():
             assign_first_test(request.user)
             generate_pdf(request.user)
-        # check_streak(user=request.user)
         context = get_index_context(request)
         return render(request, 'main.html', context)
     else:
@@ -99,6 +99,8 @@ def test(request):
     if not user.is_authenticated:
         tasks = get_first_test()
     else:
+        if get_completion_status(user):
+            return redirect('/')
         tasks = get_today_tasks(user)
     if request.method == 'POST':
         if request.POST.get('button') == 'exit':
@@ -108,7 +110,7 @@ def test(request):
                 return redirect(end)
             else:
                 update_test(user, request.POST)
-                update_stat(user)
+                update_stats(user)
                 return redirect('/test/end')
     return render(request, 'test.html', {'test': tasks})
 

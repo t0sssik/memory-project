@@ -1,5 +1,6 @@
 import math
-from .stats_functions import (get_today_test, get_last_ten_days, get_completion_status, generate_test, generate_pdf,
+from .stats_functions import check_stats
+from .test_functions import (get_today_test, get_last_ten_days, get_completion_status, generate_test, generate_pdf,
                               get_test_result)
 from ..models import Stats, Test
 
@@ -31,7 +32,7 @@ def get_index_context(request):
     """
     days = get_last_ten_days(user=request.user)
     is_completed = get_completion_status(user=request.user)
-    stats = Stats.objects.get(user=request.user)
+    stats = check_stats(user=request.user)
 
     if is_completed:
         result, value = get_test_result(user=request.user)
