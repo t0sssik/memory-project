@@ -1,7 +1,6 @@
 body{
     font-family: "CoFo Sans", "Arial", sans-serif;
     margin: 0;
-    overflow-x: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -9,39 +8,18 @@ body{
     background-color: var(--body-color);
 }
 
+main{
+    width: 100%;
+}
+
 button:hover{
     cursor: pointer;
-}
-
-nav{
-    display: flex;
-    justify-content: space-between;
-    margin: 38px 0 0 80px;
-    width: 86%;
-    color: var(--font-color);
-    border-radius: 20px;
-    padding: 0 20px 0 20px;
-    background-color: var(--nav-color);
-}
-
-nav ul{
-    list-style: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 10px 0 0;
-    margin: 0;
-}
-
-nav li{
-    padding: 0 30px 0 0;
 }
 
 div.hero{
     display: flex;
     flex-direction: column;
-    height: 100%;
-    width: 100%;
+    padding: 0 83px 0 83px;
     background-size: contain;
     background: linear-gradient(-45deg,#5EB5F2, #91CFFB);
 }
@@ -55,30 +33,10 @@ div.hero h2, button{
     color: var(--font-color-hero-secondary);
 }
 
-nav a{
-    color: black;
-    text-decoration: none;
-    font-size: 23px;
-}
-
-nav h2 a{
-    color: var(--font-color-secondary);
-}
-
-nav a:hover{
-    text-decoration: underline;
-}
-
-main{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
 .hero button{
     width: 300px;
     height: 60px;
-    margin: 25px 0 80px 80px;
+    margin: 25px 0 80px 0;
     border:0;
     border-radius: 20px;
     background: white;
@@ -93,18 +51,20 @@ main{
 
 .hero-image img{
     width: 750px;
+    max-width: 100%;
+    max-height: 100%;
     margin-bottom: 100px;
 }
 
 .hero h1{
     font-size: 68px;
-    margin: 30px 0 0 80px;
+    margin: 30px 0 0 0;
     line-height: 90%;
 }
 
 .hero p{
-    font-size: 27px;
-    margin: 90px 0 0 80px;
+    font-size: 24px;
+    margin: 90px 0 0 0;
 }
 
 .avatar{
@@ -114,33 +74,31 @@ main{
     margin: 0;
 }
 
-nav h2{
-    color: var(--font-color-hero-secondary)
-}
-
 .info h2{
     font-size: 50px;
-    margin: 6vh 0 2vh 10vh;
+    margin: 60px 0 5px 0;
+    font-weight: normal;
 }
 
 .info p{
     font-size: 26px;
     margin: 0;
     padding: 20px 0 0 20px;
-
 }
 
-.info{
+.info {
     display: flex;
     flex-direction: column;
-    padding: 0;
     user-select: none;
+    padding: 0 100px 0 100px;
 }
 
 .blocks{
     display: flex;
     align-items: center;
-    margin: 3vh 0 0 10vh;
+    justify-content: center;
+    margin: 20px 0 0 40px;
+    flex-wrap: wrap;
 }
 
 .blocks div{
@@ -151,13 +109,15 @@ nav h2{
 
 .small-block{
     background: var(--background-block);
-    min-height: 223px;
-    min-width: 400px;
     border-radius: 25px;
+    min-height: 220px;
+    margin-bottom: 10px;
 }
 
-.small-block:first-child{
-    margin-bottom: 10px;
+.small-blocks{
+    min-height: 442px;
+    flex-basis: 25%;
+    flex-grow: 1;
 }
 
 .huge-block{
@@ -165,8 +125,8 @@ nav h2{
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 442px;
-    min-width: 400px;
-    max-width: 400px;
+    flex-basis: 30%;
+    flex-grow: 1;
 }
 
 .huge-block:first-child{
@@ -175,8 +135,8 @@ nav h2{
 
 .huge-block:last-child{
     background-image: url('../images/block-2-svg.svg');
+    background-size: cover;
     color: var(--font-color-hero);
-    margin-right: 104px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -202,18 +162,16 @@ nav h2{
 
 
 .video-block video{
-    max-width: 1232px;
-    max-height: 639px;
-    min-width: 1232px;
-    min-height: 639px;
+    max-width: 100%;
+    max-height: 100%;
+    width: 1232px;
+    height: 639px;
     border-radius: 25px;
-
 }
 
 .diseases{
     background: var(--background-blue);
     color: white;
-
 }
 
 .diseases h4, .diseases h2{
@@ -224,17 +182,22 @@ nav h2{
 .diseases ol {
     list-style-type: none;
     counter-reset: num;
-   }
+    margin-bottom: 0;
+}
 
 .diseases li::before {
     content: '0' counter(num);
     counter-increment: num;
     font-size: 33px;
-   }
+}
 
 .diseases li{
     display: flex;
     margin: 6vh 0 2vh 5vh;
+}
+
+.diseases li:last-child{
+    margin-bottom: 0;
 }
 
 .diseases h4, .diseases p{

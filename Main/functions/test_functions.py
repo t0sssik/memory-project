@@ -2,7 +2,7 @@ import math
 from datetime import datetime
 from datetime import timedelta
 from collections import deque
-from ..models import Stats, TaskTest, Test
+from ..models import Stats, TaskTest, Test, User
 from ..models import Task as TaskModel
 from django.utils import timezone
 from alg.genetic_algorithm import *
