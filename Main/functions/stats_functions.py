@@ -1,51 +1,23 @@
+from .test_functions import get_today_test, get_completion_status
 from ..models import *
 from datetime import timedelta
-from .test_functions import get_completion_status
 
-def create_empty_dict():
+def get_previous_test(user):
     """
-    Функция возвращает подготовленный пустой словарь для обработки данных тестов
-    :return: Пустой словарь data
+    Получает и возвращает данные за вчерашний тест
+    :param user: Данные пользователя
+    :return: Данные теста, если он есть, либо False
     """
-    data=dict()
-    data['max_memory'] = []
-    data['max_attention'] = []
-    data['max_recognition'] = []
-    data['max_speech'] = []
-    data['max_action'] = []
-    data['result_memory'] = []
-    data['result_attention'] = []
-    data['result_recognition'] = []
-    data['result_speech'] = []
-    data['result_action'] = []
-    data['easy'] = []
-    data['medium'] = []
-    data['hard'] = []
-    return data
-
-def get_latest_test_data(tests):
-    """
-    Функция возвращает словарь с данными, где каждый элемент ключа является списком
-    :param tests: QuerySet, состоящий из тестов.
-    :return: Словарь списков
-    """
-    data = create_empty_dict()
-    for test in tests:
-        tasks = TaskTest.objects.all().filter(test=test).order_by('number')
-        data['max_memory'].append(len(tasks.filter(task__type='memory')))
-        data['max_attention'].append(len(tasks.filter(task__type='attention')))
-        data['max_recognition'].append(len(tasks.filter(task__type='recognition')))
-        data['max_speech'].append(len(tasks.filter(task__type='speech')))
-        data['max_action'].append(len(tasks.filter(task__type='action')))
-        data['result_memory'].append(test.correct_memory)
-        data['result_attention'].append(test.correct_attention)
-        data['result_recognition'].append(test.correct_recognition)
-        data['result_speech'].append(test.correct_speech)
-        data['result_action'].append(test.correct_action)
-        data['easy'].append(len(tasks.filter(task__difficulty=1)))
-        data['medium'].append(len(tasks.filter(task__difficulty=2)))
-        data['hard'].append(len(tasks.filter(task__difficulty=3)))
-    return data
+    time = timezone.now() - timedelta(days=1)
+    try:
+        previous_test = Test.objects.get(user=user, date__day = time.date().day, date__month = time.date().month,
+                                        date__year = time.date().year)
+    except:
+        previous_test = None
+    else:
+        previous_test = Test.objects.get(user=user, date__day=time.date().day, date__month=time.date().month,
+                                         date__year=time.date().year)
+    return previous_test
 
 def update_stats(user):
     """
@@ -54,10 +26,10 @@ def update_stats(user):
     :return:
     """
     stats = Stats.objects.get(user=user)
-    time = timezone.now().date() - timedelta(days=1)
-    previous_test = Test.objects.filter(user=user, date = time)
-    if previous_test.count() > 0 is not None and Test.objects.get(user=user, date=time).is_completed:
+    previous_test = get_previous_test(user)
+    if previous_test is not None and previous_test.is_completed:
         streak = stats.streak + 1
+        stats.streak = streak
         stats.best_streak = max(streak, stats.best_streak)
     else:
         stats.streak = 1
@@ -73,5 +45,9 @@ def check_stats(user):
     """
     stat = Stats.objects.get(user=user)
     stat.completed = Test.objects.all().filter(user=user, is_completed=True).count()
+    previous_test = get_previous_test(user)
+    if not (previous_test is not None and previous_test.is_completed):
+        if stat.streak > 0 and not get_completion_status(user):
+            stat.streak = 0
     stat.save()
     return Stats.objects.get(user=user)
