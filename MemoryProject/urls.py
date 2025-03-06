@@ -30,4 +30,5 @@ urlpatterns = [
     path('offer/', views.offer, name='offer'),
     path('test/', views.test, name='test'),
     path('test/end', views.end, name='end'),
+    path('password_change', views.password_change, name='password_change'),
 ]

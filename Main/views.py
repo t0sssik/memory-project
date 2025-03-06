@@ -8,7 +8,7 @@ from .models import Test
 from .functions.test_functions import (assign_first_test, generate_pdf, get_start_info, get_first_test, save_first_test,
                                        get_today_tasks, get_first_test_result, update_test, get_test_data,
                                        get_completion_status)
-from .functions.user_functions import create_user, authenticate_user
+from .functions.user_functions import create_user, authenticate_user, change_password
 from .functions.context_functions import get_end_context, get_index_context
 
 def index(request):
@@ -27,6 +27,7 @@ def index(request):
             assign_first_test(request.user)
             generate_pdf(request.user)
         context = get_index_context(request)
+        check_stats(request.user)
         return render(request, 'main.html', context)
     else:
         return render(request, 'home.html')
@@ -131,3 +132,15 @@ def end(request):
         data = result
     context = get_end_context(data)
     return render(request, 'end.html', context)
+
+def password_change(request):
+    user = request.user
+    if not user.is_authenticated:
+        return redirect('/')
+    result = True
+    if request.method == 'POST':
+        if request.POST.get('button') == 'change':
+            result = change_password(request)
+            if result:
+                return render(request, 'pass_change_success.html')
+    return render(request, 'pass_change.html', {'result': result})

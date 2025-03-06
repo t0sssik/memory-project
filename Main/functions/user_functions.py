@@ -77,3 +77,14 @@ def create_stats(user):
     """
     stats = Stats.objects.create(user=user)
     return stats.save()
+
+def change_password(request):
+    user = User.objects.get(username=request.user.username)
+    old_password = request.POST.get('old-pass')
+    new_password = request.POST.get('new-pass')
+    confirm_password = request.POST.get('new-pass-repeat')
+    if user.check_password(old_password) and new_password == confirm_password:
+        user.set_password(new_password)
+        user.save()
+        return True
+    return False
