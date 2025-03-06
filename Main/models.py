@@ -37,7 +37,7 @@ class Task(models.Model): #Банк заданий
 class Stats(models.Model):
     streak = models.IntegerField(default=0)
     best_streak = models.IntegerField(default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, unique=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     completed = models.IntegerField(default=0)
 
     def __str__(self):
