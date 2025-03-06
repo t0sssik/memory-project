@@ -134,6 +134,11 @@ def end(request):
     return render(request, 'end.html', context)
 
 def password_change(request):
+    """
+    Отображение для страниц изменения пароля
+    :param request: Запрос из браузера
+    :return: Отображает страницу изменения пароля или страницу успеха в случае успешного изменения пароля
+    """
     user = request.user
     if not user.is_authenticated:
         return redirect('/')
