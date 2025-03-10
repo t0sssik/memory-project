@@ -94,19 +94,56 @@ class ViewTests(TestCase):
 
     def setUp(self):
         user = User.objects.create(username='user_test', email='test', password='test')
+        Stats.objects.create(user=user)
+        anon_user = User.objects.create(username='Anon', email='test', password='test')
+        Test.objects.create(user=anon_user, date=timezone.now(), is_completed=False)
 
     def test_homepage(self):
-        client_1 = Client()
-        client_2 = Client()
-        response_1 = client_1.get('/')
-        response_2 = client_2.post('/auth/', {'email': 'test', 'password': 'test'})
-        response_2 = client_2.get('/')
-        self.assertEqual(response_1.status_code, 200)
-        self.assertTemplateUsed(response_1, 'home.html')
-        self.assertEqual(response_2.status_code, 200)
-        self.assertTemplateUsed(response_2, 'main.html')
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'home.html')
+        self.client.force_login(user=User.objects.get(username='user_test'))
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'main.html')
 
     def test_auth_page(self):
         response = self.client.get('/auth/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'auth.html')
+        self.client.force_login(user=User.objects.get(username='user_test'))
+        response = self.client.get('/auth/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
+
+    def test_first_page(self):
+        response = self.client.get('/first/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'first.html')
+        self.client.force_login(user=User.objects.get(username='user_test'))
+        response = self.client.get('/first/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
+
+    def test_offer_page(self):
+        response = self.client.get('/offer/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'offer.html')
+        self.client.force_login(user=User.objects.get(username='user_test'))
+        response = self.client.get('/offer/')
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, '/')
+
+    def test_test_page(self):
+        response = self.client.get('/test/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'test.html')
+
+    def test_password_change_page(self):
+        response = self.client.get('/password_change')
+        self.assertRedirects(response, '/')
+        self.assertEqual(response.status_code, 302)
+        self.client.force_login(user=User.objects.get(username='user_test'))
+        response = self.client.get('/password_change')
+        self.assertTemplateUsed(response, 'pass_change.html')
+        self.assertEqual(response.status_code, 200)
