@@ -72,6 +72,11 @@ def get_latest_tests(user):
     return tests
 
 def update_test(user, data):
+    """
+    Функция обновляет данные в тесте, считая результаты оценивания пользователем
+    :param user: Данные пользователя
+    :param data: Данные из запроса
+    """
     test = get_today_test(user)
     tasks = get_today_tasks(user).order_by('number')
     for i in range(min(24,len(tasks))):

@@ -77,3 +77,19 @@ def create_stats(user):
     """
     stats = Stats.objects.create(user=user)
     return stats.save()
+
+def change_password(request):
+    """
+    Функция, которая проверяет и изменяет пароль пользователя
+    :param request: Запрос из браузера с данными формы
+    :return: True в случае успешного изменения пароля, иначе False
+    """
+    user = User.objects.get(username=request.user.username)
+    old_password = request.POST.get('old-pass')
+    new_password = request.POST.get('new-pass')
+    confirm_password = request.POST.get('new-pass-repeat')
+    if user.check_password(old_password) and new_password == confirm_password:
+        user.set_password(new_password)
+        user.save()
+        return True
+    return False

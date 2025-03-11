@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static "/styles/base.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/offer.css" %}" type="text/css">
+    <link rel="stylesheet" href="{% static "/styles/nav.css" %}" type="text/css">
+    <title>MemoryProject</title>
+</head>
+    <body>
+    <main>
+        <div class="nav">
+            {% include 'nav.html' %}
+        </div>
+        <div class="blocks">
+            <div class="reg-block">
+                <h1>Изменить пароль</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input">
+                        <label for="old-pass">Старый пароль<strong>*</strong></label>
+                        <input class="input-field" required id="old-pass" name="old-pass" type="password"
+                               placeholder="Введите старый пароль" />
+                    </div>
+                    <div class="input">
+                        <label for="new-pass">Новый пароль <strong>*</strong></label>
+                        <input class="input-field" required id="new-pass" name="new-pass" type="password"
+                               placeholder="Введите новый пароль"/>
+                    </div>
+                    <div class="input">
+                        <label for="new-pass-repeat">Повторите новый пароль <strong>*</strong></label>
+                        <input class="input-field" required id="new-pass-repeat" name="new-pass-repeat" type="password"
+                               placeholder="Введите новый пароль"/>
+                    </div>
+                    <button type="submit" value="change" name="button" id="register-btn">Сохранить</button>
+                    {% if result == False %}
+                        <p class="note">Данные введены неверно, попробуйте ещё раз!</p>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </main>
+    </body>
+</html>
