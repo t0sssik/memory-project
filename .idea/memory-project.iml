@@ -18,8 +18,10 @@
       <excludeFolder url="file://$MODULE_DIR$/.venv/Include" />
       <excludeFolder url="file://$MODULE_DIR$/.venv/Lib" />
       <excludeFolder url="file://$MODULE_DIR$/.venv/Scripts" />
+      <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/.venv1" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.12 virtualenv at C:\Users\Admin\PycharmProjects\memory-project\.venv" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13 (memory-project — BACKUP NEW)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TemplatesService">

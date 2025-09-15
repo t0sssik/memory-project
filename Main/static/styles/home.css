@@ -131,10 +131,13 @@ div.hero h2, button{
 
 .huge-block:first-child{
     background-image: url('../images/block-svg.svg');
+    background-position: center center;
+    background-size: cover;
 }
 
 .huge-block:last-child{
     background-image: url('../images/block-2-svg.svg');
+    background-position: center center;
     background-size: cover;
     color: var(--font-color-hero);
     display: flex;
